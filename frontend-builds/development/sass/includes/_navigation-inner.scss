@@ -1,0 +1,156 @@
+// стили для навигационного меню для зарегистрированных клиентов
+
+.gf-navigation {
+    margin-bottom: 60px;
+    height: 60px;
+    background-color: #009688;
+}
+
+.text__h3 {
+    margin-top: 15px;
+}
+
+.footer {
+    background-color: $footer-background-color;
+    color: rgba(255,255,255,.84);
+}
+
+.navbar__cart-text {
+    padding-left: 3px;
+    font-size: 22px;
+}
+
+.wss-navbar__minheight {
+    min-height: 60px;
+}
+
+.navbar .gf-logo__link {
+    min-height: 90px;
+    line-height: 90px;
+}
+
+.wss__cart-minheight {
+    min-height: 60px;
+    line-height: 60px;
+}
+
+.wss__cart-div {
+    min-height: 50px;
+    line-height: 50px;
+    position: relative;
+    font-size: 22px;
+}
+
+.wss-navbar__minheight {
+    padding-left: 16px;
+    h1 {
+        font-size: 16px;
+        margin: 0;
+        line-height: 20px;
+    }
+}
+
+.wss-navbar__minheight-xs {
+    h1 {
+        font-size: 16px;
+        margin: 0;
+        line-height: 20px;
+    }
+}
+
+.wss-logo-block {
+    background-color: $logoblock-background-color;
+    margin-bottom: 20px;
+}
+
+.wss-logo-block__cart {
+    padding-left: 0;
+    li {
+        list-style-type: none;
+    }
+}
+
+.wss-logo-block__cart-xs {
+    padding-left: 0;
+    li {
+        list-style-type: none;
+    }
+}
+
+.wss-logoblock__cart_cartlink {
+    color: black;
+    text-decoration: none;
+    &:link {
+        text-decoration: none;
+        color: black;
+    }
+    &:visited {
+        text-decoration: none;
+        color: black;
+    }
+    &:hover {
+        text-decoration: none;
+        color: black;
+    }
+    &:active {
+        text-decoration: none;
+        color: black;
+    }
+}
+
+.wss-logo__link-xs {
+    padding-top: 20px;
+}
+
+.wss-logo__h1-sm {
+    padding-top: 12px;
+}
+
+.wss-logo__h1-lg {
+    padding-top: 20px;
+}
+
+.wss-logo__cart-lg {
+    padding-top: 15px;
+}
+
+.wss-logo__cart_maindiv {
+    @include clearfix;
+}
+
+.wss-logo__cart_width {
+    float: right;
+    width: 90px;
+}
+
+.wss-logo__news_button {
+    float: left;
+}
+
+.wss__cart_equips-in-the-cart-lg {
+    color: #fe0000;
+    position: absolute;
+    line-height: 15px;
+    top: 11px;
+    left: 21px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

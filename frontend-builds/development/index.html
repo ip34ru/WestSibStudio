@@ -1,0 +1,224 @@
+<!doctype html>
+<html ng-app="ngNoReddit">
+
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>WestSib Studio. Good sound - good life</title>
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="Professional equipment for all stages of recording and processing sound: mic preamps, rack mixers and summing amps, dynamic and psychoacoustic processors, EQs, AD/DA converters, monitor controllers, ribbon microphones, monitors, level meters, clock generators, power distributors, sound distributors and much more" />
+        <meta name="keywords" content="Professional equipment for all stages of recording and processing sound, mic preamp, rack mixers and summing amps, dynamic and psychoacoustic processor, EQ, AD/DA converter, monitor controller, ribbon microphone, monitor, level meter, clock generator, power distributor, sound distributor" />
+
+        <!-- Favicon -->
+        <link href="../img/favicon.png" rel="shortcut icon">
+
+        <link rel="stylesheet" href="css/style.min.css">
+
+        <!-- убрать на продакшене -->
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+    </head>
+
+    <body>
+
+
+    <!-- logoblock -->
+    <section class="wss-logo-block">
+
+        <div class="container">
+            <div class="row">
+
+                <!-- отображение лого на больших экранах -->
+                <div class="col-sm-4 col-md-4 col-lg-4 hidden-xs hidden-sm hidden-md">
+                    <a ui-sref="main" href="" class="gf-logo__link navbar-brand hidden-xs">
+                        <img src="../img/navbar-logo.png" alt="">
+                    </a>
+                </div>
+
+                <div class="col-sm-4 col-md-4 col-lg-4 hidden-xs hidden-sm hidden-md wss-navbar__minheight wss-logo__h1-lg">
+                    <h1 class="wss__cart-minheight wss__header1_padding-left">
+                        Professional equipment for all stages of recording and processing sound
+                    </h1>
+                </div>
+
+                <div class="col-sm-4 col-md-4 col-lg-4 hidden-xs hidden-sm hidden-md text-right logoblock__reg_margintop wss-logo__cart-lg">
+                    <ul class="wss-logo-block__cart">
+                        <li class="wss-navbar__minheight">
+                            <div class="wss-logo__cart_maindiv">
+                                <div class="wss-logo__news_button">
+                                    <a href="#" class="btn btn-default">Our News</a>
+                                </div>
+                                <div class="wss-logo__cart_width">
+                                    <a href="" class="wss-logoblock__cart_cartlink wss__cart-minheight center-block">
+                                        <div class="wss__cart-div">
+                                            <div class="wss__cart_equips-in-the-cart-lg">4</div>
+                                            <i class="icon-shopping-cart"></i>
+                                            <span class="navbar__cart-text">Cart</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+                <!-- отображение лого на больших экранах -->
+
+                <!-- отображение лого на устройствах со средними экранами -->
+                <div class="col-sm-6 col-md-4 col-lg-4 hidden-xs hidden-lg">
+                    <a ui-sref="main" href="" class="gf-logo__link navbar-brand">
+                        <img src="../img/navbar-logo-xs.png" alt="">
+                    </a>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-4 hidden-xs hidden-lg wss-navbar__minheight-xs wss-logo__h1-sm">
+                    <h1 class="wss__header1_padding-left">
+                        Professional equipment for all stages of recording and processing sound
+                    </h1>
+                </div>
+
+                <div class="col-sm-12 col-md-4 col-lg-4 hidden-xs hidden-lg text-center">
+                    <ul class="wss-logo-block__cart">
+                        <li class="">
+                            <a href="" class="wss-logoblock__cart_cartlink center-block">
+                                <div class="wss__cart-div">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="navbar__cart-text">Cart</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- отображение лого на устройствах со средними экранами -->
+
+                <!-- отображение лого на телефоне -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 hidden-sm hidden-md hidden-lg text-center wss-logo__link-xs">
+                    <a href="" class="gf-logo__link">
+                        <img src="../img/navbar-logo-xs.png" alt="">
+                    </a>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center hidden-sm hidden-md hidden-lg wss-navbar__minheight-xs">
+                    <h1 class="wss__header1_padding-left">
+                        Professional equipment for all stages of recording and processing sound
+                    </h1>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 hidden-sm hidden-md hidden-lg text-center">
+                    <ul class="wss-logo-block__cart-xs">
+                        <li class="">
+                            <a href="" class="wss-logoblock__cart_cartlink center-block">
+                                <div class="wss__cart-div">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="navbar__cart-text">Cart</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- отображение лого на телефоне -->
+
+            </div>
+        </div>
+
+    </section>
+    <!-- logoblock -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section>
+            <div class="container">
+                <!-- контент -->
+                <div>
+
+                    <!-- форма добавления нового поста -->
+                    <div ng-if="isSignedIn()" ui-view="formPostAdd">
+                    </div>
+                    <!-- форма добавления нового поста -->
+
+                    <form class="form-horizontal">
+
+                        <div ui-view="allPostsMainPage"></div>
+
+                    </form>
+
+                </div>
+                <!-- контент -->
+
+            </div>
+        </section>
+        <!-- открытая часть сайта -->
+
+        <!-- footer -->
+        <section class="footer">
+            <!-- todo сделать смену года в зависимости от даты, забивать год в БД -->
+            <!-- footer -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-left gf-exercise-string__exercise-text gf-exercise-caption__word-wrap">
+                                    <p class="text__h3 text-center">
+                                        &copy;2015 ngForum. Все права защищены.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- footer -->
+        </section>
+        <!-- footer -->
+
+        <!-- точка входа для ангуляра -->
+
+        <!-- Others JS Files -->
+        <script src="libs/jquery/jquery.js"></script>
+        <!--<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>-->
+        <script src="libs/bootstrap/js/bootstrap.js"></script>
+        <!--<script src="libs/jasny-bootstrap/js/jasny-bootstrap.js"></script>-->
+        <!--<script src="libs/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>-->
+        <!--<script src="libs/bootstrap-datepicker/locales/bootstrap-datepicker.ru.min.js" charset="UTF-8"></script>-->
+        <script src="libs/arrive/arrive.min.js"></script>
+        <script src="libs/bootstrap-material-design/js/material.js"></script>
+        <script src="libs/bootstrap-material-design/js/ripples.js"></script>
+        <script src="js/material/material-init.js"></script>
+        <!-- AngularJs vDependencies -->
+        <script src="libs/angular/angular.js"></script>
+        <script src="libs/angular/firebase.js"></script>
+        <script src="libs/angular/angularfire.js"></script>
+        <script src="libs/angular-ui-router/angular-ui-router.js"></script>
+        <script src="libs/angular-bootstrap/ui-bootstrap.js"></script>
+        <script src="libs/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="libs/Chart.js/Chart.js"></script>
+        <script src="libs/angular-chart.js/angular-chart.js"></script>
+        <!--<script src="libs/angular-bootstrap-datetimepicker/js/datetimepicker.js"></script>-->
+        <script src="libs/a0-angular-storage/angular-storage.js"></script>
+        <script src="libs/angular-toastr/angular-toastr.tpls.js"></script>
+        <!-- Our JS App Fies -->
+        <script src="app/app.js"></script>
+        <!-- Other helpers JS -->
+        <!--<script src="js/date-picker/date-picker.js"></script>-->
+        <!--<script src="js/tooltip/tooltip.js"></script>-->
+
+    </body>
+
+</html>

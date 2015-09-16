@@ -1,0 +1,67 @@
+/*
+Error: Invalid CSS after "    background: ": expected "{", was "url('../img/pre..."
+        on line 4 of includes/_preloader.scss
+        from line 25 of style.scss
+
+1: 
+2: .gf-preloader
+3:     padding: 50px
+4:     background: url('../img/preloader.gif') no-repeat 50% 50% transparent
+
+Backtrace:
+includes/_preloader.scss:4
+style.scss:25
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:1162:in `expected'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:1098:in `expected'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:1093:in `tok!'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:638:in `block'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:632:in `ruleset'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:657:in `block_child'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:647:in `block_contents'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:117:in `stylesheet'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/scss/parser.rb:42:in `parse'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/engine.rb:393:in `_to_tree'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/engine.rb:299:in `to_tree'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:323:in `block in visit_import'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/stack.rb:88:in `block in with_import'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/stack.rb:115:in `with_frame'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/stack.rb:88:in `with_import'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:322:in `visit_import'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:36:in `visit'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/stack.rb:79:in `block in with_base'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/stack.rb:115:in `with_frame'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/stack.rb:79:in `with_base'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:158:in `visit'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:52:in `map'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:36:in `block in visit'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:36:in `visit'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:157:in `visit'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:8:in `visit'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/root_node.rb:36:in `css_tree'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/engine.rb:368:in `_render_with_sourcemap'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/engine.rb:285:in `render_with_sourcemap'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:490:in `update_stylesheet'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:209:in `each'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/plugin.rb:82:in `update_stylesheets'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/exec/sass_scss.rb:361:in `watch_or_update'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/exec/sass_scss.rb:51:in `process_result'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/exec/base.rb:52:in `parse'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/lib/sass/exec/base.rb:19:in `parse!'
+d:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.14/bin/scss:13:in `<top (required)>'
+d:/Ruby22-x64/bin/scss:23:in `load'
+d:/Ruby22-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"    background: \": expected \"{\", was \"url('../img/pre...\"\A         on line 4 of includes/_preloader.scss\A         from line 25 of style.scss\A \A 1: \A 2: .gf-preloader\A 3:     padding: 50px\A 4:     background: url('../img/preloader.gif') no-repeat 50% 50% transparent"; }

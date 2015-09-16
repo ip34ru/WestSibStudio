@@ -1,0 +1,53 @@
+// Стили для страницы с контактами (contacts)
+// author: taksenov@gmail.com
+
+.gf-contacts-bg-image {
+    min-height: 100vh;
+    background-image: url("../img/nggirlsfit-contacts-bg.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}
+
+.gf-contacts__site-address {
+    color: #ffffff;
+    text-shadow: #000000 1px 1px 2px, #000000 -1px -1px 2px,
+                 #000000 -1px 1px 2px, #000000 1px -1px 2px;
+    font-size: $font-size-contacts-link;
+    text-decoration: underline;
+
+    &:hover {
+        color: #d77101;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

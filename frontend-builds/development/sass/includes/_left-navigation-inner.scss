@@ -1,0 +1,93 @@
+// стили для левостороннего меню для зарегистрированных пользователей
+
+.gf-left-navigation {
+    position: relative;
+//    min-width: 250px;
+//    min-height: 150px;
+}
+
+.gf-left-navigation__userpic {
+    position: absolute;
+    top: -35px;
+    left: 15px;
+    box-shadow: 0 0 5px #bbbbbb;
+    img {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+.gf-left-navigation__border {
+    //border: 1px solid #bbbbbb;
+    box-shadow: 0 0 5px #bbbbbb;
+}
+
+.gf-left-navigation__username {
+    font-size: $font-size-profile-user-name;
+    padding-left: 120px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    word-wrap: break-word;
+}
+
+.gf-left-navigation__achivments {
+    @include clearfix;
+}
+
+.gf-left-navigation__list {
+    li {
+        float: left;
+        margin-left: 1em;
+    }
+}
+
+.gf-left-navigation__achivments_icons {
+    font-size: 20pt;
+}
+
+.gf-left-navigation__achivments_center {
+    display:inline-block;
+}
+
+.gf-workout-navigation__pos-rel {
+    position: relative;
+}
+
+.gf-workout-navigation__image-lg-screens {
+    position: absolute;
+    top: -239px;
+    margin-right: 15px;
+}
+
+.gf-workout-navigation__btnexit-lg-screens {
+    position: absolute;
+    top: 107px;
+    width: 362px;
+}
+
+.navbar__small-avatar {
+    margin-top: -8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
