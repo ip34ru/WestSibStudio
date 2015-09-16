@@ -1,0 +1,43 @@
+{
+  "name": "NoReddit",
+  "version": "1.0.0",
+  "homepage": "https://github.com/taksenov/",
+  "authors": [
+    "TAksenov@gmail.com"
+  ],
+  "description": "It is a simple application that runs gulp and helps in work.",
+  "keywords": [
+    "ngFit",
+    "angularjs"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    ".jshintrc"
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.3.4",
+    "bootstrap-material-design": "~0.3.0",
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "angular-sanitize": "~1.4.0",
+    "angular-animate": "~1.4.0",
+    "angular-cookies": "~1.4.0",
+    "angular-touch": "~1.4.0",
+    "angular-loader": "~1.4.0",
+    "angular-i18n": "~1.4.0",
+    "angular-bootstrap": "~0.13.0",
+    "angular-ui-router": "~0.2.15",
+    "a0-angular-storage": "~0.0.11"
+  },
+  "dependencies": {
+    "angular-chart.js": "~0.7.2",
+    "arrive": "~2.2.0",
+    "firebase": "~2.2.7",
+    "angularfire": "~1.1.1",
+    "angular-toastr": "~1.4.1"
+  }
+}
