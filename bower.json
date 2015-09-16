@@ -1,14 +1,15 @@
 {
-  "name": "NoReddit",
+  "name": "WestSibStudio",
   "version": "1.0.0",
-  "homepage": "https://github.com/taksenov/",
+  "homepage": "https://github.com/ip34ru/WestSibStudio/",
   "authors": [
     "TAksenov@gmail.com"
   ],
-  "description": "It is a simple application that runs gulp and helps in work.",
+  "description": "It is e-commerce site for professional equipment for all stages of recording and processing sound.",
   "keywords": [
-    "ngFit",
-    "angularjs"
+    "WestSibStudio",
+    "angularjs",
+    "Django"
   ],
   "license": "MIT",
   "ignore": [

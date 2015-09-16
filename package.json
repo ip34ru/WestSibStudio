@@ -1,17 +1,18 @@
 {
   "name": "NoReddit2",
   "version": "2.0.0",
-  "description": "It is a simple application that runs gulp and helps in work.",
+  "description": "It is e-commerce site for professional equipment for all stages of recording and processing sound.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/taksenov/angularjs-noreddit2.git"
+    "url": "https://github.com/ip34ru/WestSibStudio.git"
   },
   "keywords": [
-    "ngFit",
-    "angualrjs"
+    "WestSibStudio",
+    "angularjs",
+    "Django"
   ],
   "author": "Timofey Аksyonov",
   "license": "ISC",
