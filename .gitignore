@@ -55,7 +55,7 @@ db.sqlite3
 #
  
 #files to ignore
-settings.py
+localsettings.py
 sitebellib.ini
 
 #extensions to ignore
