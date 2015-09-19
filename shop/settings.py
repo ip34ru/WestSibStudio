@@ -6,6 +6,8 @@ SECRET_KEY = '&mvi0m(sd_en4rfk&06pw=(@am7d_en4rfk&06pd_en4rfk&06p'
 
 DEBUG = True
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
@@ -15,6 +17,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'app'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,6 +60,12 @@ DATABASES = {
 }
 
 LANGUAGE_CODE = 'ru-ru'
+
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'full',
+    },
+}
 
 TIME_ZONE = 'UTC'
 
