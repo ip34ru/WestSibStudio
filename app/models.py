@@ -25,7 +25,7 @@ class Product (models.Model):
     name = models.CharField(verbose_name=u'Название', max_length=150)
     text = RichTextField(verbose_name=u'Описание')
     image = models.ImageField(verbose_name=u'Изображение', upload_to=u'/products')
-    price = models.DecimalField(verbose_name=u'Цена', max_digits=6, default=0.0)
+    price = models.DecimalField(verbose_name=u'Цена', max_digits=6, default=0.0, decimal_places=2)
 
     class Meta:
         verbose_name = u'Продукт'
@@ -42,8 +42,8 @@ class Brand (models.Model):
     products = models.ManyToManyField(Product, verbose_name=u'Продукты', blank=True, null=True)
 
     class Meta:
-        verbose_name = u'Клиент'
-        verbose_name_plural = u'Клиенты'
+        verbose_name = u'Производитель'
+        verbose_name_plural = u'Производители'
 
     def __unicode__(self):
         return self.name
@@ -73,7 +73,7 @@ class Order(models.Model):
     date_create = models.DateTimeField(auto_now_add=True, verbose_name=u'Создан')
     date_change = models.DateTimeField(auto_now=True, verbose_name=u'Изменен')
     items = models.ManyToManyField(OrderItem, verbose_name=u'Позиции')
-    sum = models.DecimalField(verbose_name=u'Сумма', max_digits=6, default=0.0)
+    sum = models.DecimalField(verbose_name=u'Сумма', max_digits=6, default=0.0, decimal_places=2)
     status = models.CharField(verbose_name=u'Статус', max_length=5, choices=ORDER_CHOICES, default='new')
 
     class Meta:
