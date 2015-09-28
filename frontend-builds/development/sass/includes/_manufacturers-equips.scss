@@ -1,0 +1,110 @@
+// “аблицы стилей дл€ производителей и товаров
+
+.wss__manufacturer_main_block {
+    @include clearfix;
+}
+
+.wss__manufacturer {
+    padding-top: 10px;
+    background-color: $manufacturer-background-color;
+}
+
+.wss__manufacturer_info_btn,
+.wss__manufacturer_motto {
+    float: left;
+    margin-right: 15px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.wss__manufacturer_logo {
+    margin-top: -4px;
+}
+
+.wss__manufacturer_logo {
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 6px;
+}
+
+.wss__manufacturer_motto {
+    margin-top: 8px;
+}
+
+.btn__nomargins {
+    margin: 0;
+}
+
+.wss__manufacturer_motto {
+    h2 {
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
+        color: $header-cart-cartlink-color;
+        text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+    }
+}
+
+.marg-top__10 {
+    margin-top: 10px;
+}
+
+.serv-thumbnail {
+    p {
+        font-size: 22px;
+        font-weight: 900;
+    }
+
+    h3 {
+        font-size: 16px;
+        text-transform: uppercase;
+        margin-top: 10px;
+    }
+    &:hover {
+        box-shadow: 0 0 20px 10px rgba(86, 136, 187, 0.3);
+        -webkit-transition: 2s;
+        -moz-transition: 2s;
+        -ms-transition: 2s;
+        -o-transition: 2s;
+        transition: 2s;
+    }
+}
+
+.wss__equipment_qty_btn {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.form-group__no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.wss_equipment {
+    padding-top: 20px;
+
+    -webkit-box-shadow: inset 0px 8px 4px -4px rgba(0,0,0,0.25),
+                        inset 0px -8px 4px -4px rgba(0,0,0,0.25);
+    -moz-box-shadow: inset 0px 8px 4px -4px rgba(0,0,0,0.25),
+                     inset 0px -8px 4px -4px rgba(0,0,0,0.25);
+    box-shadow: inset 0px 8px 4px -4px rgba(0,0,0,0.25),
+                inset 0px -8px 4px -4px rgba(0,0,0,0.25);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,14 +10,14 @@
     margin-top: 15px;
 }
 
-.footer {
-    background-color: $footer-background-color;
-    color: rgba(255,255,255,.84);
-}
-
 .navbar__cart-text {
     padding-left: 3px;
-    font-size: 22px;
+    font-size: 20px;
+}
+
+.navbar__cart-text-xs {
+    padding-left: 3px;
+    font-size: 16px;
 }
 
 .wss-navbar__minheight {
@@ -34,17 +34,29 @@
     line-height: 60px;
 }
 
+.wss__cart-minheight-xs {
+    min-height: 30px;
+    line-height: 30px;
+}
+
 .wss__cart-div {
     min-height: 50px;
     line-height: 50px;
     position: relative;
-    font-size: 22px;
+    font-size: 20px;
+}
+
+.wss__cart-div-xs {
+    min-height: 30px;
+    line-height: 30px;
+    position: relative;
+    font-size: 16px;
 }
 
 .wss-navbar__minheight {
     padding-left: 16px;
     h1 {
-        font-size: 16px;
+        font-size: 15px;
         margin: 0;
         line-height: 20px;
     }
@@ -52,15 +64,17 @@
 
 .wss-navbar__minheight-xs {
     h1 {
-        font-size: 16px;
+        font-size: 12px;
         margin: 0;
-        line-height: 20px;
+        line-height: 16px;
     }
 }
 
 .wss-logo-block {
     background-color: $logoblock-background-color;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    color: rgba(255,255,255,.84);
+    text-shadow: rgb(31, 31, 31) 0px 1px 0px;
 }
 
 .wss-logo-block__cart {
@@ -70,6 +84,13 @@
     }
 }
 
+.wss-logo-block__float_ul {
+    ul {
+        margin-bottom: 0;
+    }
+}
+
+
 .wss-logo-block__cart-xs {
     padding-left: 0;
     li {
@@ -78,28 +99,38 @@
 }
 
 .wss-logoblock__cart_cartlink {
-    color: black;
+    color: $header-cart-cartlink-color;
     text-decoration: none;
+    text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+    text-transform: uppercase;
     &:link {
         text-decoration: none;
-        color: black;
+        color: $header-cart-cartlink-color;
+        text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+        text-transform: uppercase;
     }
     &:visited {
         text-decoration: none;
-        color: black;
+        color: $header-cart-cartlink-color;
+        text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+        text-transform: uppercase;
     }
     &:hover {
         text-decoration: none;
-        color: black;
+        color: $header-cart-cartlink-color;
+        text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+        text-transform: uppercase;
     }
     &:active {
         text-decoration: none;
-        color: black;
+        color: $header-cart-cartlink-color;
+        text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+        text-transform: uppercase;
     }
 }
 
 .wss-logo__link-xs {
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 .wss-logo__h1-sm {
@@ -123,26 +154,178 @@
     width: 90px;
 }
 
+.wss-logo__cart_width-xs {
+    width: 90px;
+}
+
 .wss-logo__news_button {
     float: left;
+    a {
+        color: rgba(255,255,255,.84) !important;
+        text-shadow: rgb(31, 31, 31) 0px 1px 0px !important;
+    }
 }
 
 .wss__cart_equips-in-the-cart-lg {
-    color: #fe0000;
+    color: $header-cart-equips-in-cart-color;
     position: absolute;
     line-height: 15px;
     top: 11px;
-    left: 21px;
-    font-size: 22px;
+    left: 15px;
+    font-size: 20px;
     font-weight: 700;
 }
 
+.wss__cart_equips-in-the-cart-md {
+    color: $header-cart-equips-in-cart-color;
+    position: absolute;
+    line-height: 15px;
+    top: 11px;
+    left: 9px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.wss__cart_equips-in-the-cart-xs {
+    color: $header-cart-equips-in-cart-color;
+    position: absolute;
+    line-height: 15px;
+    top: 4px;
+    left: 15px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.wss-logo-block__float {
+    display: none;
+}
+
+.wss-logo-block__float_bg-color {
+    background-color: $logoblock-background-color;
+}
+
+.wss-logo-block__float_top {
+    top:0;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+}
+
+//медиаквери для плавающей корзины
+@media screen and (min-width: 1201px) {
+
+    .wss__cart_equips-in-the-cart-xs-float {
+        color: $header-cart-equips-in-cart-color;
+        position: absolute;
+        line-height: 15px;
+        top: 12px;
+        left: 15px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .navbar__cart-text-xs-float {
+        padding-left: 3px;
+        font-size: 20px;
+    }
+
+    .wss__cart-div-xs-float {
+        min-height: 50px;
+        line-height: 50px;
+        position: relative;
+        font-size: 20px;
+    }
+
+}
 
 
+@media screen and (min-width: 993px) and (max-width: 1200px) {
 
+    .wss__cart_equips-in-the-cart-xs-float {
+        color: $header-cart-equips-in-cart-color;
+        position: absolute;
+        line-height: 15px;
+        top: 12px;
+        left: 15px;
+        font-size: 20px;
+        font-weight: 700;
+    }
 
+    .navbar__cart-text-xs-float {
+        padding-left: 3px;
+        font-size: 20px;
+    }
 
+    .wss__cart-div-xs-float {
+        min-height: 50px;
+        line-height: 50px;
+        position: relative;
+        font-size: 20px;
+    }
 
+}
+
+@media screen and (min-width: 769px) and (max-width: 993px) {
+
+    .wss__cart_equips-in-the-cart-xs-float {
+        color: $header-cart-equips-in-cart-color;
+        position: absolute;
+        line-height: 15px;
+        top: 4px;
+        left: 15px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .navbar__cart-text-xs-float {
+        padding-left: 3px;
+        font-size: 16px;
+    }
+
+    .wss__cart-div-xs-float {
+        min-height: 30px;
+        line-height: 30px;
+        position: relative;
+        font-size: 16px;
+    }
+
+    .wss__cart-minheight {
+        min-height: 30px;
+        line-height: 30px;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    .wss__cart_equips-in-the-cart-xs-float {
+        color: $header-cart-equips-in-cart-color;
+        position: absolute;
+        line-height: 15px;
+        top: 4px;
+        left: 15px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .navbar__cart-text-xs-float {
+        padding-left: 3px;
+        font-size: 16px;
+    }
+
+    .wss__cart-div-xs-float {
+        min-height: 30px;
+        line-height: 30px;
+        position: relative;
+        font-size: 16px;
+    }
+
+    .wss__cart-minheight {
+        min-height: 30px;
+        line-height: 30px;
+    }
+
+}
 
 
 

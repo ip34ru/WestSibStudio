@@ -6,6 +6,7 @@
 @import "../libs/angular-chart.js/angular-chart.css";
 @import "../libs/angular-toastr/angular-toastr.css";
 @import "../libs/whhg-font/css/whhg.css";
+@import "../libs/fancybox/jquery.fancybox.css";
 //=== === ===
 // Our SASS Files
 @import "includes/varibles";
@@ -23,26 +24,11 @@
 @import "includes/page404";
 @import "includes/auth-modal";
 @import "includes/preloader";
-// Some Styles...
-body {
-  width: 100%;
-  height: 100%;
-  font-size: $font-size-base;
-}
+@import "includes/_manufacturers-equips";
+@import "includes/mainpage";
+@import "includes/footer";
+@import "includes/modal-about-manufacturer";
+@import "includes/one-item";
+@import "includes/cart-modal";
 
-// -------= адаптивный футер =-------
-html {
-    height: 100%;
-}
-body {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-
-
-
-
-}
-
-// -------= адаптивный футер =-------
 

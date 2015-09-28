@@ -124,6 +124,12 @@ gulp.task('libs', function() {
         .pipe(gulp.dest('./frontend-builds/dist/libs/angular-toastr/'));
     // -----
 
+    // Подключение fancybox
+    gulp.src(bc + 'fancybox/source/**/*')
+        .pipe(gulp.dest('./frontend-builds/dist/libs/fancybox/'));
+    // -----
+
+
     gulp.src([bc+'angular/angular.js',
             bc+'angular-animate/angular-animate.js',
             bc+'angular-cookies/angular-cookies.js',

@@ -2,8 +2,6 @@
 
 .gf-left-navigation {
     position: relative;
-//    min-width: 250px;
-//    min-height: 150px;
 }
 
 .gf-left-navigation__userpic {
@@ -18,7 +16,6 @@
 }
 
 .gf-left-navigation__border {
-    //border: 1px solid #bbbbbb;
     box-shadow: 0 0 5px #bbbbbb;
 }
 
@@ -69,10 +66,71 @@
     margin-top: -8px;
 }
 
+.wss-logo-block__for-yabrowser {
+}
+
+.wss-equipment__for-yabrowser {
+    height: 100%;
+
+}
+
+.wss__manufacturer_and_equipment_block__for-yabrowser {
+    height: 100%;
+}
+
+// костыль для яндекс броузера
+@media screen and (min-width: 1201px) {
+    .wss-logo-block {
+        width: 100%;
+        min-height: 85px;
+    }
+
+    .wss_equipment {
+        min-height: 100px;
+        max-height: 99999px;
+
+    }
+
+    .wss__manufacturer_and_equipment_block {
+        height: 100%;
+    }
+
+}
 
 
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+    .wss-logo-block {
+        width: 100%;
+        min-height: 85px;
+    }
 
+    .wss_equipment {
+        height: 100%;
+    }
+}
 
+@media screen and (min-width: 769px) and (max-width: 993px) {
+    .wss-logo-block {
+        width: 100%;
+        height: 100%;
+    }
+
+    .wss_equipment {
+        height: 100%;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .wss-logo-block {
+        width: 100%;
+        height: 100%;
+    }
+
+    .wss_equipment {
+        height: 100%;
+    }
+}
 
 
 
