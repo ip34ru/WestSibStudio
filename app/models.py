@@ -1,6 +1,58 @@
 # coding=utf-8
+import os
 from django.db import models
 from ckeditor.fields import RichTextField
+from PIL import Image
+
+THUMBNAIL_SIZE = 128, 128
+
+
+class Photo(models.Model):
+    image = models.ImageField('Изображение', upload_to='images/')
+    text = models.CharField(verbose_name=u'Текст', max_length=150, blank=True)
+
+    class Meta:
+        verbose_name = u'Изображение'
+        verbose_name_plural = u'Изображения'
+
+    def __unicode__(self):
+        return self.text or 'img'
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        super(Photo, self).save(force_insert=False, force_update=False, using=None,
+                                update_fields=None)
+        img_path = self.image.path.replace('\\', '/')
+        img_result_path = os.path.join(os.path.dirname(img_path),
+                                       'thumbs',
+                                       os.path.basename(img_path))
+        img = Image.open(img_path)
+        img.thumbnail(THUMBNAIL_SIZE)
+        img.save(img_result_path)
+
+    def get_thumbnail_url(self):
+        original = self.image.url
+        i = original.rfind('/')
+        return original[:i] + '/thumbs' + original[i:]
+
+
+class Logo(models.Model):
+    main_image = models.ImageField(verbose_name='Главное изображение', upload_to='logos')
+    scroll_image = models.ImageField(verbose_name='Изображение при скролле', upload_to='logos')
+
+    class Meta:
+        verbose_name = u'Логотип сайта'
+        verbose_name_plural = u'Логотипы сайта'
+
+
+class Notes(models.Model):
+    title_text = models.CharField(verbose_name=u'Title', max_length=255, blank=True, null=True)
+    h_text = models.CharField(verbose_name=u'Заголовок', max_length=255, blank=True, null=True)
+    footer = models.CharField(verbose_name=u'Текст подвала', max_length=255, blank=True, null=True)
+
+    class Meta:
+        verbose_name = u'Описание'
+        verbose_name_plural = u'Описания'
 
 
 class Client(models.Model):
@@ -11,7 +63,7 @@ class Client(models.Model):
     address = models.TextField(verbose_name=u'Адрес')
     town = models.CharField(verbose_name=u'Город', max_length=150)
     country = models.CharField(verbose_name=u'Страна', max_length=150)
-    zip = models.CharField(verbose_name=u'Страна', max_length=150)
+    zip = models.CharField(verbose_name=u'Индекс', max_length=150)
 
     class Meta:
         verbose_name = u'Клиент'
@@ -21,10 +73,13 @@ class Client(models.Model):
         return self.name
 
 
-class Product (models.Model):
+class Product(models.Model):
     name = models.CharField(verbose_name=u'Название', max_length=150)
+    slug = models.CharField(verbose_name=u'Слаг', max_length=150, blank=True)
     text = RichTextField(verbose_name=u'Описание')
-    image = models.ImageField(verbose_name=u'Изображение', upload_to=u'/products')
+    main_image = models.ForeignKey(Photo, verbose_name=u"Главное изображение", related_name="main_image", blank=True,
+                                   null=True)
+    gallery = models.ManyToManyField(Photo, verbose_name=u"Галлерея", blank=True)
     price = models.DecimalField(verbose_name=u'Цена', max_digits=6, default=0.0, decimal_places=2)
 
     class Meta:
@@ -35,11 +90,14 @@ class Product (models.Model):
         return self.name
 
 
-class Brand (models.Model):
+class Brand(models.Model):
     name = models.CharField(verbose_name=u'Название', max_length=150)
+    slug = models.CharField(verbose_name=u'Слаг', max_length=150, blank=True)
+    logo = models.ForeignKey(Photo, verbose_name=u"Главное изображение", related_name="main_photo", blank=True,
+                             null=True)
     tagline = models.CharField(verbose_name=u'Слоган', max_length=150)
     text = RichTextField(verbose_name=u'Описание')
-    products = models.ManyToManyField(Product, verbose_name=u'Продукты', blank=True, null=True)
+    products = models.ManyToManyField(Product, verbose_name=u'Продукты', blank=True)
 
     class Meta:
         verbose_name = u'Производитель'
@@ -75,10 +133,33 @@ class Order(models.Model):
     items = models.ManyToManyField(OrderItem, verbose_name=u'Позиции')
     sum = models.DecimalField(verbose_name=u'Сумма', max_digits=6, default=0.0, decimal_places=2)
     status = models.CharField(verbose_name=u'Статус', max_length=5, choices=ORDER_CHOICES, default='new')
+    postal_code = models.CharField(verbose_name=u'Номер почтового отправления', max_length=150, blank=True)
 
     class Meta:
         verbose_name = u'Заказ'
         verbose_name_plural = u'Заказы'
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        postal_code_old = Order.objects.get(pk=self.pk).postal_code
+        super(Order, self).save(force_insert=False, force_update=False, using=None,
+                                update_fields=None)
+        if postal_code_old == '' and self.postal_code != '':
+            print('send message for %s' % self.client.email)
+
     def __unicode__(self):
         return u'%s: %s' % (self.client.name, self.sum)
+
+
+class News(models.Model):
+    title = models.CharField(verbose_name=u'Заголовок', max_length=150)
+    teaser = RichTextField(verbose_name=u'Тизер')
+    text = RichTextField(verbose_name=u'Текст')
+    date = models.DateTimeField(verbose_name=u'Дата и время')
+
+    class Meta:
+        verbose_name = u'Новость'
+        verbose_name_plural = u'Новости'
+
+    def __unicode__(self):
+        return self.title
