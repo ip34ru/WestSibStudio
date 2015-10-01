@@ -1,7 +1,7 @@
 # coding=utf-8
 import os
 from django.db import models
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from PIL import Image
 
 THUMBNAIL_SIZE = 128, 128
@@ -76,7 +76,7 @@ class Client(models.Model):
 class Product(models.Model):
     name = models.CharField(verbose_name=u'Название', max_length=150)
     slug = models.CharField(verbose_name=u'Слаг', max_length=150, blank=True)
-    text = RichTextField(verbose_name=u'Описание')
+    text = RichTextUploadingField(verbose_name=u'Описание')
     main_image = models.ForeignKey(Photo, verbose_name=u"Главное изображение", related_name="main_image", blank=True,
                                    null=True)
     gallery = models.ManyToManyField(Photo, verbose_name=u"Галлерея", blank=True)
@@ -96,7 +96,7 @@ class Brand(models.Model):
     logo = models.ForeignKey(Photo, verbose_name=u"Главное изображение", related_name="main_photo", blank=True,
                              null=True)
     tagline = models.CharField(verbose_name=u'Слоган', max_length=150)
-    text = RichTextField(verbose_name=u'Описание')
+    text = RichTextUploadingField(verbose_name=u'Описание')
     products = models.ManyToManyField(Product, verbose_name=u'Продукты', blank=True)
 
     class Meta:
@@ -153,8 +153,8 @@ class Order(models.Model):
 
 class News(models.Model):
     title = models.CharField(verbose_name=u'Заголовок', max_length=150)
-    teaser = RichTextField(verbose_name=u'Тизер')
-    text = RichTextField(verbose_name=u'Текст')
+    teaser = RichTextUploadingField(verbose_name=u'Тизер')
+    text = RichTextUploadingField(verbose_name=u'Текст')
     date = models.DateTimeField(verbose_name=u'Дата и время')
 
     class Meta:

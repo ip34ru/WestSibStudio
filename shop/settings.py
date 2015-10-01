@@ -6,8 +6,6 @@ SECRET_KEY = '&mvi0m(sd_en4rfk&06pw=(@am7d_en4rfk&06pd_en4rfk&06p'
 
 DEBUG = True
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
-
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
@@ -18,6 +16,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'ckeditor_uploader',
     'app'
 )
 
@@ -66,6 +65,10 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'full',
     },
 }
+
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 TIME_ZONE = 'UTC'
 
