@@ -15,4 +15,4 @@ install:
   - pip install django-ckeditor
 
 script:
-  - run manage.py test
+  - python manage.py test
