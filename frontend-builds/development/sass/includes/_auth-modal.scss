@@ -1,0 +1,45 @@
+// Таблицы стилей для модального окна входа и регистрации
+
+.gf-auth-modal__marg-bottom_25px {
+    margin-bottom: 25px;
+}
+
+.gf-auth-modal__btn-small-size {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.gf-auth-modal__btn-color_facebook {
+    &:hover {
+        background-color: #0d47a1 !important;
+        color: #ffffff !important;
+    }
+}
+
+.gf-auth-modal__btn-color_googleplus {
+    &:hover {
+        background-color: #e53935 !important;
+        color: #ffffff !important;
+    }
+}
+
+.gf-auth-modal__btn-color_twitter {
+    &:hover {
+        background-color: #80d8ff !important;
+        color: #ffffff !important;
+    }
+}
+
+.gf-auth-modal__btn-color_vk {
+    &:hover {
+        background-color: #57799E !important;
+        color: #ffffff !important;
+    }
+}
+
+.gf-auth-modal__manual-singn-in_buttons {
+    display: inline-block;
+}
+
+
+

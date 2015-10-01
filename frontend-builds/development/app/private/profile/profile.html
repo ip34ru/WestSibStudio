@@ -1,0 +1,48 @@
+
+            <!--  -->
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+                    <div class="gf-left-navigation__border">
+                        <div class="gf-left-navigation__image">
+                            <img class="img-responsive" src="../img/ngNoReddit-about-article-001.jpg" alt="ProfileBackground"/>
+                        </div>
+
+                        <div class="gf-left-navigation">
+                            <div class="gf-left-navigation__username">
+                                {{ currentUser.name }}
+                            </div>
+
+                            <!-- userpic -->
+                            <div class="gf-left-navigation__userpic">
+                                <img ng-src="{{ currentUser.avatar }}" src="" alt="Userpic"/>
+                            </div>
+                            <!-- userpic -->
+
+                        </div>
+                    </div>
+
+                    <div class="gf-left-navigation__buttons">
+                        <div class="btn-group-vertical center-block">
+                            <a ui-sref=".account" href="" ui-sref-active="btn-primary" class="btn btn-flat btn-default">Учетная запись</a>
+                            <a ui-sref=".password" href="" ui-sref-active="btn-primary" class="btn btn-flat btn-default">Пароль</a>
+                            <a ui-sref=".achivments" href="" ui-sref-active="btn-primary" class="btn btn-flat btn-default">Достижения</a>
+                            <a ui-sref=".design" href="" ui-sref-active="btn-primary" class="btn btn-flat btn-default">Дизайн</a>
+                            <a ng-click="vm.logout()" href="#/" class="btn btn-flat btn-default">Выход</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-8 col-ld-8 center-block">
+
+                    <div ui-view></div>
+
+                </div>
+
+            </div>
+            <!--  -->
+
+
+

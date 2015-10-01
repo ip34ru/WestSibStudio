@@ -1,0 +1,33 @@
+// Стилизация для элементов форм профиля
+
+.gf-left-navigation__profile-achivments_icons {
+    font-size: 40pt;
+}
+
+
+@media screen and (max-width: 768px) {
+    .gf-profile__wrap-long-words {
+        word-wrap: break-word;
+        font-size: 10px;
+    }
+}
+
+.gf-left-navigation__list-link {
+    a {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

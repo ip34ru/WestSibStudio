@@ -1,0 +1,203 @@
+    <!-- пост со свернутыми комментариями -->
+
+    <div ng-hide="allPostsData.dataLoaded" class="gf-preloader">
+
+    </div>
+
+    <div ng-show="allPostsData.dataLoaded" class="col-lg-12" ng-repeat="post in allPosts | orderBy : post.dateTime : true">
+
+        <div class="panel gf-panel-material-orange-50">
+            <div class="row">
+
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <img class="nr-post__userpic-img"
+                                 ng-src="{{post.avatar}}"
+                                 src=""
+                                 alt="icon"
+                                 width="60px">
+                        </div>
+                        <div class="col-lg-11">
+                            <div class="text-left gf-exercise-string__exercise-text gf-exercise-caption__word-wrap">
+                                <h3>
+                                    {{ post.postCaption }}
+                                </h3>
+                                <p>
+                                    {{ post.postText }}
+                                </p>
+                                <span>Автор: {{ post.ownerName }}, {{ post.dateTime * 1000 | date:'dd.MM.yyyy HH:mm' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="text-right gf-exercise-string__exercise-btns"
+                         ng-if="isSignedIn() && post.ownerId === currentUser.id">
+                        <p>
+                            <!-- кнопки удаления-редактирования поста -->
+                            <button class="btn btn-success nr-btn-manage-group"
+                            ng-click="vm.postEdit( post.elementIndex, post )">
+                                <i class="mdi-editor-mode-edit"></i>
+                            </button>
+                            <button class="btn btn-danger nr-btn-manage-group"
+                            ng-click="vm.postDelete( post.elementIndex, post.postID )">
+                                <i class="mdi-content-clear"></i>
+                            </button>
+                            <!-- кнопки удаления-редактирования поста -->
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="nr-separator__post"></div>
+
+            <!-- ========================[комментарии]============================================================= -->
+            <div class="row">
+
+                <div class="col-lg-11 col-lg-offset-1">
+                    <div class="list-group" ng-repeat="comment in post.comments"
+                         ng-show="vm.isShowExistedComments( post )">
+                        <div class="list-group-item">
+
+                            <div class="row-picture">
+                                <img ng-src="{{comment.avatar}}"
+                                     src=""
+                                     alt="icon"
+                                     width="60px">
+                            </div>
+
+                            <div class="row-content">
+                                <div class="row">
+                                    <div class="col-lg-9">
+                                        <h4 class="list-group-item-heading">
+                                            {{ comment.commentText }}
+                                        </h4>
+                                        <p class="list-group-item-text">
+                                            {{ comment.ownerName }}: прокомментировал, {{ comment.dateTime * 1000 | date:'dd.MM.yyyy HH:mm' }}
+                                        </p>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="text-right gf-exercise-string__exercise-btns"
+                                             ng-show="isSignedIn() && comment.ownerId === currentUser.id">
+                                            <p>
+                                                <!-- кнопки удаления-редактирования комментария -->
+                                                <button class="btn btn-success nr-btn-manage-group"
+                                                        ng-click="vm.commentEdit( comment, post )">
+                                                    <i class="mdi-editor-mode-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger nr-btn-manage-group"
+                                                        ng-click="vm.deleteThisComment( comment, post )">
+                                                    <i class="mdi-content-clear"></i>
+                                                </button>
+                                                <!-- кнопки удаления-редактирования комментария -->
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="list-group-separator"></div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- ========================[комментарии]============================================================= -->
+
+            <!-- форма добавления комментария -->
+            <div class="row" ng-show="vm.isSelectedFormAddNewComment( post )">
+                <div class="col-lg-10 col-lg-offset-1"
+                     ng-if="isSignedIn()">  <!-- показывать, только если пользователь вошел в систему -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <legend>Оставить комментарий</legend>
+
+                                    <div class="form-group">
+                                        <label for="inputPostComment"
+                                               class="col-lg-2 control-label">Текст
+                                            комментария</label>
+
+                                        <div class="col-lg-10">
+                                            <textarea class="form-control" rows="3"
+                                                      id="inputPostComment"
+                                                      ng-model="vm.newComment.text"
+                                                      >
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div class="col-lg-12">
+                                            <div class="text-center gf-exercise-string__exercise-btns">
+                                                <p>
+                                                    <button class="btn btn-success"
+                                                            ng-click="vm.addNewComment( vm.newComment.text, post.postID )">
+                                                        Submit
+                                                    </button>
+                                                    <button class="btn btn-danger"
+                                                            ng-click="vm.cancelCommentFunc()">
+                                                        Cancel
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- форма добавления комментария -->
+
+            <!-- кнопки управления комментариями -->
+            <div class="row" ng-hide="vm.isSelectedFormAddNewComment( post )">
+                <div class="col-lg-12">
+                    <div class="text-center gf-exercise-string__exercise-btns">
+
+                        <span ng-if="!post.nocomments">
+                            <button class="btn btn-primary"
+                                    ng-hide="vm.isShowExistedComments( post )"
+                                    ng-click="vm.showExistedComments( post )">
+                                Развернуть комментарии
+                            </button>
+
+                            <button class="btn btn-default"
+                                    ng-show="vm.isShowExistedComments( post )"
+                                    ng-click="vm.hideExistedComments()">
+                                Свернуть комментарии
+                            </button>
+                        </span>
+
+                        <span>
+                            <button class="btn btn-info"
+                                    ng-click="vm.addNewCommentFunc( post )"
+                                    ng-if="isSignedIn()" > <!-- показывать, только если пользователь вошел в систему -->
+                                Добавить свой комментарий
+                            </button>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <!-- кнопки управления комментариями -->
+
+        </div>
+    </div>
+    <!-- пост со свернутыми комментариями -->

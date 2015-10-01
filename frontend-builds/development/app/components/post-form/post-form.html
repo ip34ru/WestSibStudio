@@ -1,0 +1,89 @@
+
+<div ng-show="allPostsData.dataLoaded">
+
+    <!-- добавить новый пост, свернутая форма -->
+    <div class="col-lg-12" ng-show="vm.addNewPost">
+        <a href="#" data-toggle="modal"
+           class="gf-exercise-string__add-link"
+           ng-click="vm.addNewPostFunc()" >
+            <div class="panel panel-default">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="gf-exercise-string__image center-block">
+                            <img class="img-responsive" width="40"
+                                 src="../img/nggirlsfit-exercises-plus.png"
+                                 alt="Упражнение прыжки"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="text-center gf-exercise-string__text">
+                            <h3>
+                                Добавить новый пост
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <!-- добавить новый пост, свернутая форма -->
+
+    <!-- добавить новый пост, раскрытая форма -->
+    <div class="col-lg-12" ng-hide="vm.addNewPost">
+
+        <div class="panel panel-default">
+
+            <form class="form-horizontal">
+                <fieldset>
+                    <legend class="text-center">Новый пост</legend>
+                    <div class="form-group">
+                        <label for="inputPostCaption" class="col-lg-2 control-label">Заголовок
+                            поста</label>
+
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="inputPostCaption"
+                                   placeholder="Заголовок поста"
+                                   ng-model="vm.newpost.postCaption"
+                                   ng-required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPosttext"
+                               class="col-lg-2 control-label">Текст
+                            поста</label>
+
+                        <div class="col-lg-10">
+                            <textarea class="form-control" rows="3" id="inputPosttext"
+                                    ng-model="vm.newpost.postText"
+                                    ng-required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-lg-12">
+                            <div class="text-center gf-exercise-string__exercise-btns">
+                                <p>
+                                    <button class="btn btn-success"
+                                            ng-click="vm.submitNewPost( vm.newpost.postCaption, vm.newpost.postText )">
+                                        Submit
+                                    </button>
+                                    <button class="btn btn-danger"
+                                            ng-click="vm.cancelPostFunc()" >
+                                        Cancel
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+            </form>
+
+        </div>
+
+    </div>
+    <!-- добавить новый пост, раскрытая форма -->
+
+</div>

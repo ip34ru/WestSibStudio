@@ -1,0 +1,103 @@
+                    <div class="well bs-component gf-profile-form__account">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <legend>Учетная запись</legend>
+                                <div class="form-group">
+                                    <label for="inputName"
+                                           class="col-lg-4 control-label"
+                                            >Имя пользователя</label>
+
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="inputName" placeholder="Имя пользователя"
+                                            ng-model="vm.userProfileObj.name"
+                                                >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail" class="col-lg-4 control-label">Электронная почта</label>
+
+                                    <div class="col-lg-8">
+                                        <input type="email" class="form-control" id="inputEmail" placeholder="Электронная почта"
+                                            ng-model="vm.userProfileObj.email"
+                                                >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputWeight" class="col-lg-4 control-label">Масса тела</label>
+
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="inputWeight" placeholder="Масса тела"
+                                            ng-model="vm.userProfileObj.weight"
+                                                >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputHeight" class="col-lg-4 control-label">Рост</label>
+
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="inputHeight" placeholder="Рост"
+                                            ng-model="vm.userProfileObj.height"
+                                                >
+                                    </div>
+                                </div>
+                                <div class="form-group" id="dateOfBirthInput">
+                                    <label for="inputDateOfBirth" class="col-lg-4 control-label">Дата рождения</label>
+
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="inputDateOfBirth" placeholder="Дата рождения"
+                                            ng-model="vm.userProfileObj.birthdate"
+                                                >
+
+<!--<div class="dropdown">-->
+
+    <!--{{ data.date | date:'dd.MM.yyyy' }}-->
+
+    <!--<a class="dropdown-toggle my-toggle-select" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">-->
+        <!--<div class="input-append"><input type="text" class="form-control" data-ng-model="data.embeddedDate" placeholder="Дата рождения"><span class="add-on"><i-->
+                <!--class="icon-calendar"></i></span>-->
+        <!--</div>-->
+    <!--</a>-->
+    <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">-->
+        <!--<datetimepicker data-ng-model="data.embeddedDate"-->
+                        <!--data-datetimepicker-config="{ dropdownSelector: '.my-toggle-select',-->
+                                                      <!--startView:        'day',-->
+                                                      <!--minView:          'day'      }"></datetimepicker>-->
+    <!--</ul>-->
+<!--</div>-->
+
+
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputFile" class="col-lg-4 control-label">Выберите аватар</label>
+
+                                    <div class="col-lg-8">
+                                        <input type="text" readonly="" class="form-control floating-label" placeholder="Browse...">
+                                        <input type="file" id="inputFile" multiple="">
+
+                                        <div class="togglebutton">
+
+                                                <button class="btn btn-default">
+                                                    <i class="mdi-navigation-cancel"></i>
+                                                    Удалить аватар
+                                                </button>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-lg-8 col-lg-offset-4">
+                                        <button ng-click="vm.accountProfileEdit()" class="btn btn-success">Сохранить</button>
+                                        <button class="btn btn-warning">Отменить</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>

@@ -1,0 +1,29 @@
+//Таблицы стилей для footer
+
+.footer {
+    background-color: $footer-background-color;
+    color: rgba(255,255,255,.84);
+    text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+}
+
+.wss-footer__paypal-logo {
+    margin-top: 4px;
+}
+
+.wss-footer__ip34-link {
+    color: $header-cart-cartlink-color;
+    text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+    &:hover {
+        color: $header-cart-cartlink-color;
+        text-shadow: rgb(31, 31, 31) 0px 1px 0px;
+    }
+}
+
+
+
+
+
+
+
+
+

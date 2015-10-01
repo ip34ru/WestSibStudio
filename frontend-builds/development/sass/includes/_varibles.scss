@@ -1,0 +1,48 @@
+// Media Queries
+// Extra small screen / phone
+$screen-xs:                  480px !default;
+$screen-phone:               $screen-xs !default;
+// Small screen / tablet
+$screen-sm:                  768px !default;
+$screen-tablet:              $screen-sm !default;
+// Medium screen / desktop
+$screen-md:                  992px !default;
+$screen-desktop:             $screen-md !default;
+// Large screen / wide desktop
+$screen-lg:                  1200px !default;
+$screen-lg-desktop:          $screen-lg !default;
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max:              ($screen-sm - 1) !default;
+$screen-sm-max:              ($screen-md - 1) !default;
+$screen-md-max:              ($screen-lg - 1) !default;
+// === === === === === === === === === === === === === === === === //
+$font-size-base: 16px;
+// Переменные для main page
+$font-size-logo: 20px;
+$font-size-logo-mini: 16px;
+$font-size-navbar: 16px;
+$font-size-info: 22px;
+$font-size-info-mini: 16px;
+// Переменные для profile
+$font-size-profile-user-name: 20px;
+// Переменные для contacts
+$font-size-contacts-link: 36px;
+// Переменные для 404
+$font-size-404-header: 52px;
+//Цвет фона логоблока
+$logoblock-background-color: #0D2C4D;
+//Цвет фона футера
+$footer-background-color: #0D2C4D;
+// Цвет количества товаров в корзине
+$header-cart-equips-in-cart-color: #FF5722;
+// Цвет бекгроунда, за неподвижной картинкой паттерна
+$main-background-color: #EEEEEE;
+// Цвет текста корзины в хедере
+$header-cart-cartlink-color: rgba(255,255,255,.84);
+// Цвет плашек с производителями
+$manufacturer-background-color: #5687bb;
+// Цвет бекгроунда, на котором расположены плашки с товарами
+$main-background-equips-color: #eceef1;
+
+
+
