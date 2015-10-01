@@ -9,6 +9,7 @@ THUMBNAIL_SIZE = 128, 128
 
 class Photo(models.Model):
     image = models.ImageField('Изображение', upload_to='images/')
+
     text = models.CharField(verbose_name=u'Текст', max_length=150, blank=True)
 
     class Meta:
@@ -20,7 +21,9 @@ class Photo(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        super(Photo, self).save(force_insert=False, force_update=False, using=None,
+        super(Photo, self).save(force_insert=False,
+                                force_update=False,
+                                using=None,
                                 update_fields=None)
         img_path = self.image.path.replace('\\', '/')
         img_result_path = os.path.join(os.path.dirname(img_path),
@@ -30,15 +33,20 @@ class Photo(models.Model):
         img.thumbnail(THUMBNAIL_SIZE)
         img.save(img_result_path)
 
+    def get_original_url(self):
+        return self.image.url
+
     def get_thumbnail_url(self):
-        original = self.image.url
+        original = self.get_original_url()
         i = original.rfind('/')
         return original[:i] + '/thumbs' + original[i:]
 
 
 class Logo(models.Model):
-    main_image = models.ImageField(verbose_name='Главное изображение', upload_to='logos')
-    scroll_image = models.ImageField(verbose_name='Изображение при скролле', upload_to='logos')
+    main_image = models.ImageField(verbose_name='Главное изображение',
+                                   upload_to='logos')
+    scroll_image = models.ImageField(verbose_name='Изображение при скролле',
+                                     upload_to='logos')
 
     class Meta:
         verbose_name = u'Логотип сайта'
@@ -46,9 +54,12 @@ class Logo(models.Model):
 
 
 class Notes(models.Model):
-    title_text = models.CharField(verbose_name=u'Title', max_length=255, blank=True, null=True)
-    h_text = models.CharField(verbose_name=u'Заголовок', max_length=255, blank=True, null=True)
-    footer = models.CharField(verbose_name=u'Текст подвала', max_length=255, blank=True, null=True)
+    title_text = models.CharField(verbose_name=u'Title', max_length=255,
+                                  blank=True, null=True)
+    h_text = models.CharField(verbose_name=u'Заголовок', max_length=255,
+                              blank=True, null=True)
+    footer = models.CharField(verbose_name=u'Текст подвала', max_length=255,
+                              blank=True, null=True)
 
     class Meta:
         verbose_name = u'Описание'
@@ -77,10 +88,15 @@ class Product(models.Model):
     name = models.CharField(verbose_name=u'Название', max_length=150)
     slug = models.CharField(verbose_name=u'Слаг', max_length=150, blank=True)
     text = RichTextUploadingField(verbose_name=u'Описание')
-    main_image = models.ForeignKey(Photo, verbose_name=u"Главное изображение", related_name="main_image", blank=True,
+    main_image = models.ForeignKey(Photo, verbose_name=u"Главное изображение",
+                                   related_name="main_image", blank=True,
                                    null=True)
-    gallery = models.ManyToManyField(Photo, verbose_name=u"Галлерея", blank=True)
-    price = models.DecimalField(verbose_name=u'Цена', max_digits=6, default=0.0, decimal_places=2)
+
+    gallery = models.ManyToManyField(Photo, verbose_name=u"Галлерея",
+                                     blank=True)
+
+    price = models.DecimalField(verbose_name=u'Цена', max_digits=6, default=0.0,
+                                decimal_places=2)
 
     class Meta:
         verbose_name = u'Продукт'
@@ -93,11 +109,15 @@ class Product(models.Model):
 class Brand(models.Model):
     name = models.CharField(verbose_name=u'Название', max_length=150)
     slug = models.CharField(verbose_name=u'Слаг', max_length=150, blank=True)
-    logo = models.ForeignKey(Photo, verbose_name=u"Главное изображение", related_name="main_photo", blank=True,
+    logo = models.ForeignKey(Photo, verbose_name=u"Главное изображение",
+                             related_name="main_photo", blank=True,
                              null=True)
+
     tagline = models.CharField(verbose_name=u'Слоган', max_length=150)
     text = RichTextUploadingField(verbose_name=u'Описание')
-    products = models.ManyToManyField(Product, verbose_name=u'Продукты', blank=True)
+
+    products = models.ManyToManyField(Product, verbose_name=u'Продукты',
+                                      blank=True)
 
     class Meta:
         verbose_name = u'Производитель'
@@ -128,12 +148,22 @@ class Order(models.Model):
         (u'cls', u'Закрыт'),
         (u'cnl', u'Отменен'),)
     client = models.ForeignKey(Client, verbose_name=u'Клиент')
-    date_create = models.DateTimeField(auto_now_add=True, verbose_name=u'Создан')
+
+    date_create = models.DateTimeField(auto_now_add=True,
+                                       verbose_name=u'Создан')
+
     date_change = models.DateTimeField(auto_now=True, verbose_name=u'Изменен')
+
     items = models.ManyToManyField(OrderItem, verbose_name=u'Позиции')
-    sum = models.DecimalField(verbose_name=u'Сумма', max_digits=6, default=0.0, decimal_places=2)
-    status = models.CharField(verbose_name=u'Статус', max_length=5, choices=ORDER_CHOICES, default='new')
-    postal_code = models.CharField(verbose_name=u'Номер почтового отправления', max_length=150, blank=True)
+
+    sum = models.DecimalField(verbose_name=u'Сумма', max_digits=6, default=0.0,
+                              decimal_places=2)
+
+    status = models.CharField(verbose_name=u'Статус', max_length=5,
+                              choices=ORDER_CHOICES, default='new')
+
+    postal_code = models.CharField(verbose_name=u'Номер почтового отправления',
+                                   max_length=150, blank=True)
 
     class Meta:
         verbose_name = u'Заказ'
@@ -141,9 +171,12 @@ class Order(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
+
         postal_code_old = Order.objects.get(pk=self.pk).postal_code
-        super(Order, self).save(force_insert=False, force_update=False, using=None,
-                                update_fields=None)
+
+        super(Order, self).save(force_insert=False, force_update=False,
+                                using=None, update_fields=None)
+
         if postal_code_old == '' and self.postal_code != '':
             print('send message for %s' % self.client.email)
 
