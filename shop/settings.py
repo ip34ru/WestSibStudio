@@ -49,6 +49,12 @@ TEMPLATES = [
     },
 ]
 
+from django.conf import global_settings
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.request',
+)
+
 WSGI_APPLICATION = 'shop.wsgi.application'
 
 DATABASES = {

@@ -19,6 +19,9 @@ class Photo(models.Model):
     def __unicode__(self):
         return self.text or 'img'
 
+    def __str__(self):
+        return self.__unicode__()
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         super(Photo, self).save(force_insert=False,
@@ -65,10 +68,17 @@ class Notes(models.Model):
         verbose_name = u'Описание'
         verbose_name_plural = u'Описания'
 
+    def __unicode__(self):
+        return self.title_text
+
+    def __str__(self):
+        return self.__unicode__()
+
 
 class Client(models.Model):
     name = models.CharField(verbose_name=u'ФИО', max_length=150)
-    phone = models.CharField(verbose_name=u'Телефон', max_length=50, blank=True)
+    phone = models.CharField(
+        verbose_name=u'Телефон', max_length=50, blank=True)
     company = models.CharField(verbose_name=u'Компания', max_length=150)
     email = models.EmailField(verbose_name=u'E-mail')
     address = models.TextField(verbose_name=u'Адрес')
@@ -82,6 +92,9 @@ class Client(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def __str__(self):
+        return self.__unicode__()
 
 
 class Product(models.Model):
@@ -105,6 +118,9 @@ class Product(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.__unicode__()
+
 
 class Brand(models.Model):
     name = models.CharField(verbose_name=u'Название', max_length=150)
@@ -126,6 +142,9 @@ class Brand(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.__unicode__()
+
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, verbose_name=u'Продукт')
@@ -137,6 +156,9 @@ class OrderItem(models.Model):
 
     def __unicode__(self):
         return u'%s: %s' % (self.product.name, self.count)
+
+    def __str__(self):
+        return self.__unicode__()
 
 
 class Order(models.Model):
@@ -169,6 +191,12 @@ class Order(models.Model):
         verbose_name = u'Заказ'
         verbose_name_plural = u'Заказы'
 
+    def __unicode__(self):
+        return u'%s: %s' % (self.client.name, self.sum)
+
+    def __str__(self):
+        return self.__unicode__()
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
 
@@ -179,9 +207,6 @@ class Order(models.Model):
 
         if postal_code_old == '' and self.postal_code != '':
             print('send message for %s' % self.client.email)
-
-    def __unicode__(self):
-        return u'%s: %s' % (self.client.name, self.sum)
 
 
 class News(models.Model):
@@ -196,3 +221,6 @@ class News(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def __str__(self):
+        return self.__unicode__()
