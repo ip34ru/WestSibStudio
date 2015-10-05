@@ -1,9 +1,13 @@
 from django.shortcuts import HttpResponse
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 import json
 from .models import *
 
 
+class Home(TemplateView):
+  template_name = 'base.html'
+ 
+    
 class Brands_View(View):
 
     def get(self, request, *args, **kwargs):
