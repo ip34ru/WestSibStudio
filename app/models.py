@@ -105,11 +105,20 @@ class Product(models.Model):
                                    related_name="main_image", blank=True,
                                    null=True)
 
+    miniature_image = models.ForeignKey(Photo,
+                                        verbose_name=u"Миниатюрное изображение",
+                                        related_name="miniature_image",
+                                        blank=True, null=True)
+
     gallery = models.ManyToManyField(Photo, verbose_name=u"Изображения",
                                      blank=True)
 
     price = models.DecimalField(verbose_name=u'Цена', max_digits=6, default=0.0,
                                 decimal_places=2)
+
+    price_discont = models.DecimalField(verbose_name=u'Цена со скидкой',
+                                        max_digits=6, default=0.0,
+                                        decimal_places=2)
 
     class Meta:
         verbose_name = u'Продукт'

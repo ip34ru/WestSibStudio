@@ -5,6 +5,7 @@ from .models import *
 
 
 class Brands_View(View):
+
     def get(self, request, *args, **kwargs):
         brands = Brand.objects.all()
         result = [{'id': brand.id,
@@ -22,15 +23,21 @@ class Brands_View(View):
                                  'name': product.name,
                                  'text': product.text,
                                  'slug': product.slug,
-                                 'main_image':{
-                                     'original':product.main_image.get_original_url(),
-                                               'thumb':product.main_image.get_thumbnail_url()} 
-                                 if product.main_image else '',
+                                 'main_image': {'original': product.main_image.get_original_url(),
+                                                'thumb': product.main_image.get_thumbnail_url(),
+                                                'text': product.main_image.text}
+                                 if product.main_image else {},
+                                 'miniature_image': {'original': product.miniature_image.get_original_url(),
+                                                     'thumb': product.miniature_image.get_thumbnail_url(),
+                                                     'text': product.miniature_image.text
+                                                     } if product.miniature_image else {},
                                  'gallery': [
-                                 {'original': photo.image.url,
-                                  'thumb': photo.get_thumbnail_url()
-                                  }for photo in product.gallery.all()],
-                                 'price': str(product.price)
+                                     {'original': photo.get_original_url(),
+                                      'thumb': photo.get_thumbnail_url(),
+                                      'text': photo.text
+                                      }for photo in product.gallery.all()],
+                                 'price': str(product.price),
+                                 'price_discont': str(product.price_discont),
                                  } for product in brand.products.all()]
                    } for brand in brands]
         return HttpResponse(json.dumps(result, indent=1),
