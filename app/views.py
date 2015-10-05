@@ -13,9 +13,9 @@ class Brands_View(View):
                    'slug': brand.slug,
                    'tagline': brand.tagline,
                    'logo': {
-                       'main': brand.logo.image.get_original_url()
+                       'main': brand.logo.get_original_url()
                        if brand.logo else '',
-                       'thumb': brand.logo.image.get_thumbnail_url()
+                       'thumb': brand.logo.get_thumbnail_url()
                        if brand.logo else '',
                    },
                    'products': [{'id': product.id,
@@ -26,7 +26,7 @@ class Brands_View(View):
                                  if product.main_image else '',
                                  'gallery': [
                                  {'original': photo.image.url,
-                                  'thumb': photo.image.get_thumbnail_url()
+                                  'thumb': photo.get_thumbnail_url()
                                   }for photo in product.gallery.all()],
                                  'price': str(product.price)
                                  } for product in brand.products.all()]
