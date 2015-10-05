@@ -105,7 +105,7 @@ class Product(models.Model):
                                    related_name="main_image", blank=True,
                                    null=True)
 
-    gallery = models.ManyToManyField(Photo, verbose_name=u"Галлерея",
+    gallery = models.ManyToManyField(Photo, verbose_name=u"Изображения",
                                      blank=True)
 
     price = models.DecimalField(verbose_name=u'Цена', max_digits=6, default=0.0,
@@ -120,6 +120,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.__unicode__()
+
+    def get_admin_th(self):
+        if self.main_image:
+            return '<img src="%s" width="100"/>' % self.main_image.get_thumbnail_url()
+        return '<strong>%s</strong>' % self.name
+    get_admin_th.short_description = u'Фото'
+    get_admin_th.allow_tags = True
 
 
 class Brand(models.Model):
@@ -144,6 +151,13 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.__unicode__()
+
+    def get_admin_th(self):
+        if self.logo:
+            return '<img src="%s" width="100"/>' % self.logo.get_thumbnail_url()
+        return '<strong>%s</strong>' % self.name
+    get_admin_th.short_description = u'Фото'
+    get_admin_th.allow_tags = True
 
 
 class OrderItem(models.Model):

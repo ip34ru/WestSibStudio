@@ -22,7 +22,9 @@ class Brands_View(View):
                                  'name': product.name,
                                  'text': product.text,
                                  'slug': product.slug,
-                                 'main_image': product.main_image.image.url
+                                 'main_image':{
+                                     'original':product.main_image.get_original_url(),
+                                               'thumb':product.main_image.get_thumbnail_url()} 
                                  if product.main_image else '',
                                  'gallery': [
                                  {'original': photo.image.url,
