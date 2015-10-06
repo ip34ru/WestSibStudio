@@ -39,6 +39,7 @@
     "arrive": "~2.2.0",
     "firebase": "~2.2.7",
     "angularfire": "~1.1.1",
-    "angular-toastr": "~1.4.1"
+    "angular-toastr": "~1.4.1",
+    "fancybox": "~2.1.5"
   }
 }

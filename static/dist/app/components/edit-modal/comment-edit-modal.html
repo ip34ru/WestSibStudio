@@ -1,0 +1,57 @@
+<!-- Модальное окно редактирования комментария -->
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()">×</button>
+
+        <!--<h4 class="modal-title">Регистрация</h4>-->
+        <h4 class="modal-title text-center gf-auth-modal__marg-bottom_25px">{{ modalCaption }}</h4>
+
+    </div>
+
+    <div class="modal-body">
+
+        <form class="form-horizontal">
+            <fieldset>
+
+                <div class="form-group">
+                    <label for="inputPostComment"
+                           class="col-lg-2 control-label">Текст
+                        комментария</label>
+
+                    <div class="col-lg-10">
+                        <textarea class="form-control" rows="3"
+                                  id="inputPostComment"
+                                  ng-model="commentData.commentText"
+                                  >
+
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-lg-12">
+                        <div class="text-center gf-exercise-string__exercise-btns">
+                            <p>
+                                <button class="btn btn-success"
+                                        ng-click="ok()">
+                                    Submit
+                                </button>
+                                <button class="btn btn-danger"
+                                        ng-click="cancel()">
+                                    Cancel
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </fieldset>
+        </form>
+
+    </div>
+
+<!-- Модальное окно редактирования комментария -->
+
+

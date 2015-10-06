@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps');
 
 var bc = './bower_components/';
+var distFolder = './static/dist/';
 
 //Здесь конкатенируется app.js из кастомного кода, внимание сначала нужно собирать модули
 gulp.task('js', function() {
@@ -19,13 +20,13 @@ gulp.task('js', function() {
         ]
     )
     .pipe(concat('app.js'))
-    .pipe(gulp.dest('frontend-builds/dist/app/'))
+    .pipe(gulp.dest(distFolder+'app/'))
 });
 // -----
 
 gulp.task('html', function() {
   gulp.src('frontend-builds/development/**/*.html')
-    .pipe(gulp.dest('frontend-builds/dist/'))
+    .pipe(gulp.dest(distFolder))
 });
 
 gulp.task('sass', function () {
@@ -33,18 +34,18 @@ gulp.task('sass', function () {
       .pipe(sass())
       .pipe(concat('style.min.css'))
       .pipe(csso())
-      .pipe(gulp.dest('frontend-builds/dist/css/'));
+      .pipe(gulp.dest(distFolder+'css/'));
 });
 
 gulp.task('img', function() {
   gulp.src('frontend-builds/development/img/**/*')
-    .pipe(gulp.dest('frontend-builds/dist/img/'));
+    .pipe(gulp.dest(distFolder+'img/'));
 });
 
 // Копирование папки со вспомогательными JS файлами
 gulp.task('jsHelpers', function() {
     gulp.src('frontend-builds/development/js/**/*')
-        .pipe(gulp.dest('frontend-builds/dist/js/'));
+        .pipe(gulp.dest(distFolder+'js/'));
 });
 // -----
 
@@ -59,74 +60,74 @@ gulp.task('watch', function() {
 
 gulp.task('libs', function() {
     gulp.src(bc+'jquery/dist/jquery.js')
-      .pipe(gulp.dest('./frontend-builds/dist/libs/jquery/'));
+      .pipe(gulp.dest(distFolder+'libs/jquery/'));
 
     gulp.src(bc+'bootstrap/dist/**/*.*')
-      .pipe(gulp.dest('./frontend-builds/dist/libs/bootstrap/'));
+      .pipe(gulp.dest(distFolder+'libs/bootstrap/'));
 
     gulp.src(bc+'bootstrap-material-design/dist/**/*.*')
-      .pipe(gulp.dest('./frontend-builds/dist/libs/bootstrap-material-design/'));
+      .pipe(gulp.dest(distFolder+'libs/bootstrap-material-design/'));
 
     // Копирование библиотеки jasny-bootstrap для бокового меню
     gulp.src(bc+'jasny-bootstrap/dist/**/*.*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/jasny-bootstrap/'));
+        .pipe(gulp.dest(distFolder+'libs/jasny-bootstrap/'));
     // -----
 
     // Копирование библиотеки bootstrap-datepicker
     gulp.src(bc+'bootstrap-datepicker/dist/**/*.*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/bootstrap-datepicker/'));
+        .pipe(gulp.dest(distFolder+'libs/bootstrap-datepicker/'));
     // -----
 
     // Графики для ангуляра angular-charts
     gulp.src(bc+'angular-chart.js/dist/**/*.*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/angular-chart.js/'));
+        .pipe(gulp.dest(distFolder+'libs/angular-chart.js/'));
     gulp.src(bc+'Chart.js/**/*.*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/Chart.js/'));
+        .pipe(gulp.dest(distFolder+'libs/Chart.js/'));
     // -----
 
     // Подключение angular bootstrap-ui
     gulp.src(bc+'angular-bootstrap/**/*.*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/angular-bootstrap/'));
+        .pipe(gulp.dest(distFolder+'libs/angular-bootstrap/'));
     // -----
 
     // Подключение angular ui-router
     gulp.src(bc+'angular-ui-router/release/**/*.*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/angular-ui-router/'));
+        .pipe(gulp.dest(distFolder+'libs/angular-ui-router/'));
     // -----
 
     // Подключение angular-bootstrap-material
     gulp.src(bc+'angular-bootstrap-material/**/*.*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/angular-bootstrap-material/'));
+        .pipe(gulp.dest(distFolder+'libs/angular-bootstrap-material/'));
     // -----
 
     // Подключение arrive
     gulp.src(bc+'arrive/minified/*.js')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/arrive/'));
+        .pipe(gulp.dest(distFolder+'libs/arrive/'));
     // -----
 
     // Подключение angular-bootstrap-datetimepicker
     gulp.src(bc+'angular-bootstrap-datetimepicker/src/**/*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/angular-bootstrap-datetimepicker/'));
+        .pipe(gulp.dest(distFolder+'libs/angular-bootstrap-datetimepicker/'));
     // -----
 
     // Подключение шрифта с иконками whhg
     gulp.src('frontend-builds/development/non_bower_components/whhg-font/**/*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/whhg-font/'));
+        .pipe(gulp.dest(distFolder+'libs/whhg-font/'));
     // -----
 
     // Подключение angular-storage
     gulp.src(bc + 'a0-angular-storage/dist/**/*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/a0-angular-storage/'));
+        .pipe(gulp.dest(distFolder+'libs/a0-angular-storage/'));
     // -----
 
     // Подключение angular-toastr
     gulp.src(bc + 'angular-toastr/dist/**/*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/angular-toastr/'));
+        .pipe(gulp.dest(distFolder+'libs/angular-toastr/'));
     // -----
 
     // Подключение fancybox
     gulp.src(bc + 'fancybox/source/**/*')
-        .pipe(gulp.dest('./frontend-builds/dist/libs/fancybox/'));
+        .pipe(gulp.dest(distFolder+'libs/fancybox/'));
     // -----
 
 
@@ -145,11 +146,11 @@ gulp.task('libs', function() {
             bc+'angularfire/dist/angularfire.js',
 
           ])
-      .pipe(gulp.dest('./frontend-builds/dist/libs/angular/'));
+      .pipe(gulp.dest(distFolder+'libs/angular/'));
 });
 
 gulp.task('webserver', function() {
-  gulp.src('frontend-builds/dist/')
+  gulp.src(distFolder)
       .pipe(webserver({
         livereload: true,
         open: true
