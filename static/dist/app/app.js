@@ -10,21 +10,21 @@
 
     // модуль и конфигурирование
     angular
-        .module('ngNoReddit', [
-            'firebase',
-            'ngNoReddit.main',
+        .module('ngWestSibStudio', [
+            //'firebase',
+            'ngWestSibStudio.main',
             //'ngNoReddit.profile',
-            'ngNoReddit.error404',
-            'ngNoReddit.firebase.service',
-            'ngNoReddit.auth-modal',
-            'ngNoReddit.edit-modal',
+            'ngWestSibStudio.error404',
+            'ngWestSibStudio.firebase.service',
+            'ngWestSibStudio.auth-modal',
+            'ngWestSibStudio.edit-modal',
             'authfire.factory',
             'ui.router',
             'ui.bootstrap',
             'angular-storage',
             'toastr'
         ])
-        .constant('FIREBASE_URL', 'https://ngnoreddit2.firebaseio.com/')
+        //.constant('FIREBASE_URL', 'https://ngnoreddit2.firebaseio.com/')
         .config(ngGFConfig)
         .run(run);
 

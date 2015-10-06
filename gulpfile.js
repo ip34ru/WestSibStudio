@@ -150,11 +150,12 @@ gulp.task('libs', function() {
 });
 
 gulp.task('webserver', function() {
-  gulp.src(distFolder)
-      .pipe(webserver({
-        livereload: true,
-        open: true
-      }));
+    gulp.src(distFolder)
+        .pipe(webserver({
+            port: 8080,
+            livereload: true,
+            open: true
+    }));
 });
 
 gulp.task('default', [
