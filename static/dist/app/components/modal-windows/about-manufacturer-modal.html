@@ -1,0 +1,118 @@
+<!-- Модальное окно регистрации в системе + вход и регистрация по соц сетям -->
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()">×</button>
+
+        <!--<h4 class="modal-title">Регистрация</h4>-->
+        <h4 class="modal-title text-center gf-auth-modal__marg-bottom_25px">{{ modalCaption }}</h4>
+
+    </div>
+
+    <div class="modal-body">
+
+        <form name="signUpForm" class="form-horizontal">
+            <fieldset>
+
+                <div class="form-group">
+                    <span class="col-lg-12 text-center">Введите данные для регистрации</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputSingUpName" class="col-lg-4 control-label">
+                        Имя<span class="gf-red-asterics">*</span>
+                    </label>
+                    <div class="col-lg-8">
+                        <input type="text" class="form-control"
+                               id="inputSingUpName"
+                               placeholder="Имя"
+                               ng-model="newUserData.name"
+                                >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSingUpEmail" class="col-lg-4 control-label">
+                        Электронная почта<span class="gf-red-asterics">*</span>
+                    </label>
+                    <div class="col-lg-8">
+                        <input type="email" class="form-control"
+                               id="inputSingUpEmail"
+                               placeholder="Электронная почта"
+                               ng-model="newUserData.email"
+                                >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSingUpPassword" class="col-lg-4 control-label">
+                        Пароль<span class="gf-red-asterics">*</span>
+                    </label>
+                    <div class="col-lg-8">
+                        <input type="password" class="form-control"
+                               id="inputSingUpPassword"
+                               placeholder="Пароль"
+                               ng-model="newUserData.password"
+                                >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-12 text-center">
+                        <div class="gf-auth-modal__manual-singn-in_buttons">
+                            <button type="submit" class="btn btn-success" ng-click="ok()">Регистрация</button>
+                            <button class="btn btn-warning" ng-click="cancel()">Отменить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gf-warning-message__borders" ng-if="signUpErrorAllFields">
+                    <span class="text-warning">
+                        Необходимо заполнить поля формы, помеченные <span class="gf-red-asterics">*</span>
+                    </span>
+                </div>
+                <div class="gf-warning-message__borders" ng-if="signUpErrorBool">
+                    <span class="text-warning">
+                        {{ authError }}
+                    </span>
+                </div>
+                <div class="gf-warning-message__borders" ng-if="signUpErrorNonStrongPassword">
+                    <span class="text-warning">
+                        {{ authError }}
+                    </span>
+                </div>
+
+                <!-- кнопки социальных сетей -->
+                <div class="form-group">
+                    <span class="col-lg-12 text-center">или войдите через социальные сети</span>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-12 text-center">
+                        <div class="gf-auth-modal__manual-singn-in_buttons">
+                            <button ng-click="facebookLogin()" class="btn gf-auth-modal__btn-small-size gf-auth-modal__btn-color_facebook">
+                                <i class="icon-facebook" data-toggle="tooltip" data-placement="bottom" title=""
+                                   data-original-title="Facebook"></i>
+                            </button>
+                            <button ng-click="googleLogin()" class="btn gf-auth-modal__btn-small-size gf-auth-modal__btn-color_googleplus">
+                                <i class="icon-googleplus" data-toggle="tooltip" data-placement="bottom" title=""
+                                   data-original-title="Google+"></i>
+                            </button>
+                            <button ng-click="twitterLogin()" class="btn gf-auth-modal__btn-small-size gf-auth-modal__btn-color_twitter">
+                                <i class="icon-twitter" data-toggle="tooltip" data-placement="bottom" title=""
+                                   data-original-title="Twitter"></i>
+                            </button>
+                            <!--<button class="btn gf-auth-modal__btn-small-size gf-auth-modal__btn-color_vk">-->
+                                <!--<i class="icon-vk" data-toggle="tooltip" data-placement="bottom" title=""-->
+                                   <!--data-original-title="VK.com"></i>-->
+                            <!--</button>-->
+                        </div>
+                    </div>
+                </div>
+                <!-- кнопки социальных сетей -->
+
+            </fieldset>
+        </form>
+
+    </div>
+
+<!-- Модальное окно регистрации в системе + вход и регистрация по соц сетям -->
+
+

@@ -17,7 +17,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'ckeditor',
     'ckeditor_uploader',
-    'app'
+    'app',
+    'livereload'
 )
 
 MIDDLEWARE_CLASSES = (

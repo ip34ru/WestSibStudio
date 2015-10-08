@@ -29,6 +29,11 @@ gulp.task('html', function() {
     .pipe(gulp.dest(distFolder))
 });
 
+gulp.task('htmlMain', function() {
+  gulp.src('frontend-builds/development/app/main/main.html')
+    .pipe(gulp.dest('./templates/'))
+});
+
 gulp.task('sass', function () {
   gulp.src('frontend-builds/development/sass/**/*.scss')
       .pipe(sass())
@@ -54,6 +59,7 @@ gulp.task('watch', function() {
     gulp.watch('frontend-builds/development/app/**/*.js', ['js']);
     gulp.watch('frontend-builds/development/sass/**/*', ['sass']);
     gulp.watch('frontend-builds/development/**/*.html', ['html']);
+    gulp.watch('frontend-builds/development/**/main.html', ['htmlMain']);
     gulp.watch('frontend-builds/development/img/**/*', ['img']);
 });
 // -----
@@ -161,6 +167,7 @@ gulp.task('webserver', function() {
 gulp.task('default', [
     'libs',
     'html',
+    'htmlMain',
     'js',
     'sass',
     'img',

@@ -11,18 +11,16 @@
     // модуль и конфигурирование
     angular
         .module('ngWestSibStudio', [
-            //'firebase',
+
             'ngWestSibStudio.main',
-            //'ngNoReddit.profile',
-            'ngWestSibStudio.error404',
-            'ngWestSibStudio.firebase.service',
-            'ngWestSibStudio.auth-modal',
-            'ngWestSibStudio.edit-modal',
-            'authfire.factory',
+
+            //'ngWestSibStudio.error404',
+            //'ngWestSibStudio.firebase.service',
+            'ngWestSibStudio.modal-windows',
+            //'ngWestSibStudio.edit-modal',
             'ui.router',
             'ui.bootstrap',
-            'angular-storage',
-            'toastr'
+            'angular-storage'
         ])
         //.constant('FIREBASE_URL', 'https://ngnoreddit2.firebaseio.com/')
         .config(ngGFConfig)
@@ -38,10 +36,10 @@
 
         $logProvider.debugEnabled( true );
 
-        $urlRouterProvider.otherwise(function ($injector, $location) {
-            $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
-            return true;
-        }); // ~~~ $urlRouterProvider ~~~
+        //$urlRouterProvider.otherwise(function ($injector, $location) {
+        //    $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
+        //    return true;
+        //}); // ~~~ $urlRouterProvider ~~~
 
         $urlRouterProvider
             .when('', '/')

@@ -11,18 +11,16 @@
     // модуль и конфигурирование
     angular
         .module('ngWestSibStudio', [
-            //'firebase',
+
             'ngWestSibStudio.main',
-            //'ngNoReddit.profile',
-            'ngWestSibStudio.error404',
-            'ngWestSibStudio.firebase.service',
-            'ngWestSibStudio.auth-modal',
-            'ngWestSibStudio.edit-modal',
-            'authfire.factory',
+
+            //'ngWestSibStudio.error404',
+            //'ngWestSibStudio.firebase.service',
+            'ngWestSibStudio.modal-windows',
+            //'ngWestSibStudio.edit-modal',
             'ui.router',
             'ui.bootstrap',
-            'angular-storage',
-            'toastr'
+            'angular-storage'
         ])
         //.constant('FIREBASE_URL', 'https://ngnoreddit2.firebaseio.com/')
         .config(ngGFConfig)
@@ -38,10 +36,10 @@
 
         $logProvider.debugEnabled( true );
 
-        $urlRouterProvider.otherwise(function ($injector, $location) {
-            $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
-            return true;
-        }); // ~~~ $urlRouterProvider ~~~
+        //$urlRouterProvider.otherwise(function ($injector, $location) {
+        //    $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
+        //    return true;
+        //}); // ~~~ $urlRouterProvider ~~~
 
         $urlRouterProvider
             .when('', '/')
@@ -81,15 +79,30 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.main', [
+        .module('ngWestSibStudio.main', [
             'ui.router',
-            'ngNoReddit.auth-modal',
+            'ngWestSibStudio.modal-windows',
             'ui.bootstrap'
         ]);
 
 })();
 
 
+
+/**
+ * Created by taksenov@gmail.com on 01.07.2015.
+ */
+
+;(function() {
+    'use strict';
+
+    angular
+        .module('ngNoReddit.edit-modal', [
+            'ngNoReddit.main',
+            'ui.bootstrap'
+        ]);
+
+})();
 
 /**
  * Created by taksenov@gmail.com on 01.07.2015.
@@ -114,8 +127,8 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.edit-modal', [
-            'ngNoReddit.main',
+        .module('ngWestSibStudio.modal-windows', [
+            'ngWestSibStudio.main',
             'ui.bootstrap'
         ]);
 
@@ -200,9 +213,9 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.main')
+        .module('ngWestSibStudio.main')
         .controller('MainCtrl', mainCtrl)
-        .controller('OpenModalSingInCtrl', openModalSingInCtrl)
+        .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('FormPostAddCtrl', formPostAddCtrl)
         .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
     ;
@@ -484,25 +497,32 @@
 
     } // ~~~ mainCtrl ~~~
 
-    openModalSingInCtrl.$inject = [ '$scope', '$rootScope',
-                                    'ngfitfire', '$modal',
-                                    'AuthfireFactory', 'FIREBASE_URL' ];
+    openModalAboutManufacturerCtrl.$inject = [
+                                                '$scope',
+                                                '$rootScope',
+                                                'ngfitfire',
+                                                '$modal',
+                                                'AuthfireFactory',
+                                                'FIREBASE_URL'
+    ];
 
-    function openModalSingInCtrl( $scope, $rootScope,
-                                  ngfitfire, $modal,
-                                  AuthfireFactory, FIREBASE_URL ) {
+    function openModalAboutManufacturerCtrl(
+                                             $scope,
+                                             $rootScope,
+                                             $modal
+    ) {
 
         var vm = this;
 
         vm.animationsEnabled = true;
 
-        vm.openModalSingIn = function ( e ) {
+        vm.openModalAboutManufacturer = function ( e ) {
             e.preventDefault();
             vm.modalCaption = 'Вход в личный кабинет';
             $modal.open(
                 {
                     animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/auth-modal/sign-in-modal.html',
+                    templateUrl: 'app/components/modal-windows/about-manufacturer-modal.html',
                     controller: 'ModalSingInCtrl',
                     resolve: {
                         modalCaption: function () {
@@ -513,29 +533,29 @@
             ); // ~~~ $modal.open ~~~
         }; // ~~~ openModalSingIn ~~~
 
-        vm.openModalSingUp = function ( e ) {
-            e.preventDefault();
-            vm.modalCaption = 'Регистрация';
-            $modal.open(
-                {
-                    animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/auth-modal/sign-up-modal.html',
-                    controller: 'ModalSingUpCtrl',
-                    resolve: {
-                        modalCaption: function () {
-                            return vm.modalCaption;
-                        }
-                    }
-                }
-            ); // ~~~ $modal.open ~~~
-        }; // ~~~ openModalSingUp ~~~
+        //vm.openModalSingUp = function ( e ) {
+        //    e.preventDefault();
+        //    vm.modalCaption = 'Регистрация';
+        //    $modal.open(
+        //        {
+        //            animation: vm.animationsEnabled,
+        //            templateUrl: '/app/components/auth-modal/sign-up-modal.html',
+        //            controller: 'ModalSingUpCtrl',
+        //            resolve: {
+        //                modalCaption: function () {
+        //                    return vm.modalCaption;
+        //                }
+        //            }
+        //        }
+        //    ); // ~~~ $modal.open ~~~
+        //}; // ~~~ openModalSingUp ~~~
+        //
+        //
+        //vm.logout = function (  ) {
+        //    AuthfireFactory.logout();
+        //}; // ~~~ vm.logout ~~~
 
-
-        vm.logout = function (  ) {
-            AuthfireFactory.logout();
-        }; // ~~~ vm.logout ~~~
-
-    } // ~~~ openModalSingInCtrl ~~~
+    } // ~~~ openModalAboutManufacturerCtrl ~~~
 
 })();
 
@@ -549,7 +569,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.main')
+        .module('ngWestSibStudio.main')
         .config(route);
 
     route.$inject = ['$stateProvider'];
@@ -559,25 +579,43 @@
             .state('main', {
                 url: '/',
                 views : {
-                    'navbarPublick' : {
-                        templateUrl: 'app/components/navbar-public/navbar-public.html',
-                        controller: 'OpenModalSingInCtrl',
+                    'aboutManufacturerModal' : {
+                        //templateUrl: 'app/components/modal-windows/about-manufacturer-modal.html',
+                        controller: 'OpenModalAboutManufacturerCtrl',
                         controllerAs: 'vm'
+                    },
+                    'headerMainPage' : {
+                        templateUrl: 'static/dist/app/components/header/header.html',
+                        //static/dist/app/components/header/header.html
+                        //controller: 'HeaderMainPageCtrl',
+                        //controllerAs: 'vm'
+                    },
+                    'footerMainPage' : {
+                        templateUrl: 'static/dist/app/components/footer/footer.html',
+                        //static/dist/app/components/header/header.html
+                        //controller: 'HeaderMainPageCtrl',
+                        //controllerAs: 'vm'
+                    },
+                    'footerIP34MainPage' : {
+                        templateUrl: 'static/dist/app/components/footer-ip34/footer-ip34.html',
+                        //static/dist/app/components/header/header.html
+                        //controller: 'HeaderMainPageCtrl',
+                        //controllerAs: 'vm'
                     },
                     'formPostAdd' : {
-                        templateUrl: 'app/components/post-form/post-form.html',
-                        controller: 'FormPostAddCtrl',
-                        controllerAs: 'vm'
+                        //templateUrl: 'app/components/post-form/post-form.html',
+                        //controller: 'FormPostAddCtrl',
+                        //controllerAs: 'vm'
                     },
                     'allPostsMainPage' : {
-                        templateUrl: 'app/components/all-posts/all-posts.html',
-                        controller: 'AllPostsMainPageCtrl',
-                        controllerAs: 'vm'
+                        //templateUrl: 'app/components/all-posts/all-posts.html',
+                        //controller: 'AllPostsMainPageCtrl',
+                        //controllerAs: 'vm'
                     },
                     'mainContent' : {
-                        templateUrl: 'app/main/main.html',
-                        controller: 'MainCtrl',
-                        controllerAs: 'vm'
+                        //templateUrl: 'app/main/main.html',
+                        //controller: 'MainCtrl',
+                        //controllerAs: 'vm'
                     }
                 }
 
@@ -1313,6 +1351,99 @@
     'use strict';
 
     angular
+        .module('ngNoReddit.edit-modal')
+        .controller('ModalCommentEditCtrl', modalCommentEditCtrl)
+        .controller('ModalPostEditCtrl', modalPostEditCtrl)
+    ;
+
+    modalCommentEditCtrl.$inject = [
+        '$scope', '$modal', '$log',
+        '$rootScope', '$modalInstance', 'modalCaption',
+        'AuthfireFactory', '$location', 'postData',
+        'commentData', 'ngfitfire'
+    ];
+    modalPostEditCtrl.$inject = [
+        '$scope', '$modal', '$log',
+        '$rootScope', '$modalInstance', 'modalCaption',
+        'AuthfireFactory', '$location',
+        'postData', 'ngfitfire'
+    ];
+
+    function modalCommentEditCtrl ( $scope, $modal,
+                               $log, $rootScope,
+                               $modalInstance, modalCaption,
+                               AuthfireFactory, $location,
+                               postData, commentData, ngfitfire  ) {
+
+        var vm = this;
+
+        $scope.modalCaption = modalCaption;
+        $scope.postData = postData;
+        $scope.commentData = commentData;
+        $scope.commentDataCommentText = commentData.commentText;
+
+        $rootScope.modalInstance = $modalInstance;
+
+        $log.debug( 'commentData =', commentData );
+        $log.debug( 'postData =', postData );
+
+        $scope.ok = function () {
+            ngfitfire.commentEdit(
+                $scope.postData.postID,
+                $scope.commentData.commentID,
+                $scope.commentData.commentText
+            );
+        }; //~~~ $scope.ok ~~~
+
+        $scope.cancel = function () {
+            commentData.commentText = $scope.commentDataCommentText;
+            $modalInstance.dismiss('cancel');
+        }; //~~~ $scope.cancel ~~~
+
+    } // ~~~ modalSingInCtrl ~~~
+
+    function modalPostEditCtrl ( $scope, $modal,
+                               $log, $rootScope,
+                               $modalInstance, modalCaption,
+                               AuthfireFactory, $location,
+                               postData, ngfitfire ) {
+
+        var vm = this;
+
+        $scope.modalCaption = modalCaption;
+        $scope.postData = postData;
+        $scope.postDataPostText = postData.postText;
+        $scope.postDataPostCaption = postData.postCaption;
+        $rootScope.modalInstance = $modalInstance;
+
+        $scope.ok = function () {
+            ngfitfire.postEdit(
+                $scope.postData.postID,
+                $scope.postData.postCaption,
+                $scope.postData.postText
+            );
+        }; //~~~ $scope.ok ~~~
+
+        $scope.cancel = function () {
+            postData.postText = $scope.postDataPostText;
+            postData.postCaption = $scope.postDataPostCaption;
+            $modalInstance.dismiss('cancel');
+        }; //~~~ $scope.cancel ~~~
+
+    } // ~~~ modalSingUpCtrl ~~~
+
+})();
+
+
+
+/**
+ * Created by taksenov@gmail.com on 01.07.2015.
+ */
+
+;(function() {
+    'use strict';
+
+    angular
         .module('ngNoReddit.auth-modal')
         .controller('ModalSingInCtrl', modalSingInCtrl)
         .controller('ModalSingUpCtrl', modalSingUpCtrl)
@@ -1513,82 +1644,192 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.edit-modal')
-        .controller('ModalCommentEditCtrl', modalCommentEditCtrl)
-        .controller('ModalPostEditCtrl', modalPostEditCtrl)
+        .module('ngWestSibStudio.modal-windows')
+        .controller('ModalCartCtrl', modalCartCtrl)
+        .controller('ModalAboutManufacturerCtrl', modalAboutManufacturerCtrl)
     ;
 
-    modalCommentEditCtrl.$inject = [
+    modalCartCtrl.$inject = [
         '$scope', '$modal', '$log',
         '$rootScope', '$modalInstance', 'modalCaption',
-        'AuthfireFactory', '$location', 'postData',
-        'commentData', 'ngfitfire'
-    ];
-    modalPostEditCtrl.$inject = [
-        '$scope', '$modal', '$log',
-        '$rootScope', '$modalInstance', 'modalCaption',
-        'AuthfireFactory', '$location',
-        'postData', 'ngfitfire'
+        'AuthfireFactory', '$location'
     ];
 
-    function modalCommentEditCtrl ( $scope, $modal,
+    function modalCartCtrl ( $scope, $modal,
                                $log, $rootScope,
                                $modalInstance, modalCaption,
-                               AuthfireFactory, $location,
-                               postData, commentData, ngfitfire  ) {
+                               AuthfireFactory, $location ) {
 
-        var vm = this;
-
-        $scope.modalCaption = modalCaption;
-        $scope.postData = postData;
-        $scope.commentData = commentData;
-        $scope.commentDataCommentText = commentData.commentText;
-
-        $rootScope.modalInstance = $modalInstance;
-
-        $log.debug( 'commentData =', commentData );
-        $log.debug( 'postData =', postData );
+        //var vm = this;
+        //
+        //$rootScope.modalInstance = $modalInstance;
+        //$rootScope.authError = '';
+        //$rootScope.authErrorAllFields = false;
+        //$rootScope.authErrorBool = false;
+        //$scope.modalCaption = modalCaption;
+        //$scope.credentials = {
+        //    email: null,
+        //    password: null
+        //};
+        //
+        //vm.login = function (  ) {
+        //    AuthfireFactory.login( $scope.credentials );
+        //
+        //    $log.debug( 'Login!',
+        //        'UserName =', $scope.credentials.email,
+        //        'UserPassword =', $scope.credentials.password  );
+        //}; // ~~~ vm.login ~~~
+        //
+        //$scope.twitterLogin = function (  ) {
+        //
+        //    AuthfireFactory.twitterLogin(  );
+        //    $modalInstance.close();
+        //
+        //}; // ~~~ vm.twitterLogin ~~~
+        //
+        //$scope.facebookLogin = function (  ) {
+        //
+        //    AuthfireFactory.facebookLogin(  );
+        //    $modalInstance.close();
+        //
+        //}; // ~~~ vm.facebookLogin ~~~
+        //
+        //$scope.googleLogin = function (  ) {
+        //
+        //    AuthfireFactory.googleLogin(  );
+        //    $modalInstance.close();
+        //
+        //}; // ~~~ vm.googleLogin ~~~
 
         $scope.ok = function () {
-            ngfitfire.commentEdit(
-                $scope.postData.postID,
-                $scope.commentData.commentID,
-                $scope.commentData.commentText
-            );
+
+            //if ( !$scope.credentials.email || !$scope.credentials.password ) {
+            //    $log.debug('Для входа необходимо ввести логин и пароль');
+            //    $rootScope.authErrorAllFields = true;
+            //    $rootScope.authErrorBool = false;
+            //} else {
+            //    $rootScope.authErrorAllFields = false;
+            //    vm.login();
+            //}
+
         }; //~~~ $scope.ok ~~~
 
         $scope.cancel = function () {
-            commentData.commentText = $scope.commentDataCommentText;
             $modalInstance.dismiss('cancel');
         }; //~~~ $scope.cancel ~~~
 
-    } // ~~~ modalSingInCtrl ~~~
+    } // ~~~ modalCartCtrl ~~~
 
-    function modalPostEditCtrl ( $scope, $modal,
+
+    modalAboutManufacturerCtrl.$inject = [
+        '$scope', '$modal', '$log',
+        '$rootScope', '$modalInstance', 'modalCaption',
+        'AuthfireFactory', '$location'
+    ];
+
+
+    function modalAboutManufacturerCtrl ( $scope, $modal,
                                $log, $rootScope,
                                $modalInstance, modalCaption,
-                               AuthfireFactory, $location,
-                               postData, ngfitfire ) {
+                               AuthfireFactory, $location ) {
 
         var vm = this;
 
-        $scope.modalCaption = modalCaption;
-        $scope.postData = postData;
-        $scope.postDataPostText = postData.postText;
-        $scope.postDataPostCaption = postData.postCaption;
+        $rootScope.signUpErrorBool = false;
         $rootScope.modalInstance = $modalInstance;
+        $rootScope.authError = '';
+        $rootScope.signUpErrorAllFields = false;
+        $rootScope.signUpErrorNonStrongPassword = false;
+        $scope.modalCaption = modalCaption;
+        $scope.newUserData = {
+            name: null,
+            email: null,
+            password: null
+        };
+
+        vm.signUp = function (  ) {
+            AuthfireFactory.signUp( $scope.newUserData );
+
+            $log.debug( 'SignUp!',
+                'UserName =', $scope.newUserData.name,
+                'Email =', $scope.newUserData.email,
+                'UserPassword =', $scope.newUserData.password  );
+        }; // ~~~ vm.login ~~~
+
+        $scope.twitterLogin = function (  ) {
+
+            AuthfireFactory.twitterLogin(  );
+            $modalInstance.close();
+
+        }; // ~~~ vm.twitterLogin ~~~
+
+        $scope.facebookLogin = function (  ) {
+
+            AuthfireFactory.facebookLogin(  );
+            $modalInstance.close();
+
+        }; // ~~~ vm.facebookLogin ~~~
+
+        $scope.googleLogin = function (  ) {
+
+            AuthfireFactory.googleLogin(  );
+            $modalInstance.close();
+
+        }; // ~~~ vm.googleLogin ~~~
 
         $scope.ok = function () {
-            ngfitfire.postEdit(
-                $scope.postData.postID,
-                $scope.postData.postCaption,
-                $scope.postData.postText
-            );
+
+            var s = $scope.newUserData.password;
+
+            //todo сделать эту громоздкую проверку директивой -----------------------------------------
+            if ( !$scope.newUserData.email ||
+                 !$scope.newUserData.password ||
+                 !$scope.newUserData.name
+            ) {
+                $log.debug('Для регистрации должны быть заполнены все поля');
+                $rootScope.signUpErrorAllFields = true;
+                $rootScope.authErrorBool = false;
+                $rootScope.signUpErrorNonStrongPassword = false;
+            } else {
+
+                if ( !(s.length > 7) ) {
+                    $rootScope.signUpErrorNonStrongPassword = true;
+                    $rootScope.signUpErrorAllFields = false;
+                    $rootScope.authErrorBool = false;
+                    $rootScope.authError = 'Пароль очень простой! Используйте пароль не менее 8 символов';
+                    $log.debug('Пароль очень простой! Используйте пароль не менее 8 символов');
+                } else if ( !(/[0-9]/.test(s)) ) {
+                    $rootScope.signUpErrorNonStrongPassword = true;
+                    $rootScope.signUpErrorAllFields = false;
+                    $rootScope.authErrorBool = false;
+                    $rootScope.authError = 'Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из комбинации латинских прописных и заглавных букв, а так же цифр';
+                    $log.debug('Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из цифр');
+                } else if ( !(/[A-Za-z]/.test(s)) ) {
+                    $rootScope.signUpErrorNonStrongPassword = true;
+                    $rootScope.signUpErrorAllFields = false;
+                    $rootScope.authErrorBool = false;
+                    $rootScope.authError = 'Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из комбинации латинских прописных и заглавных букв, а так же цифр';
+                    $log.debug('Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из цифр и латинских букв');
+                } else if ( (/[А-Яа-я]/.test(s)) ) {
+                    $rootScope.signUpErrorNonStrongPassword = true;
+                    $rootScope.signUpErrorAllFields = false;
+                    $rootScope.authErrorBool = false;
+                    $rootScope.authError = 'Пароль не подходит! Используйте только латинские буквы';
+                    $log.debug('Пароль очень простой! Используйте только латинские буквы');
+                } else {
+                    $log.debug('Ваш пароль подходит!');
+                    $rootScope.signUpErrorNonStrongPassword = false;
+                    $rootScope.signUpErrorAllFields = false;
+                    $rootScope.authErrorBool = false;
+                    $rootScope.authError = '';
+                    vm.signUp();
+                }
+            }
+            //todo сделать эту громоздкую проверку директивой -----------------------------------------
+
         }; //~~~ $scope.ok ~~~
 
         $scope.cancel = function () {
-            postData.postText = $scope.postDataPostText;
-            postData.postCaption = $scope.postDataPostCaption;
             $modalInstance.dismiss('cancel');
         }; //~~~ $scope.cancel ~~~
 

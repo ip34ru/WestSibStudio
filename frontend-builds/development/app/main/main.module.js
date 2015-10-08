@@ -6,9 +6,9 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.main', [
+        .module('ngWestSibStudio.main', [
             'ui.router',
-            'ngNoReddit.auth-modal',
+            'ngWestSibStudio.modal-windows',
             'ui.bootstrap'
         ]);
 

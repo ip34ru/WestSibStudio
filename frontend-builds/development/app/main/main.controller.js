@@ -6,9 +6,9 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.main')
+        .module('ngWestSibStudio.main')
         .controller('MainCtrl', mainCtrl)
-        .controller('OpenModalSingInCtrl', openModalSingInCtrl)
+        .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('FormPostAddCtrl', formPostAddCtrl)
         .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
     ;
@@ -290,25 +290,32 @@
 
     } // ~~~ mainCtrl ~~~
 
-    openModalSingInCtrl.$inject = [ '$scope', '$rootScope',
-                                    'ngfitfire', '$modal',
-                                    'AuthfireFactory', 'FIREBASE_URL' ];
+    openModalAboutManufacturerCtrl.$inject = [
+                                                '$scope',
+                                                '$rootScope',
+                                                'ngfitfire',
+                                                '$modal',
+                                                'AuthfireFactory',
+                                                'FIREBASE_URL'
+    ];
 
-    function openModalSingInCtrl( $scope, $rootScope,
-                                  ngfitfire, $modal,
-                                  AuthfireFactory, FIREBASE_URL ) {
+    function openModalAboutManufacturerCtrl(
+                                             $scope,
+                                             $rootScope,
+                                             $modal
+    ) {
 
         var vm = this;
 
         vm.animationsEnabled = true;
 
-        vm.openModalSingIn = function ( e ) {
+        vm.openModalAboutManufacturer = function ( e ) {
             e.preventDefault();
             vm.modalCaption = 'Вход в личный кабинет';
             $modal.open(
                 {
                     animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/auth-modal/sign-in-modal.html',
+                    templateUrl: 'app/components/modal-windows/about-manufacturer-modal.html',
                     controller: 'ModalSingInCtrl',
                     resolve: {
                         modalCaption: function () {
@@ -319,29 +326,29 @@
             ); // ~~~ $modal.open ~~~
         }; // ~~~ openModalSingIn ~~~
 
-        vm.openModalSingUp = function ( e ) {
-            e.preventDefault();
-            vm.modalCaption = 'Регистрация';
-            $modal.open(
-                {
-                    animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/auth-modal/sign-up-modal.html',
-                    controller: 'ModalSingUpCtrl',
-                    resolve: {
-                        modalCaption: function () {
-                            return vm.modalCaption;
-                        }
-                    }
-                }
-            ); // ~~~ $modal.open ~~~
-        }; // ~~~ openModalSingUp ~~~
+        //vm.openModalSingUp = function ( e ) {
+        //    e.preventDefault();
+        //    vm.modalCaption = 'Регистрация';
+        //    $modal.open(
+        //        {
+        //            animation: vm.animationsEnabled,
+        //            templateUrl: '/app/components/auth-modal/sign-up-modal.html',
+        //            controller: 'ModalSingUpCtrl',
+        //            resolve: {
+        //                modalCaption: function () {
+        //                    return vm.modalCaption;
+        //                }
+        //            }
+        //        }
+        //    ); // ~~~ $modal.open ~~~
+        //}; // ~~~ openModalSingUp ~~~
+        //
+        //
+        //vm.logout = function (  ) {
+        //    AuthfireFactory.logout();
+        //}; // ~~~ vm.logout ~~~
 
-
-        vm.logout = function (  ) {
-            AuthfireFactory.logout();
-        }; // ~~~ vm.logout ~~~
-
-    } // ~~~ openModalSingInCtrl ~~~
+    } // ~~~ openModalAboutManufacturerCtrl ~~~
 
 })();
 

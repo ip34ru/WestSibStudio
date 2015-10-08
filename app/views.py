@@ -5,7 +5,7 @@ from .models import *
 
 
 class Home(TemplateView):
-  template_name = 'base.html'
+  template_name = 'main.html'
  
     
 class Brands_View(View):
