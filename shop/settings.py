@@ -69,7 +69,7 @@ LANGUAGE_CODE = 'ru-ru'
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'full',
+        'toolbar' : 'full',
     },
 }
 

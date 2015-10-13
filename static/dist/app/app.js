@@ -97,7 +97,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.edit-modal', [
+        .module('ngNoReddit.auth-modal', [
             'ngNoReddit.main',
             'ui.bootstrap'
         ]);
@@ -112,7 +112,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.auth-modal', [
+        .module('ngNoReddit.edit-modal', [
             'ngNoReddit.main',
             'ui.bootstrap'
         ]);
@@ -218,6 +218,7 @@
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('FormPostAddCtrl', formPostAddCtrl)
         .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
+        .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
     ;
 
     // extend function: https://gist.github.com/katowulf/6598238
@@ -234,6 +235,40 @@
         });
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
+    allBrandsAndProductsMainPageCtrl.$inject = [
+                                                '$scope',
+                                                '$rootScope',
+                                                '$log',
+                                                '$q',
+                                                '$http'
+    ];
+
+    function allBrandsAndProductsMainPageCtrl(
+                                                $scope,
+                                                $rootScope,
+                                                $log,
+                                                $q,
+                                                $http
+    ) {
+
+        var vm = this;
+
+        $http({method: 'GET', url: 'http://localhost:8000/ajax/brands/'}).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+                vm.dataJSON = data;
+                $log.debug('Data is', data);
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $log.debug('Error when i retrieve main data from backend!', status);
+        });
+
+    } //allBrandsAndProductsMainPageCtrl
+
 
     allPostsMainPageCtrl.$inject = [ '$scope', '$rootScope',
                                     'ngfitfire', '$modal',
@@ -602,15 +637,10 @@
                         //controller: 'HeaderMainPageCtrl',
                         //controllerAs: 'vm'
                     },
-                    'formPostAdd' : {
-                        //templateUrl: 'app/components/post-form/post-form.html',
-                        //controller: 'FormPostAddCtrl',
-                        //controllerAs: 'vm'
-                    },
-                    'allPostsMainPage' : {
-                        //templateUrl: 'app/components/all-posts/all-posts.html',
-                        //controller: 'AllPostsMainPageCtrl',
-                        //controllerAs: 'vm'
+                    'allBrandsAndProductsMainPage' : {
+                        templateUrl: 'static/dist/app/components/brands-products-mainpage/brands-products-mainpage.html',
+                        controller: 'AllBrandsAndProductsMainPageCtrl',
+                        controllerAs: 'vm'
                     },
                     'mainContent' : {
                         //templateUrl: 'app/main/main.html',
@@ -1351,99 +1381,6 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.edit-modal')
-        .controller('ModalCommentEditCtrl', modalCommentEditCtrl)
-        .controller('ModalPostEditCtrl', modalPostEditCtrl)
-    ;
-
-    modalCommentEditCtrl.$inject = [
-        '$scope', '$modal', '$log',
-        '$rootScope', '$modalInstance', 'modalCaption',
-        'AuthfireFactory', '$location', 'postData',
-        'commentData', 'ngfitfire'
-    ];
-    modalPostEditCtrl.$inject = [
-        '$scope', '$modal', '$log',
-        '$rootScope', '$modalInstance', 'modalCaption',
-        'AuthfireFactory', '$location',
-        'postData', 'ngfitfire'
-    ];
-
-    function modalCommentEditCtrl ( $scope, $modal,
-                               $log, $rootScope,
-                               $modalInstance, modalCaption,
-                               AuthfireFactory, $location,
-                               postData, commentData, ngfitfire  ) {
-
-        var vm = this;
-
-        $scope.modalCaption = modalCaption;
-        $scope.postData = postData;
-        $scope.commentData = commentData;
-        $scope.commentDataCommentText = commentData.commentText;
-
-        $rootScope.modalInstance = $modalInstance;
-
-        $log.debug( 'commentData =', commentData );
-        $log.debug( 'postData =', postData );
-
-        $scope.ok = function () {
-            ngfitfire.commentEdit(
-                $scope.postData.postID,
-                $scope.commentData.commentID,
-                $scope.commentData.commentText
-            );
-        }; //~~~ $scope.ok ~~~
-
-        $scope.cancel = function () {
-            commentData.commentText = $scope.commentDataCommentText;
-            $modalInstance.dismiss('cancel');
-        }; //~~~ $scope.cancel ~~~
-
-    } // ~~~ modalSingInCtrl ~~~
-
-    function modalPostEditCtrl ( $scope, $modal,
-                               $log, $rootScope,
-                               $modalInstance, modalCaption,
-                               AuthfireFactory, $location,
-                               postData, ngfitfire ) {
-
-        var vm = this;
-
-        $scope.modalCaption = modalCaption;
-        $scope.postData = postData;
-        $scope.postDataPostText = postData.postText;
-        $scope.postDataPostCaption = postData.postCaption;
-        $rootScope.modalInstance = $modalInstance;
-
-        $scope.ok = function () {
-            ngfitfire.postEdit(
-                $scope.postData.postID,
-                $scope.postData.postCaption,
-                $scope.postData.postText
-            );
-        }; //~~~ $scope.ok ~~~
-
-        $scope.cancel = function () {
-            postData.postText = $scope.postDataPostText;
-            postData.postCaption = $scope.postDataPostCaption;
-            $modalInstance.dismiss('cancel');
-        }; //~~~ $scope.cancel ~~~
-
-    } // ~~~ modalSingUpCtrl ~~~
-
-})();
-
-
-
-/**
- * Created by taksenov@gmail.com on 01.07.2015.
- */
-
-;(function() {
-    'use strict';
-
-    angular
         .module('ngNoReddit.auth-modal')
         .controller('ModalSingInCtrl', modalSingInCtrl)
         .controller('ModalSingUpCtrl', modalSingUpCtrl)
@@ -1627,6 +1564,99 @@
         }; //~~~ $scope.ok ~~~
 
         $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        }; //~~~ $scope.cancel ~~~
+
+    } // ~~~ modalSingUpCtrl ~~~
+
+})();
+
+
+
+/**
+ * Created by taksenov@gmail.com on 01.07.2015.
+ */
+
+;(function() {
+    'use strict';
+
+    angular
+        .module('ngNoReddit.edit-modal')
+        .controller('ModalCommentEditCtrl', modalCommentEditCtrl)
+        .controller('ModalPostEditCtrl', modalPostEditCtrl)
+    ;
+
+    modalCommentEditCtrl.$inject = [
+        '$scope', '$modal', '$log',
+        '$rootScope', '$modalInstance', 'modalCaption',
+        'AuthfireFactory', '$location', 'postData',
+        'commentData', 'ngfitfire'
+    ];
+    modalPostEditCtrl.$inject = [
+        '$scope', '$modal', '$log',
+        '$rootScope', '$modalInstance', 'modalCaption',
+        'AuthfireFactory', '$location',
+        'postData', 'ngfitfire'
+    ];
+
+    function modalCommentEditCtrl ( $scope, $modal,
+                               $log, $rootScope,
+                               $modalInstance, modalCaption,
+                               AuthfireFactory, $location,
+                               postData, commentData, ngfitfire  ) {
+
+        var vm = this;
+
+        $scope.modalCaption = modalCaption;
+        $scope.postData = postData;
+        $scope.commentData = commentData;
+        $scope.commentDataCommentText = commentData.commentText;
+
+        $rootScope.modalInstance = $modalInstance;
+
+        $log.debug( 'commentData =', commentData );
+        $log.debug( 'postData =', postData );
+
+        $scope.ok = function () {
+            ngfitfire.commentEdit(
+                $scope.postData.postID,
+                $scope.commentData.commentID,
+                $scope.commentData.commentText
+            );
+        }; //~~~ $scope.ok ~~~
+
+        $scope.cancel = function () {
+            commentData.commentText = $scope.commentDataCommentText;
+            $modalInstance.dismiss('cancel');
+        }; //~~~ $scope.cancel ~~~
+
+    } // ~~~ modalSingInCtrl ~~~
+
+    function modalPostEditCtrl ( $scope, $modal,
+                               $log, $rootScope,
+                               $modalInstance, modalCaption,
+                               AuthfireFactory, $location,
+                               postData, ngfitfire ) {
+
+        var vm = this;
+
+        $scope.modalCaption = modalCaption;
+        $scope.postData = postData;
+        $scope.postDataPostText = postData.postText;
+        $scope.postDataPostCaption = postData.postCaption;
+        $rootScope.modalInstance = $modalInstance;
+
+        $scope.ok = function () {
+            ngfitfire.postEdit(
+                $scope.postData.postID,
+                $scope.postData.postCaption,
+                $scope.postData.postText
+            );
+        }; //~~~ $scope.ok ~~~
+
+        $scope.cancel = function () {
+            postData.postText = $scope.postDataPostText;
+            postData.postCaption = $scope.postDataPostCaption;
             $modalInstance.dismiss('cancel');
         }; //~~~ $scope.cancel ~~~
 

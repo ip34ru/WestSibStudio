@@ -11,6 +11,7 @@
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('FormPostAddCtrl', formPostAddCtrl)
         .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
+        .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
     ;
 
     // extend function: https://gist.github.com/katowulf/6598238
@@ -27,6 +28,40 @@
         });
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
+    allBrandsAndProductsMainPageCtrl.$inject = [
+                                                '$scope',
+                                                '$rootScope',
+                                                '$log',
+                                                '$q',
+                                                '$http'
+    ];
+
+    function allBrandsAndProductsMainPageCtrl(
+                                                $scope,
+                                                $rootScope,
+                                                $log,
+                                                $q,
+                                                $http
+    ) {
+
+        var vm = this;
+
+        $http({method: 'GET', url: 'http://localhost:8000/ajax/brands/'}).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+                vm.dataJSON = data;
+                $log.debug('Data is', data);
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $log.debug('Error when i retrieve main data from backend!', status);
+        });
+
+    } //allBrandsAndProductsMainPageCtrl
+
 
     allPostsMainPageCtrl.$inject = [ '$scope', '$rootScope',
                                     'ngfitfire', '$modal',

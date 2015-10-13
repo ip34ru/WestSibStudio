@@ -39,15 +39,10 @@
                         //controller: 'HeaderMainPageCtrl',
                         //controllerAs: 'vm'
                     },
-                    'formPostAdd' : {
-                        //templateUrl: 'app/components/post-form/post-form.html',
-                        //controller: 'FormPostAddCtrl',
-                        //controllerAs: 'vm'
-                    },
-                    'allPostsMainPage' : {
-                        //templateUrl: 'app/components/all-posts/all-posts.html',
-                        //controller: 'AllPostsMainPageCtrl',
-                        //controllerAs: 'vm'
+                    'allBrandsAndProductsMainPage' : {
+                        templateUrl: 'static/dist/app/components/brands-products-mainpage/brands-products-mainpage.html',
+                        controller: 'AllBrandsAndProductsMainPageCtrl',
+                        controllerAs: 'vm'
                     },
                     'mainContent' : {
                         //templateUrl: 'app/main/main.html',
