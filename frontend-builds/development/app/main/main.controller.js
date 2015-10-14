@@ -12,6 +12,18 @@
         .controller('FormPostAddCtrl', formPostAddCtrl)
         .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
         .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
+        .filter('deleteTwoSymbolsFilter', function(){
+                return function (input) {
+                    return input.replace(".00" , "")
+                }
+            }
+        )
+        .filter("sanitize", ['$sce', function($sce) {
+                return function(htmlCode){
+                    return $sce.trustAsHtml(htmlCode);
+                }
+            }]
+        )
     ;
 
     // extend function: https://gist.github.com/katowulf/6598238
@@ -34,6 +46,7 @@
                                                 '$rootScope',
                                                 '$log',
                                                 '$q',
+                                                'BRANDS_URL',
                                                 '$http'
     ];
 
@@ -42,21 +55,18 @@
                                                 $rootScope,
                                                 $log,
                                                 $q,
+                                                BRANDS_URL,
                                                 $http
     ) {
 
         var vm = this;
 
-        $http({method: 'GET', url: 'http://localhost:8000/ajax/brands/'}).
+        $http({method: 'GET', url: BRANDS_URL}).
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
                 vm.dataJSON = data;
                 $log.debug('Data is', data);
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
                 $log.debug('Error when i retrieve main data from backend!', status);
         });
 

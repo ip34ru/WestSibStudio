@@ -14,7 +14,7 @@ class Brands_View(View):
         brands = Brand.objects.all()
         result = [{'id': brand.id,
                    'name': brand.name,
-                   'text': brand.text.replace('\r\n', '\\').replace('\\\t', ''),
+                   'text': brand.text.replace('\r\n', '').replace('\t', ''),
                    'slug': brand.slug,
                    'tagline': brand.tagline,
                    'logo': {
@@ -25,7 +25,7 @@ class Brands_View(View):
                    },
                    'products': [{'id': product.id,
                                  'name': product.name,
-                                 'text': product.text.replace('\r\n', '\\').replace('\\\t', ''),
+                                 'text': product.text.replace('\r\n', '').replace('\t', ''),
                                  'slug': product.slug,
                                  'main_image': {'original': product.main_image.get_original_url(),
                                                 'thumb': product.main_image.get_thumbnail_url(),

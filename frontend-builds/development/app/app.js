@@ -22,7 +22,7 @@
             'ui.bootstrap',
             'angular-storage'
         ])
-        //.constant('FIREBASE_URL', 'https://ngnoreddit2.firebaseio.com/')
+        .constant('BRANDS_URL', '/ajax/brands/')
         .config(ngGFConfig)
         .run(run);
 
