@@ -65,8 +65,30 @@ body {
 }
 // -------= Адаптивный wrapper (контейнер) =-------
 
+// -- поинтер в виде пальцап, когда ховерим на кнопке и на надписи
+.h3__miniature_pointer-on-hover,
+.img__miniature_pointer-on-hover {
+    &:hover {
+        cursor: pointer;
+    }
+}
 
+.img__miniature_pointer-on-hover {
+    &:hover {
+        opacity:0.8;
+        -moz-opacity:0.8;
+        filter: alpha(opacity=80) black;
+        -khtml-opacity: 0.8;
+    }
+}
 
+.h3__miniature_pointer-on-hover {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// -- поинтер в виде пальцап, когда ховерим на кнопке и на надписи
 
 
 

@@ -1,5 +1,6 @@
 <!-- Header -->
 
+<div class="wss-logo-block">
     <div class="container wss__container">
         <div class="row">
 
@@ -25,10 +26,10 @@
                             </div>
                             <div class="wss-logo__cart_width">
                                 <a href="#"
-                                    data-toggle="modal" data-target="#cartModal"
-                                    class="wss-logoblock__cart_cartlink wss__cart-minheight center-block">
+                                   data-toggle="modal" data-target="#cartModal"
+                                   class="wss-logoblock__cart_cartlink wss__cart-minheight center-block">
                                     <div class="wss__cart-div">
-                                        <div class="wss__cart_equips-in-the-cart-lg">4</div>
+                                        <div class="wss__cart_equips-in-the-cart-lg">{{ currentCart.itemsInCart }}</div>
                                         <i class="icon-shopping-cart"></i>
                                         <span class="navbar__cart-text">Cart</span>
                                     </div>
@@ -64,10 +65,10 @@
                             </div>
                             <div class="wss-logo__cart_width">
                                 <a href="#"
-                                    data-toggle="modal" data-target="#cartModal"
-                                    class="wss-logoblock__cart_cartlink wss__cart-minheight center-block">
+                                   data-toggle="modal" data-target="#cartModal"
+                                   class="wss-logoblock__cart_cartlink wss__cart-minheight center-block">
                                     <div class="wss__cart-div">
-                                        <div class="wss__cart_equips-in-the-cart-md">4</div>
+                                        <div class="wss__cart_equips-in-the-cart-md">{{ currentCart.itemsInCart }}</div>
                                         <i class="icon-shopping-cart"></i>
                                         <span class="navbar__cart-text">Cart</span>
                                     </div>
@@ -100,10 +101,10 @@
                         <div class="wss-logo__cart_maindiv">
                             <div class="wss-logo__cart_width-xs center-block">
                                 <a href="#"
-                                    data-toggle="modal" data-target="#cartModal"
-                                    class="wss-logoblock__cart_cartlink wss__cart-minheight-xs center-block">
+                                   data-toggle="modal" data-target="#cartModal"
+                                   class="wss-logoblock__cart_cartlink wss__cart-minheight-xs center-block">
                                     <div class="wss__cart-div-xs">
-                                        <div class="wss__cart_equips-in-the-cart-xs">4</div>
+                                        <div class="wss__cart_equips-in-the-cart-xs">{{ currentCart.itemsInCart }}</div>
                                         <i class="icon-shopping-cart"></i>
                                         <span class="navbar__cart-text-xs">Cart</span>
                                     </div>
@@ -118,5 +119,6 @@
 
         </div>
     </div>
+</div>
 
 <!-- Header -->

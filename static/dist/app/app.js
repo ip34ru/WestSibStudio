@@ -254,6 +254,7 @@
                                                 '$log',
                                                 '$q',
                                                 'BRANDS_URL',
+                                                'store',
                                                 '$http'
     ];
 
@@ -263,11 +264,41 @@
                                                 $log,
                                                 $q,
                                                 BRANDS_URL,
+                                                store,
                                                 $http
     ) {
 
+        // extend function: https://gist.github.com/katowulf/6598238
+        function extend(base) {
+            var parts = Array.prototype.slice.call(arguments, 1);
+            parts.forEach(function (p) {
+                if (p && typeof (p) === 'object') {
+                    for (var k in p) {
+                        if (p.hasOwnProperty(k)) {
+                            base[k] = p[k];
+                        }
+                    }
+                }
+            });
+            return base;
+        } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
         var vm = this;
 
+        vm.showEquipmentSection = false;
+
+        store.set('currentCart', null);
+        $rootScope.currentCart = null;
+
+        vm.currentCart = {
+            itemsInCart: 0,
+            selectItems: [],
+            totalPrice: 0
+        };
+        store.set('currentCart',  vm.currentCart);
+        $rootScope.currentCart =  vm.currentCart;
+
+        // запрос данных о товарах и произволдителях с бекэнда
         $http({method: 'GET', url: BRANDS_URL}).
             success(function(data, status, headers, config) {
                 vm.dataJSON = data;
@@ -275,7 +306,89 @@
             }).
             error(function(data, status, headers, config) {
                 $log.debug('Error when i retrieve main data from backend!', status);
-        });
+        }); // $http
+
+        // отображение информации о товаре
+        vm.showInfoThisEquipment = function ( _equipmentID, _manufacturerID ) {
+            $log.debug('ID-выбранного товара =', _equipmentID);
+            vm.showEquipmentSection = true;
+            vm.equipmentID = _equipmentID;
+            vm.manufacturerID = _manufacturerID;
+        }; // vm.showInfoThisEquipment
+
+        vm.collapseEquipment = function () {
+            vm.showEquipmentSection = false;
+            vm.equipmentID = 0;
+            vm.manufacturerID = 0;
+        }; // vm.collapseEquipment
+
+        // добавить товар в корзину
+        vm.addItemToCart = function ( _equipmentID,
+                                      _equipmentPrice,
+                                      _equipmentName
+                                    ) {
+
+            var isCurrentItem = false,
+                isNewItem = false;
+
+            _equipmentPrice = _equipmentPrice.replace(".00" , "");
+            _equipmentPrice = parseInt(_equipmentPrice);
+
+            vm.currentCart.itemsInCart = ++$rootScope.currentCart.itemsInCart;
+
+            if ( vm.currentCart.selectItems.length === 0 ) {
+                vm.currentCart.selectItems.push({
+                    'equipmentID'     : _equipmentID,
+                    'equipmentName'   : _equipmentName,
+                    'equipmentPrice'  : _equipmentPrice,
+                    'equipmentAmount' : 1,
+                    'equipmentSum'    : 1 * _equipmentPrice
+                });
+                vm.currentCart.totalPrice = vm.currentCart.totalPrice + (_equipmentPrice);
+                isNewItem = true;
+            }
+
+            function isElementInArray( _equipmentID ) {
+
+                if (!isNewItem) {
+                    vm.currentCart.selectItems.forEach(function (element, index) {
+                        if (element.equipmentID === _equipmentID) {
+                            element.equipmentAmount = ++element.equipmentAmount;
+                            element.equipmentSum = element.equipmentAmount * element.equipmentPrice;
+                            isCurrentItem = true;
+                            vm.currentCart.totalPrice = vm.currentCart.totalPrice + element.equipmentPrice;
+                        }
+                    });
+                }
+
+            }
+
+            isElementInArray( _equipmentID );
+
+            if (!isCurrentItem && !isNewItem) {
+                vm.currentCart.selectItems.push({
+                    'equipmentID'     : _equipmentID,
+                    'equipmentName'   : _equipmentName,
+                    'equipmentPrice'  : _equipmentPrice,
+                    'equipmentAmount' : 1,
+                    'equipmentSum'    : 1 * _equipmentPrice
+                });
+                vm.currentCart.totalPrice = vm.currentCart.totalPrice + _equipmentPrice;
+            }
+
+            store.set('currentCart',  vm.currentCart);
+            $rootScope.currentCart =  vm.currentCart;
+
+            _equipmentID = null;
+            _equipmentPrice = null;
+            _equipmentName = null;
+            isCurrentItem = false;
+            isNewItem = false;
+
+            $log.debug('Данные корзины =',  vm.currentCart);
+
+        }; // vm.addItemToCart
+
 
     } //allBrandsAndProductsMainPageCtrl
 
@@ -631,6 +744,12 @@
                     },
                     'headerMainPage' : {
                         templateUrl: 'static/dist/app/components/header/header.html',
+                        //static/dist/app/components/header/header.html
+                        //controller: 'HeaderMainPageCtrl',
+                        //controllerAs: 'vm'
+                    },
+                    'floatHeaderMainPage' : {
+                        templateUrl: 'static/dist/app/components/header-float/header-float.html',
                         //static/dist/app/components/header/header.html
                         //controller: 'HeaderMainPageCtrl',
                         //controllerAs: 'vm'
