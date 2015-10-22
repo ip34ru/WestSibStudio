@@ -72,7 +72,6 @@ sitebellib.ini
 bower_components
 app/bower_components
 /test-work/app/static/SQLs/
-migrations/
 /node_modules
 
 # ignore at dev-server

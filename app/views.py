@@ -41,7 +41,7 @@ class Brands_View(View):
                                       'text': photo.text
                                       }for photo in product.gallery.all()],
                                  'price': str(product.price),
-                                 'price_discont': str(product.price_discont),
+                                 'price_discont': str(product.price_discont) if product.is_discont else "",
                                  } for product in brand.products.all()]
                    } for brand in brands]
         return HttpResponse(json.dumps(result, indent=1),

@@ -119,6 +119,7 @@ class Product(models.Model):
     price_discont = models.DecimalField(verbose_name=u'Цена со скидкой',
                                         max_digits=6, default=0.0,
                                         decimal_places=2)
+    is_discont = models.BooleanField(verbose_name=u'Со скидкой', default=False)
 
     class Meta:
         verbose_name = u'Продукт'
