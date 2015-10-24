@@ -12,6 +12,7 @@
         .controller('FormPostAddCtrl', formPostAddCtrl)
         .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
         .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
+        .controller('HeaderMainPageCtrl', headerMainPageCtrl)
         .filter('deleteTwoSymbolsFilter', function(){
                 return function (input) {
                     return input.replace(".00" , "")
@@ -41,6 +42,58 @@
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
 
+    // контроллердля запуска модалки корзины и генерации ее же
+    headerMainPageCtrl.$inject = [
+                                    'ARRAY_OF_LIST_OPTIONS_FOR_CART',
+                                    '$rootScope',
+                                    '$log',
+                                    '$modal'
+    ];
+
+    function headerMainPageCtrl (
+                                    ARRAY_OF_LIST_OPTIONS_FOR_CART,
+                                    $rootScope,
+                                    $log,
+                                    $modal
+    ) {
+
+        var vm = this;
+
+        vm.animationsEnabled = true;
+
+        vm.openModalCart = function ( e ) {
+            e.preventDefault();
+
+            $log.debug('openModalCart rootScope =', $rootScope.currentCart );
+            $log.debug( 'ARRAY_OF_LIST_OPTIONS_FOR_CART = ', ARRAY_OF_LIST_OPTIONS_FOR_CART );
+
+            if ( $rootScope.currentCart.itemsInCart > 0 ) {
+
+                vm.modalCaption = 'Cart';
+                $modal.open(
+                    {
+                        animation: vm.animationsEnabled,
+                        templateUrl: 'static/dist/app/components/modal-windows/cart-modal.html',
+                        controller: 'ModalCartCtrl',
+                        size: 'lg',
+                        resolve: {
+                            modalCaption: function () {
+                                return vm.modalCaption;
+                            }
+                        }
+                    }
+                ); // ~~~ $modal.open ~~~
+
+            } else if ( $rootScope.currentCart.itemsInCart === 0 ) {
+                alert('Your cart is empty. Please add equipment to cart');
+            }
+
+        }; // ~~~ openModalCart ~~~;
+
+
+    } // headerMainPageCtrl
+
+    // контроллер для товаров и брендов с главной страницы
     allBrandsAndProductsMainPageCtrl.$inject = [
                                                 '$scope',
                                                 '$rootScope',
@@ -61,21 +114,6 @@
                                                 $http
     ) {
 
-        // extend function: https://gist.github.com/katowulf/6598238
-        function extend(base) {
-            var parts = Array.prototype.slice.call(arguments, 1);
-            parts.forEach(function (p) {
-                if (p && typeof (p) === 'object') {
-                    for (var k in p) {
-                        if (p.hasOwnProperty(k)) {
-                            base[k] = p[k];
-                        }
-                    }
-                }
-            });
-            return base;
-        } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
-
         var vm = this;
 
         vm.showEquipmentSection = false;
@@ -90,6 +128,7 @@
         };
         store.set('currentCart',  vm.currentCart);
         $rootScope.currentCart =  vm.currentCart;
+        $rootScope.maxItemsInCart =  0;
 
         // запрос данных о товарах и произволдителях с бекэнда
         $http({method: 'GET', url: BRANDS_URL}).
@@ -121,27 +160,40 @@
                                       _equipmentName
                                     ) {
 
+            if ( $rootScope.maxItemsInCart >= 99 ) {
+                return false;
+            } // ограничение товаров в корзине
+
             var isCurrentItem = false,
                 isNewItem = false;
 
             _equipmentPrice = _equipmentPrice.replace(".00" , "");
             _equipmentPrice = parseInt(_equipmentPrice);
 
-            vm.currentCart.itemsInCart = ++$rootScope.currentCart.itemsInCart;
+            function pushDataInTheCart (_a, _b, _c, _d, _e) {
+
+                vm.currentCart.selectItems.push({
+                    'equipmentID'     : _a,
+                    'equipmentName'   : _b,
+                    'equipmentPrice'  : _c,
+                    'equipmentAmount' : 1,
+                    'equipmentSum'    : 1 * _d
+                });
+                vm.currentCart.totalPrice = vm.currentCart.totalPrice + ( _e );
+
+            } // pushDataInTheCart
+
+
+            //vm.currentCart.itemsInCart = ++$rootScope.currentCart.itemsInCart;
+            $rootScope.currentCart.itemsInCart = ++$rootScope.currentCart.itemsInCart;
+            $rootScope.maxItemsInCart = ++$rootScope.maxItemsInCart;
 
             if ( vm.currentCart.selectItems.length === 0 ) {
-                vm.currentCart.selectItems.push({
-                    'equipmentID'     : _equipmentID,
-                    'equipmentName'   : _equipmentName,
-                    'equipmentPrice'  : _equipmentPrice,
-                    'equipmentAmount' : 1,
-                    'equipmentSum'    : 1 * _equipmentPrice
-                });
-                vm.currentCart.totalPrice = vm.currentCart.totalPrice + (_equipmentPrice);
+                pushDataInTheCart( _equipmentID, _equipmentName, _equipmentPrice, _equipmentPrice, _equipmentPrice);
                 isNewItem = true;
             }
 
-            function isElementInArray( _equipmentID ) {
+            (function ( _equipmentID ) {
 
                 if (!isNewItem) {
                     vm.currentCart.selectItems.forEach(function (element, index) {
@@ -154,19 +206,10 @@
                     });
                 }
 
-            }
-
-            isElementInArray( _equipmentID );
+            })( _equipmentID );
 
             if (!isCurrentItem && !isNewItem) {
-                vm.currentCart.selectItems.push({
-                    'equipmentID'     : _equipmentID,
-                    'equipmentName'   : _equipmentName,
-                    'equipmentPrice'  : _equipmentPrice,
-                    'equipmentAmount' : 1,
-                    'equipmentSum'    : 1 * _equipmentPrice
-                });
-                vm.currentCart.totalPrice = vm.currentCart.totalPrice + _equipmentPrice;
+                pushDataInTheCart( _equipmentID, _equipmentName, _equipmentPrice, _equipmentPrice, _equipmentPrice);
             }
 
             store.set('currentCart',  vm.currentCart);

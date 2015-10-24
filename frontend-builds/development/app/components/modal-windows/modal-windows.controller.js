@@ -12,23 +12,39 @@
     ;
 
     modalCartCtrl.$inject = [
-        '$scope', '$modal', '$log',
-        '$rootScope', '$modalInstance', 'modalCaption',
-        'AuthfireFactory', '$location'
+                                '$scope',
+                                'ARRAY_OF_LIST_OPTIONS_FOR_CART',
+                                '$modal',
+                                '$log',
+                                '$rootScope',
+                                '$modalInstance',
+                                'modalCaption',
+                                '$location'
     ];
 
-    function modalCartCtrl ( $scope, $modal,
-                               $log, $rootScope,
-                               $modalInstance, modalCaption,
-                               AuthfireFactory, $location ) {
+    function modalCartCtrl (
+                             $scope,
+                             ARRAY_OF_LIST_OPTIONS_FOR_CART,
+                             $modal,
+                             $log,
+                             $rootScope,
+                             $modalInstance,
+                             modalCaption,
+                             $location
+    ) {
 
-        //var vm = this;
+        var vm = this;
+
+        $log.debug('modalCartCtrl rootScope =', $rootScope.currentCart );
+
+
+        $scope.arrayOfOptions = ARRAY_OF_LIST_OPTIONS_FOR_CART;
         //
         //$rootScope.modalInstance = $modalInstance;
         //$rootScope.authError = '';
         //$rootScope.authErrorAllFields = false;
         //$rootScope.authErrorBool = false;
-        //$scope.modalCaption = modalCaption;
+        $scope.modalCaption = modalCaption;
         //$scope.credentials = {
         //    email: null,
         //    password: null

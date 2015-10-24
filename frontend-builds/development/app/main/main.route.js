@@ -23,9 +23,8 @@
                     },
                     'headerMainPage' : {
                         templateUrl: 'static/dist/app/components/header/header.html',
-                        //static/dist/app/components/header/header.html
-                        //controller: 'HeaderMainPageCtrl',
-                        //controllerAs: 'vm'
+                        controller: 'HeaderMainPageCtrl',
+                        controllerAs: 'vm'
                     },
                     'floatHeaderMainPage' : {
                         templateUrl: 'static/dist/app/components/header-float/header-float.html',
