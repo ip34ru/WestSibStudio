@@ -74,6 +74,16 @@
 
 })();
 
+// todo
+// 1) при открытии полной инфы о товаре, кнопка collapse голубая, info
+// 2) количество товара ограниченго 9 позициями в корзине и 9-ю позициями по конкретной позиции в корзине для товара!
+// 3) одна транзакция на палке ограничена ~8000$
+// 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
+
+
+
+
+
 
 /**
  * Created by taksenov@gmail.com on 24.06.2015.
@@ -1868,6 +1878,22 @@
         .controller('ModalAboutManufacturerCtrl', modalAboutManufacturerCtrl)
     ;
 
+    // extend function: https://gist.github.com/katowulf/6598238
+    function extend(base) {
+        var parts = Array.prototype.slice.call(arguments, 1);
+        parts.forEach(function (p) {
+            if (p && typeof (p) === 'object') {
+                for (var k in p) {
+                    if (p.hasOwnProperty(k)) {
+                        base[k] = p[k];
+                    }
+                }
+            }
+        });
+        return base;
+    } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
+
     modalCartCtrl.$inject = [
                                 '$scope',
                                 'ARRAY_OF_LIST_OPTIONS_FOR_CART',
@@ -1894,58 +1920,111 @@
 
         $log.debug('modalCartCtrl rootScope =', $rootScope.currentCart );
 
-
         $scope.arrayOfOptions = ARRAY_OF_LIST_OPTIONS_FOR_CART;
-        //
-        //$rootScope.modalInstance = $modalInstance;
-        //$rootScope.authError = '';
-        //$rootScope.authErrorAllFields = false;
-        //$rootScope.authErrorBool = false;
         $scope.modalCaption = modalCaption;
-        //$scope.credentials = {
-        //    email: null,
-        //    password: null
-        //};
-        //
-        //vm.login = function (  ) {
-        //    AuthfireFactory.login( $scope.credentials );
-        //
-        //    $log.debug( 'Login!',
-        //        'UserName =', $scope.credentials.email,
-        //        'UserPassword =', $scope.credentials.password  );
-        //}; // ~~~ vm.login ~~~
-        //
-        //$scope.twitterLogin = function (  ) {
-        //
-        //    AuthfireFactory.twitterLogin(  );
-        //    $modalInstance.close();
-        //
-        //}; // ~~~ vm.twitterLogin ~~~
-        //
-        //$scope.facebookLogin = function (  ) {
-        //
-        //    AuthfireFactory.facebookLogin(  );
-        //    $modalInstance.close();
-        //
-        //}; // ~~~ vm.facebookLogin ~~~
-        //
-        //$scope.googleLogin = function (  ) {
-        //
-        //    AuthfireFactory.googleLogin(  );
-        //    $modalInstance.close();
-        //
-        //}; // ~~~ vm.googleLogin ~~~
+        $scope.userdata = {
+            name     : null,
+            company  : null,
+            phone    : null,
+            email    : null,
+            address  : null,
+            town     : null,
+            country  : null,
+            zipcode  : null
+        };
+        vm.orderedEquipment = [];
+        $scope.isSubmitBtnDisablet = false;
+
+        $scope.changeEquipmentAmountInSelect = function ( _index ) {
+
+            // changeEquipmentDataInTheCart
+            (function ( _index ) {
+
+                $rootScope.currentCart.selectItems[_index].equipmentSum
+                    =
+                    $rootScope.currentCart.selectItems[_index].equipmentAmount
+                    *
+                    $rootScope.currentCart.selectItems[_index].equipmentPrice;
+
+                $rootScope.currentCart.totalPrice = 0;
+
+                // changeTotalPrice
+                $rootScope.currentCart.selectItems.forEach(function (element, index) {
+                        $rootScope.currentCart.totalPrice
+                            =
+                            $rootScope.currentCart.totalPrice
+                            +
+                            element.equipmentSum;
+                }); // changeTotalPrice
+
+            })( _index ); // changeEquipmentDataInTheCart
+
+            $log.debug('$rootScope.currentCart =', $rootScope.currentCart );
+            $log.debug('изменение количество товара =', $rootScope.currentCart.selectItems[_index] );
+
+        }; // changeEquipmentAmountInSelect
+
 
         $scope.ok = function () {
 
-            //if ( !$scope.credentials.email || !$scope.credentials.password ) {
-            //    $log.debug('Для входа необходимо ввести логин и пароль');
-            //    $rootScope.authErrorAllFields = true;
-            //    $rootScope.authErrorBool = false;
-            //} else {
-            //    $rootScope.authErrorAllFields = false;
-            //    vm.login();
-            //}
+            $scope.isSubmitBtnDisablet = true;
+
+            if (
+                 !$scope.userdata.name
+                  ||
+                 !$scope.userdata.phone
+                  ||
+                 !$scope.userdata.email
+                  ||
+                 !$scope.userdata.address
+                  ||
+                 !$scope.userdata.town
+                  ||
+                 !$scope.userdata.country
+                  ||
+                 !$scope.userdata.zipcode
+            ) {
+                $log.debug('Для оплаты необходимо ввести данные пользователя');
+                $scope.isSubmitBtnDisablet = false;
+            } else {
+
+                if ( !$scope.userdata.company ) {
+                    $scope.userdata.company = '';
+                }
+
+                // getDataFromEquipments
+                $rootScope.currentCart.selectItems.forEach(function (element, index) {
+                    vm.orderedEquipment.push({
+                        'equipmentID'     : element.equipmentID,
+                        'equipmentAmount' : element.equipmentAmount
+                    });
+                }); // getDataFromEquipments
+
+                var products = [
+                    vm.orderedEquipment = extend(
+                        {},
+                        vm.orderedEquipment
+                    )
+                ];
+                var userData =  $scope.userdata ;
+
+                vm.data = {
+                    'products' : products,
+                    'userData' : userData
+                };
+
+                $log.debug('vm.data =', vm.data );
+
+                vm.orderedEquipment = [];
+
+                // todo сюда фигачить отправку на сервак и обработку аполученного ответа
+                //
+                //
+
+                // todo раздисейбелить при получкении ссылки на палку
+                $scope.isSubmitBtnDisablet = false;
+
+            }
 
         }; //~~~ $scope.ok ~~~
 
@@ -1970,97 +2049,9 @@
 
         var vm = this;
 
-        $rootScope.signUpErrorBool = false;
-        $rootScope.modalInstance = $modalInstance;
-        $rootScope.authError = '';
-        $rootScope.signUpErrorAllFields = false;
-        $rootScope.signUpErrorNonStrongPassword = false;
         $scope.modalCaption = modalCaption;
-        $scope.newUserData = {
-            name: null,
-            email: null,
-            password: null
-        };
-
-        vm.signUp = function (  ) {
-            AuthfireFactory.signUp( $scope.newUserData );
-
-            $log.debug( 'SignUp!',
-                'UserName =', $scope.newUserData.name,
-                'Email =', $scope.newUserData.email,
-                'UserPassword =', $scope.newUserData.password  );
-        }; // ~~~ vm.login ~~~
-
-        $scope.twitterLogin = function (  ) {
-
-            AuthfireFactory.twitterLogin(  );
-            $modalInstance.close();
-
-        }; // ~~~ vm.twitterLogin ~~~
-
-        $scope.facebookLogin = function (  ) {
-
-            AuthfireFactory.facebookLogin(  );
-            $modalInstance.close();
-
-        }; // ~~~ vm.facebookLogin ~~~
-
-        $scope.googleLogin = function (  ) {
-
-            AuthfireFactory.googleLogin(  );
-            $modalInstance.close();
-
-        }; // ~~~ vm.googleLogin ~~~
 
         $scope.ok = function () {
-
-            var s = $scope.newUserData.password;
-
-            //todo сделать эту громоздкую проверку директивой -----------------------------------------
-            if ( !$scope.newUserData.email ||
-                 !$scope.newUserData.password ||
-                 !$scope.newUserData.name
-            ) {
-                $log.debug('Для регистрации должны быть заполнены все поля');
-                $rootScope.signUpErrorAllFields = true;
-                $rootScope.authErrorBool = false;
-                $rootScope.signUpErrorNonStrongPassword = false;
-            } else {
-
-                if ( !(s.length > 7) ) {
-                    $rootScope.signUpErrorNonStrongPassword = true;
-                    $rootScope.signUpErrorAllFields = false;
-                    $rootScope.authErrorBool = false;
-                    $rootScope.authError = 'Пароль очень простой! Используйте пароль не менее 8 символов';
-                    $log.debug('Пароль очень простой! Используйте пароль не менее 8 символов');
-                } else if ( !(/[0-9]/.test(s)) ) {
-                    $rootScope.signUpErrorNonStrongPassword = true;
-                    $rootScope.signUpErrorAllFields = false;
-                    $rootScope.authErrorBool = false;
-                    $rootScope.authError = 'Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из комбинации латинских прописных и заглавных букв, а так же цифр';
-                    $log.debug('Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из цифр');
-                } else if ( !(/[A-Za-z]/.test(s)) ) {
-                    $rootScope.signUpErrorNonStrongPassword = true;
-                    $rootScope.signUpErrorAllFields = false;
-                    $rootScope.authErrorBool = false;
-                    $rootScope.authError = 'Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из комбинации латинских прописных и заглавных букв, а так же цифр';
-                    $log.debug('Пароль очень простой! Используйте пароль не менее 8 символов, состоящий из цифр и латинских букв');
-                } else if ( (/[А-Яа-я]/.test(s)) ) {
-                    $rootScope.signUpErrorNonStrongPassword = true;
-                    $rootScope.signUpErrorAllFields = false;
-                    $rootScope.authErrorBool = false;
-                    $rootScope.authError = 'Пароль не подходит! Используйте только латинские буквы';
-                    $log.debug('Пароль очень простой! Используйте только латинские буквы');
-                } else {
-                    $log.debug('Ваш пароль подходит!');
-                    $rootScope.signUpErrorNonStrongPassword = false;
-                    $rootScope.signUpErrorAllFields = false;
-                    $rootScope.authErrorBool = false;
-                    $rootScope.authError = '';
-                    vm.signUp();
-                }
-            }
-            //todo сделать эту громоздкую проверку директивой -----------------------------------------
 
         }; //~~~ $scope.ok ~~~
 
