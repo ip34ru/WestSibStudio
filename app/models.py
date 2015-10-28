@@ -202,8 +202,8 @@ class Order(models.Model):
 
     items = models.ManyToManyField(OrderItem, verbose_name=u'Позиции', blank=True)
 
-    sum = models.DecimalField(verbose_name=u'Сумма', max_digits=6, default=0.0,
-                              decimal_places=2)
+    sum = models.DecimalField(verbose_name=u'Сумма', max_digits=10, default=0.0,
+                              decimal_places=3)
 
     status = models.CharField(verbose_name=u'Статус', max_length=5,
                               choices=ORDER_CHOICES, default='new')

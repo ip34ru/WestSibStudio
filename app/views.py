@@ -101,7 +101,6 @@ class Cart_View(View):
 
     def post(self, request, *args, **kwargs):
         errors = []
-        
         normal = request.body.decode('utf8')
         print(normal)
         data = json.loads(normal)
