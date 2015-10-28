@@ -100,6 +100,7 @@
                                                 '$log',
                                                 '$q',
                                                 'BRANDS_URL',
+                                                'CART_MAX_ITEMS',
                                                 'store',
                                                 '$http'
     ];
@@ -110,6 +111,7 @@
                                                 $log,
                                                 $q,
                                                 BRANDS_URL,
+                                                CART_MAX_ITEMS,
                                                 store,
                                                 $http
     ) {
@@ -160,7 +162,9 @@
                                       _equipmentName
                                     ) {
 
-            if ( $rootScope.maxItemsInCart >= 99 ) {
+            //todo сюда захуячить проверку на то чтоб сумма товаров в корзине не превышает максимальный лимит палки!
+
+            if ( $rootScope.maxItemsInCart >= CART_MAX_ITEMS ) {
                 return false;
             } // ограничение товаров в корзине
 

@@ -13,7 +13,7 @@
         .module('ngWestSibStudio', [
 
             'ngWestSibStudio.main',
-
+            'ngCookies',
             //'ngWestSibStudio.error404',
             //'ngWestSibStudio.firebase.service',
             'ngWestSibStudio.modal-windows',
@@ -23,14 +23,33 @@
             'angular-storage'
         ])
         .constant('BRANDS_URL', '/ajax/brands/')
-        .constant('CART_MAX_ITEMS', 99)
-        .constant('ARRAY_OF_LIST_OPTIONS_FOR_CART', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99] )
+        .constant('CART_POST_URL', '/ajax/cart/')
+        .constant('CART_MAX_ITEMS', 9)
+        .constant('ARRAY_OF_LIST_OPTIONS_FOR_CART', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] )
         .config(ngGFConfig)
         .run(run);
 
-    ngGFConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$logProvider'];
+    ngGFConfig.$inject = [
+        '$httpProvider',
+        '$stateProvider',
+        '$urlRouterProvider',
+        '$locationProvider',
+        '$logProvider'
+    ];
 
-    function ngGFConfig($stateProvider, $urlRouterProvider, $locationProvider, $logProvider){
+    function ngGFConfig(
+        $httpProvider,
+        $stateProvider,
+        $urlRouterProvider,
+        $locationProvider,
+        $logProvider
+    ){
+
+        // get X-CSRF-token
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        // get X-CSRF-token
+
         $locationProvider.html5Mode({
             enabled: false,
             requireBase: false
@@ -77,9 +96,9 @@
 // todo
 // 1) при открытии полной инфы о товаре, кнопка collapse голубая, info
 // 2) количество товара ограниченго 9 позициями в корзине и 9-ю позициями по конкретной позиции в корзине для товара!
-// 3) одна транзакция на палке ограничена ~8000$
+// 3) одна транзакция на палке ограничена ~8500$
 // 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
-
+// 5) корзина на сайте должна обновлять значение в зависимости от того что поправили внутри корзины!
 
 
 
@@ -335,6 +354,7 @@
                                                 '$log',
                                                 '$q',
                                                 'BRANDS_URL',
+                                                'CART_MAX_ITEMS',
                                                 'store',
                                                 '$http'
     ];
@@ -345,6 +365,7 @@
                                                 $log,
                                                 $q,
                                                 BRANDS_URL,
+                                                CART_MAX_ITEMS,
                                                 store,
                                                 $http
     ) {
@@ -395,7 +416,9 @@
                                       _equipmentName
                                     ) {
 
-            if ( $rootScope.maxItemsInCart >= 99 ) {
+            //todo сюда захуячить проверку на то чтоб сумма товаров в корзине не превышает максимальный лимит палки!
+
+            if ( $rootScope.maxItemsInCart >= CART_MAX_ITEMS ) {
                 return false;
             } // ограничение товаров в корзине
 
@@ -1902,6 +1925,8 @@
                                 '$rootScope',
                                 '$modalInstance',
                                 'modalCaption',
+                                'CART_POST_URL',
+                                '$http',
                                 '$location'
     ];
 
@@ -1913,6 +1938,8 @@
                              $rootScope,
                              $modalInstance,
                              modalCaption,
+                             CART_POST_URL,
+                             $http,
                              $location
     ) {
 
@@ -1937,6 +1964,7 @@
 
         $scope.changeEquipmentAmountInSelect = function ( _index ) {
 
+            //todo !!!в эту функцию захуячить проверку на то чтоб сумма товаров в корзине не превышает максимальный лимит палки!
             // changeEquipmentDataInTheCart
             (function ( _index ) {
 
@@ -1985,8 +2013,11 @@
                  !$scope.userdata.zipcode
             ) {
                 $log.debug('Для оплаты необходимо ввести данные пользователя');
+                $scope.isValidateError2 = true;
                 $scope.isSubmitBtnDisablet = false;
             } else {
+
+                $scope.isValidateError2 = false;
 
                 if ( !$scope.userdata.company ) {
                     $scope.userdata.company = '';
@@ -2000,12 +2031,7 @@
                     });
                 }); // getDataFromEquipments
 
-                var products = [
-                    vm.orderedEquipment = extend(
-                        {},
-                        vm.orderedEquipment
-                    )
-                ];
+                var products = vm.orderedEquipment;
                 var userData =  $scope.userdata ;
 
                 vm.data = {
@@ -2017,14 +2043,77 @@
 
                 vm.orderedEquipment = [];
 
-                // todo сюда фигачить отправку на сервак и обработку аполученного ответа
-                //
-                //
+                // отправка данных корзины на back-end
+                $http({method: 'POST', data: vm.data, url: CART_POST_URL}).
+                    success(function(data, status, headers, config) {
 
-                // todo раздисейбелить при получкении ссылки на палку
-                $scope.isSubmitBtnDisablet = false;
+                        if ( typeof(data.errors) === 'undefined' ) {
+                            //todo сюда пихать обработку ссылки на палку и редирект клиента!
+                            //return link to paypal
+                            $log.debug('RETURN FROM POST Data is =', data);
+                        } else {
+                            //return some errors from back-end
+                            for (var i = 0; i < data.errors.length; i++) {
+                                $log.debug('data.errors is =', data.errors[i]);
+                                $scope.errorCode = 20;
+
+                                if ( data.errors[i] === 10 || data.errors[i] === 11 || data.errors[i] === 11 ) {
+                                    alert('No items in the cart');
+                                    vm.data = {};
+                                    $modalInstance.dismiss('cancel');
+                                } else if ( data.errors[i] === 20 ) {
+                                    alert('No user data');
+                                    $scope.errorCodeName = true;
+                                    $scope.errorCodePhone = true;
+                                    $scope.errorCodeEmail = true;
+                                    $scope.errorCodeAddress = true;
+                                    $scope.errorCodeTown = true;
+                                    $scope.errorCodeCountry = true;
+                                    $scope.errorCodeZIP = true;
+                                    $scope.isValidateError = true;
+                                } else if ( data.errors[i] === 21 ) {
+                                    $scope.errorCodeName = true;
+                                    $scope.isValidateError = true;
+                                } else if ( data.errors[i] === 22 ) {
+                                    $scope.errorCodePhone = true;
+                                    $scope.isValidateError = true;
+                                } else if ( data.errors[i] === 23 ) {
+                                    $scope.errorCodeEmail = true;
+                                    $scope.isValidateError = true;
+                                } else if ( data.errors[i] === 24 ) {
+                                    $scope.errorCodeAddress = true;
+                                    $scope.isValidateError = true;
+                                } else if ( data.errors[i] === 25 ) {
+                                    $scope.errorCodeTown = true;
+                                    $scope.isValidateError = true;
+                                } else if ( data.errors[i] === 26 ) {
+                                    $scope.errorCodeCountry = true;
+                                    $scope.isValidateError = true;
+                                } else if ( data.errors[i] === 27 ) {
+                                    $scope.errorCodeZIP = true;
+                                    $scope.isValidateError = true;
+                                }
+                            }
+                        }
+
+                        $scope.isSubmitBtnDisablet = false;
+                    }).
+                    error(function(data, status, headers, config) {
+                        $log.debug('STATUS. Error when i post cart-data =', status);
+                        alert("We're sorry, a server error occurred. Please try your request later");
+                        $scope.isSubmitBtnDisablet = false;
+                }); // $http
 
             }
+
+            $scope.errorCodeName = false;
+            $scope.errorCodePhone = false;
+            $scope.errorCodeEmail = false;
+            $scope.errorCodeAddress = false;
+            $scope.errorCodeTown = false;
+            $scope.errorCodeCountry = false;
+            $scope.errorCodeZIP = false;
+            $scope.isValidateError = false;
 
         }; //~~~ $scope.ok ~~~
 

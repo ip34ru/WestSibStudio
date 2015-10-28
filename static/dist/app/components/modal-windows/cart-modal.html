@@ -4,7 +4,7 @@
                 <h4 class="modal-title text-center">{{ modalCaption }}</h4>
             </div>
 
-            <form name="userCartForm" action="">
+            <form name="userCartForm" action="" novalidate>
                 <div class="modal-body">
 
                     <div class="row wss-cart-list-in-cart">
@@ -64,7 +64,7 @@
 
                                 <fieldset>
                                     <legend>Personal data</legend>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error' : isValidateError && errorCodeName, 'has-success' : isValidateError && !errorCodeName }">
                                         <label for="inputName" class="col-lg-3 control-label">Name*</label>
 
                                         <div class="col-lg-9">
@@ -82,7 +82,7 @@
                                                     >
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error' : isValidateError && errorCodePhone, 'has-success' : isValidateError && !errorCodePhone }">
                                         <label for="inputPhone" class="col-lg-3 control-label">Phone*</label>
 
                                         <div class="col-lg-9">
@@ -91,7 +91,7 @@
                                                     >
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error' : isValidateError && errorCodeEmail, 'has-success' : isValidateError && !errorCodeEmail }">
                                         <label for="inputEmail" class="col-lg-3 control-label">Email*</label>
 
                                         <div class="col-lg-9">
@@ -100,7 +100,7 @@
                                                     >
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error' : isValidateError && errorCodeAddress, 'has-success' : isValidateError && !errorCodeAddress }">
                                         <label for="inputAddress" class="col-lg-3 control-label">Address*</label>
 
                                         <div class="col-lg-9">
@@ -109,7 +109,7 @@
                                                     >
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error' : isValidateError && errorCodeTown, 'has-success' : isValidateError && !errorCodeTown }">
                                         <label for="inputTown" class="col-lg-3 control-label">Town*</label>
 
                                         <div class="col-lg-9">
@@ -118,7 +118,7 @@
                                                     >
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error' : isValidateError && errorCodeCountry, 'has-success' : isValidateError && !errorCodeCountry }">
                                         <label for="inputCountry" class="col-lg-3 control-label">Country*</label>
 
                                         <div class="col-lg-9">
@@ -127,7 +127,7 @@
                                                     >
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'has-error' : isValidateError && errorCodeZIP, 'has-success' : isValidateError && !errorCodeZIP }">
                                         <label for="inputZIP" class="col-lg-3 control-label">ZIP-code*</label>
 
                                         <div class="col-lg-9">
@@ -136,6 +136,11 @@
                                                     >
                                         </div>
                                     </div>
+
+                                    <div class="form-group has-error" ng-show="isValidateError || isValidateError2">
+                                        <label class="col-lg-12 control-label">Please fill in all fields marked with *</label>
+                                    </div>
+
                                 </fieldset>
 
                             </div>
