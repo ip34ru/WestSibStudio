@@ -200,7 +200,7 @@ class Order(models.Model):
 
     date_change = models.DateTimeField(auto_now=True, verbose_name=u'Изменен')
 
-    items = models.ManyToManyField(OrderItem, verbose_name=u'Позиции')
+    items = models.ManyToManyField(OrderItem, verbose_name=u'Позиции', blank=True)
 
     sum = models.DecimalField(verbose_name=u'Сумма', max_digits=6, default=0.0,
                               decimal_places=2)
@@ -223,8 +223,9 @@ class Order(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-
-        postal_code_old = Order.objects.get(pk=self.pk).postal_code
+        postal_code_old = ''
+        if self.pk:
+            postal_code_old = Order.objects.get(pk=self.pk).postal_code
 
         super(Order, self).save(force_insert=False, force_update=False,
                                 using=None, update_fields=None)

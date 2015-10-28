@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^ajax/news/', News_View.as_view(), name='news'),
     url(r'^ajax/notes/', Notes_View.as_view(), name='notes'),
     url(r'^ajax/logo/', Logo_View.as_view(), name='logo'),
+    url(r'^ajax/cart/', Cart_View.as_view(), name='cart'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
