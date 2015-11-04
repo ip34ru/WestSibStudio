@@ -15,7 +15,7 @@
             'ngWestSibStudio.main',
             'ngCookies',
             'ngAnimate',
-            //'ngWestSibStudio.error404',
+            'ngWestSibStudio.error404',
             //'ngWestSibStudio.firebase.service',
             'ngWestSibStudio.modal-windows',
             //'ngWestSibStudio.edit-modal',
@@ -26,6 +26,7 @@
         .constant('BRANDS_URL', '/ajax/brands/')
         .constant('CART_POST_URL', '/ajax/cart/')
         .constant('CART_MAX_ITEMS', 9)
+        .constant('CART_MAX_PRICE', 8500)
         .constant('ARRAY_OF_LIST_OPTIONS_FOR_CART', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] )
         .config(ngGFConfig)
         .run(run);
@@ -58,10 +59,10 @@
 
         $logProvider.debugEnabled( true );
 
-        //$urlRouterProvider.otherwise(function ($injector, $location) {
-        //    $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
-        //    return true;
-        //}); // ~~~ $urlRouterProvider ~~~
+        $urlRouterProvider.otherwise(function ($injector, $location) {
+            $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
+            return true;
+        }); // ~~~ $urlRouterProvider ~~~
 
         $urlRouterProvider
             .when('', '/')
@@ -96,7 +97,6 @@
 
 // todo
 
-// 3) одна транзакция на палке ограничена ~8500$
 // 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
 // 5) корзина на сайте должна обновлять значение в зависимости от того что поправили внутри корзины!
 // 6) сделать верстку для того случая когда есть скидка на товар
@@ -119,7 +119,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.error404', ['ui.router']);
+        .module('ngWestSibStudio.error404', ['ui.router']);
 
 })();
 
@@ -209,7 +209,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.error404')
+        .module('ngWestSibStudio.error404')
         .controller('Error404Ctrl', error404Ctrl);
 
     error404Ctrl.$inject = ['$scope', '$rootScope'];
@@ -232,7 +232,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.error404')
+        .module('ngWestSibStudio.error404')
         .config(route);
 
     route.$inject = ['$stateProvider'];
@@ -241,13 +241,8 @@
         $stateProvider
             .state('error', {
                 views : {
-                    'navbarPublick' : {
-                        templateUrl: 'app/components/navbar-public/navbar-public.html',
-                        controller: 'OpenModalSingInCtrl',
-                        controllerAs: 'vm'
-                    },
-                    'mainContent' : {
-                        templateUrl: 'app/error/error.html',
+                    'allBrandsAndProductsMainPage' : {
+                        templateUrl: 'static/dist/app/error/error.html',
                         controller: 'Error404Ctrl',
                         controllerAs: 'vm'
                     }
@@ -257,6 +252,10 @@
     }
 
 })();
+
+
+
+
 
 
 /**
@@ -385,6 +384,7 @@
                                                 '$q',
                                                 'BRANDS_URL',
                                                 'CART_MAX_ITEMS',
+                                                'CART_MAX_PRICE',
                                                 'store',
                                                 '$http'
     ];
@@ -396,6 +396,7 @@
                                                 $q,
                                                 BRANDS_URL,
                                                 CART_MAX_ITEMS,
+                                                CART_MAX_PRICE,
                                                 store,
                                                 $http
     ) {
@@ -403,6 +404,7 @@
         var vm = this;
 
         vm.showEquipmentSection = false;
+        vm.cartTotalPrice = 0;
 
         store.set('currentCart', null);
         $rootScope.currentCart = null;
@@ -446,8 +448,6 @@
                                       _equipmentName
                                     ) {
 
-            //todo сюда захуячить проверку на то чтоб сумма товаров в корзине не превышает максимальный лимит палки!
-
             if ( $rootScope.maxItemsInCart >= CART_MAX_ITEMS ) {
                 return false;
             } // ограничение товаров в корзине
@@ -457,6 +457,18 @@
 
             _equipmentPrice = _equipmentPrice.replace(".00" , "");
             _equipmentPrice = parseInt(_equipmentPrice);
+
+            vm.cartTotalPrice = vm.cartTotalPrice + _equipmentPrice;
+            $log.debug('Общая цена товаров в корзине = ', vm.cartTotalPrice);
+
+            if ( vm.cartTotalPrice >= CART_MAX_PRICE ) {
+                vm.cartTotalPrice = vm.cartTotalPrice - _equipmentPrice;
+
+                //todo сюда перевод фразы о превышении лимита по Paypal
+                alert('Стоимость выбранного количества товаров превышает лимит для оплаты PayPal. разделите ваш заказ на две или более частей');
+
+                return false;
+            } // ограничение суммы для транзакции по палке
 
             function pushDataInTheCart (_a, _b, _c, _d, _e) {
 
@@ -2097,9 +2109,10 @@
                     success(function(data, status, headers, config) {
 
                         if ( typeof(data.errors) === 'undefined' ) {
-                            //todo сюда пихать обработку ссылки на палку и редирект клиента!
                             //return link to paypal
                             $log.debug('RETURN FROM POST Data is =', data);
+                            jQuery('body').append(data);
+                            jQuery('#paypal_form_cont > form').submit();
                         } else {
 
                             // todo сделать проверку вот так как написано ниже

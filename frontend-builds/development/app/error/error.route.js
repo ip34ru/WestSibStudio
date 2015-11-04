@@ -6,7 +6,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.error404')
+        .module('ngWestSibStudio.error404')
         .config(route);
 
     route.$inject = ['$stateProvider'];
@@ -15,13 +15,8 @@
         $stateProvider
             .state('error', {
                 views : {
-                    'navbarPublick' : {
-                        templateUrl: 'app/components/navbar-public/navbar-public.html',
-                        controller: 'OpenModalSingInCtrl',
-                        controllerAs: 'vm'
-                    },
-                    'mainContent' : {
-                        templateUrl: 'app/error/error.html',
+                    'allBrandsAndProductsMainPage' : {
+                        templateUrl: 'static/dist/app/error/error.html',
                         controller: 'Error404Ctrl',
                         controllerAs: 'vm'
                     }
@@ -31,4 +26,8 @@
     }
 
 })();
+
+
+
+
 

@@ -6,7 +6,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.error404', ['ui.router']);
+        .module('ngWestSibStudio.error404', ['ui.router']);
 
 })();
 

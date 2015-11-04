@@ -6,7 +6,7 @@
     'use strict';
 
     angular
-        .module('ngNoReddit.error404')
+        .module('ngWestSibStudio.error404')
         .controller('Error404Ctrl', error404Ctrl);
 
     error404Ctrl.$inject = ['$scope', '$rootScope'];

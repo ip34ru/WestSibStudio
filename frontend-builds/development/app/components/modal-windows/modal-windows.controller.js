@@ -178,7 +178,6 @@
                     success(function(data, status, headers, config) {
 
                         if ( typeof(data.errors) === 'undefined' ) {
-                            //todo сюда пихать обработку ссылки на палку и редирект клиента!
                             //return link to paypal
                             $log.debug('RETURN FROM POST Data is =', data);
                             jQuery('body').append(data);

@@ -15,7 +15,7 @@
             'ngWestSibStudio.main',
             'ngCookies',
             'ngAnimate',
-            //'ngWestSibStudio.error404',
+            'ngWestSibStudio.error404',
             //'ngWestSibStudio.firebase.service',
             'ngWestSibStudio.modal-windows',
             //'ngWestSibStudio.edit-modal',
@@ -26,6 +26,7 @@
         .constant('BRANDS_URL', '/ajax/brands/')
         .constant('CART_POST_URL', '/ajax/cart/')
         .constant('CART_MAX_ITEMS', 9)
+        .constant('CART_MAX_PRICE', 8500)
         .constant('ARRAY_OF_LIST_OPTIONS_FOR_CART', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] )
         .config(ngGFConfig)
         .run(run);
@@ -58,10 +59,10 @@
 
         $logProvider.debugEnabled( true );
 
-        //$urlRouterProvider.otherwise(function ($injector, $location) {
-        //    $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
-        //    return true;
-        //}); // ~~~ $urlRouterProvider ~~~
+        $urlRouterProvider.otherwise(function ($injector, $location) {
+            $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
+            return true;
+        }); // ~~~ $urlRouterProvider ~~~
 
         $urlRouterProvider
             .when('', '/')
@@ -96,7 +97,6 @@
 
 // todo
 
-// 3) одна транзакция на палке ограничена ~8500$
 // 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
 // 5) корзина на сайте должна обновлять значение в зависимости от того что поправили внутри корзины!
 // 6) сделать верстку для того случая когда есть скидка на товар

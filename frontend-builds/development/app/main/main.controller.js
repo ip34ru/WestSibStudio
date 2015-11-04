@@ -124,6 +124,7 @@
                                                 '$q',
                                                 'BRANDS_URL',
                                                 'CART_MAX_ITEMS',
+                                                'CART_MAX_PRICE',
                                                 'store',
                                                 '$http'
     ];
@@ -135,6 +136,7 @@
                                                 $q,
                                                 BRANDS_URL,
                                                 CART_MAX_ITEMS,
+                                                CART_MAX_PRICE,
                                                 store,
                                                 $http
     ) {
@@ -142,6 +144,7 @@
         var vm = this;
 
         vm.showEquipmentSection = false;
+        vm.cartTotalPrice = 0;
 
         store.set('currentCart', null);
         $rootScope.currentCart = null;
@@ -185,8 +188,6 @@
                                       _equipmentName
                                     ) {
 
-            //todo сюда захуячить проверку на то чтоб сумма товаров в корзине не превышает максимальный лимит палки!
-
             if ( $rootScope.maxItemsInCart >= CART_MAX_ITEMS ) {
                 return false;
             } // ограничение товаров в корзине
@@ -196,6 +197,18 @@
 
             _equipmentPrice = _equipmentPrice.replace(".00" , "");
             _equipmentPrice = parseInt(_equipmentPrice);
+
+            vm.cartTotalPrice = vm.cartTotalPrice + _equipmentPrice;
+            $log.debug('Общая цена товаров в корзине = ', vm.cartTotalPrice);
+
+            if ( vm.cartTotalPrice >= CART_MAX_PRICE ) {
+                vm.cartTotalPrice = vm.cartTotalPrice - _equipmentPrice;
+
+                //todo сюда перевод фразы о превышении лимита по Paypal
+                alert('Стоимость выбранного количества товаров превышает лимит для оплаты PayPal. разделите ваш заказ на две или более частей');
+
+                return false;
+            } // ограничение суммы для транзакции по палке
 
             function pushDataInTheCart (_a, _b, _c, _d, _e) {
 
