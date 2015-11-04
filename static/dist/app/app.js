@@ -14,6 +14,7 @@
 
             'ngWestSibStudio.main',
             'ngCookies',
+            'ngAnimate',
             //'ngWestSibStudio.error404',
             //'ngWestSibStudio.firebase.service',
             'ngWestSibStudio.modal-windows',
@@ -94,11 +95,17 @@
 })();
 
 // todo
-// 1) при открытии полной инфы о товаре, кнопка collapse голубая, info
-// 2) количество товара ограниченго 9 позициями в корзине и 9-ю позициями по конкретной позиции в корзине для товара!
+
 // 3) одна транзакция на палке ограничена ~8500$
 // 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
 // 5) корзина на сайте должна обновлять значение в зависимости от того что поправили внутри корзины!
+// 6) сделать верстку для того случая когда есть скидка на товар
+
+
+
+
+
+
 
 
 
@@ -260,7 +267,13 @@
     'use strict';
 
     angular
-        .module('ngWestSibStudio.main')
+        .module(
+            'ngWestSibStudio.main'
+        //,
+        //    [
+        //        'ngAnimate'
+        //    ]
+        )
         .controller('MainCtrl', mainCtrl)
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('FormPostAddCtrl', formPostAddCtrl)
@@ -278,6 +291,23 @@
                     return $sce.trustAsHtml(htmlCode);
                 }
             }]
+        )
+        .
+        animation(
+            '.animate-new', function () {
+                return {
+                    enter: function ( _element, _done ) {
+
+                        var offset = jQuery( _element ).offset().top;
+                        jQuery('html, body').animate({scrollTop: (offset - 50 )},800);
+
+                    }
+                    //,
+                    //leave: function ( _element, _done ) {
+                    //
+                    //}
+                }
+            }
         )
     ;
 
@@ -843,9 +873,8 @@
                     },
                     'floatHeaderMainPage' : {
                         templateUrl: 'static/dist/app/components/header-float/header-float.html',
-                        //static/dist/app/components/header/header.html
-                        //controller: 'HeaderMainPageCtrl',
-                        //controllerAs: 'vm'
+                        controller: 'HeaderMainPageCtrl',
+                        controllerAs: 'vm'
                     },
                     'footerMainPage' : {
                         templateUrl: 'static/dist/app/components/footer/footer.html',
@@ -1899,6 +1928,7 @@
         .module('ngWestSibStudio.modal-windows')
         .controller('ModalCartCtrl', modalCartCtrl)
         .controller('ModalAboutManufacturerCtrl', modalAboutManufacturerCtrl)
+        .controller('ModalErrorMessageCtrl', modalErrorMessageCtrl)
     ;
 
     // extend function: https://gist.github.com/katowulf/6598238
@@ -1915,6 +1945,25 @@
         });
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
+    modalErrorMessageCtrl.$inject = [
+                                '$scope',
+                                '$log',
+                                '$rootScope',
+                                'modalCaption'
+    ];
+
+    function modalErrorMessageCtrl (
+                                    $scope,
+                                    $log,
+                                    $rootScope,
+                                    modalCaption
+    ) {
+        $scope.cancel = function () {
+            $rootScope.errorMessage = '';
+            $modalInstance.dismiss('cancel');
+        }; //~~~ $scope.cancel ~~~
+    } // modalErrorMessageCtrl
 
 
     modalCartCtrl.$inject = [
@@ -2052,6 +2101,12 @@
                             //return link to paypal
                             $log.debug('RETURN FROM POST Data is =', data);
                         } else {
+
+                            // todo сделать проверку вот так как написано ниже
+                            //[0:17:45] Nikolas Kost: errors = [12,22,34]
+                            //if( errors.indexOf(34) >= 0 ) ……
+                            //[0:18:09] Nikolas Kost: и числа заменить на константы
+
                             //return some errors from back-end
                             for (var i = 0; i < data.errors.length; i++) {
                                 $log.debug('data.errors is =', data.errors[i]);

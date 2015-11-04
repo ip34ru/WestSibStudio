@@ -9,6 +9,7 @@
         .module('ngWestSibStudio.modal-windows')
         .controller('ModalCartCtrl', modalCartCtrl)
         .controller('ModalAboutManufacturerCtrl', modalAboutManufacturerCtrl)
+        .controller('ModalErrorMessageCtrl', modalErrorMessageCtrl)
     ;
 
     // extend function: https://gist.github.com/katowulf/6598238
@@ -25,6 +26,25 @@
         });
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
+    modalErrorMessageCtrl.$inject = [
+                                '$scope',
+                                '$log',
+                                '$rootScope',
+                                'modalCaption'
+    ];
+
+    function modalErrorMessageCtrl (
+                                    $scope,
+                                    $log,
+                                    $rootScope,
+                                    modalCaption
+    ) {
+        $scope.cancel = function () {
+            $rootScope.errorMessage = '';
+            $modalInstance.dismiss('cancel');
+        }; //~~~ $scope.cancel ~~~
+    } // modalErrorMessageCtrl
 
 
     modalCartCtrl.$inject = [
@@ -161,7 +181,15 @@
                             //todo сюда пихать обработку ссылки на палку и редирект клиента!
                             //return link to paypal
                             $log.debug('RETURN FROM POST Data is =', data);
+                            jQuery('body').append(data);
+                            jQuery('#paypal_form_cont > form').submit();
                         } else {
+
+                            // todo сделать проверку вот так как написано ниже
+                            //[0:17:45] Nikolas Kost: errors = [12,22,34]
+                            //if( errors.indexOf(34) >= 0 ) ……
+                            //[0:18:09] Nikolas Kost: и числа заменить на константы
+
                             //return some errors from back-end
                             for (var i = 0; i < data.errors.length; i++) {
                                 $log.debug('data.errors is =', data.errors[i]);

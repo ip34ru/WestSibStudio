@@ -73,9 +73,17 @@
     margin-bottom: 20px;
 }
 
+//.btn-collapse_wss {
+//    background-color: $header-cart-cartlink-color;
+//}
+.btn-collapse_wss:not(.btn-link):not(.btn-flat) {
+  background-color: $manufacturer-background-color;
+  color: rgba(255, 255, 255, 0.84);
+}
 
-
-
+.btn-collapse_wss:hover:not(.btn-link):not(.btn-flat) {
+  background-color: #588BC0;
+}
 
 
 

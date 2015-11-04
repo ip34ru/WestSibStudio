@@ -35,12 +35,16 @@
     </section>
 
 
+<!-- ng-if="vm.showEquipmentSection && equipment.id === vm.equipmentID && manufacturer.id === vm.manufacturerID" -->
     <section
-            ng-if="vm.showEquipmentSection && equipment.id === vm.equipmentID && manufacturer.id === vm.manufacturerID" class="wss_equipment_one-item"
-            ng-animate="{enter: 'enter-animation', leave: 'leave-animation'}"
-            ng-repeat="equipment in manufacturer.products">
+            class="wss_equipment_one-item"
+            ng-repeat="equipment in manufacturer.products"
+            >
 
-        <div class="container wss__container">
+        <div class="container wss__container animate-new"
+            ng-if="vm.showEquipmentSection && equipment.id === vm.equipmentID && manufacturer.id === vm.manufacturerID"
+            >
+
             <div class="">
 
                 <div class="row">
@@ -59,9 +63,9 @@
                                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
                                             <a href="javascript:void(0)"
                                                ng-click="vm.addItemToCart( equipment.id,
-                                                                           equipment.price,
-                                                                           equipment.name )
-                                                                           "
+                                                                       equipment.price,
+                                                                       equipment.name )
+                                                                       "
                                                class="btn btn-warning wss__equipment_qty_btn">Add to
                                                 Cart</a>
                                         </div>
@@ -69,7 +73,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
                                             <a href="javascript:void(0)"
                                                ng-click="vm.collapseEquipment()"
-                                               class="btn btn-default wss__equipment_qty_btn">Collapse</a>
+                                               class="btn btn-collapse_wss wss__equipment_qty_btn">Collapse</a>
                                         </div>
 
                                     </div>
@@ -95,7 +99,7 @@
                                     <div class="row">
 
                                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 one-item__photo-gallery_ome-image"
-                                                ng-repeat="fancyboxImages in equipment.gallery">
+                                             ng-repeat="fancyboxImages in equipment.gallery">
                                             <a class="fancybox-thumb" rel="fancybox-thumb"
                                                href="{{ fancyboxImages.original }}"
                                                title="{{ fancyboxImages.text }}">
@@ -114,10 +118,10 @@
 
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
                                     <a href="javascript:void(0)"
-                                               ng-click="vm.addItemToCart( equipment.id,
-                                                                           equipment.price,
-                                                                           equipment.name )
-                                                                           "
+                                       ng-click="vm.addItemToCart( equipment.id,
+                                                                       equipment.price,
+                                                                       equipment.name )
+                                                                       "
                                        class="btn btn-warning wss__equipment_qty_btn">Add to
                                         Cart</a>
                                 </div>
@@ -125,12 +129,10 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
                                     <a href="javascript:void(0)"
                                        ng-click="vm.collapseEquipment()"
-                                       class="btn btn-default wss__equipment_qty_btn">Collapse</a>
+                                       class="btn btn-collapse_wss wss__equipment_qty_btn">Collapse</a>
                                 </div>
 
                             </div>
-
-
 
 
                         </div>
@@ -142,6 +144,7 @@
         </div>
 
     </section>
+
 
 
 

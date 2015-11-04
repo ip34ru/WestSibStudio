@@ -6,7 +6,13 @@
     'use strict';
 
     angular
-        .module('ngWestSibStudio.main')
+        .module(
+            'ngWestSibStudio.main'
+        //,
+        //    [
+        //        'ngAnimate'
+        //    ]
+        )
         .controller('MainCtrl', mainCtrl)
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('FormPostAddCtrl', formPostAddCtrl)
@@ -24,6 +30,23 @@
                     return $sce.trustAsHtml(htmlCode);
                 }
             }]
+        )
+        .
+        animation(
+            '.animate-new', function () {
+                return {
+                    enter: function ( _element, _done ) {
+
+                        var offset = jQuery( _element ).offset().top;
+                        jQuery('html, body').animate({scrollTop: (offset - 50 )},800);
+
+                    }
+                    //,
+                    //leave: function ( _element, _done ) {
+                    //
+                    //}
+                }
+            }
         )
     ;
 
