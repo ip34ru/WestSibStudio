@@ -203,10 +203,7 @@
 
             if ( vm.cartTotalPrice >= CART_MAX_PRICE ) {
                 vm.cartTotalPrice = vm.cartTotalPrice - _equipmentPrice;
-
-                //todo сюда перевод фразы о превышении лимита по Paypal
-                alert('Стоимость выбранного количества товаров превышает лимит для оплаты PayPal. разделите ваш заказ на две или более частей');
-
+                alert('The product\'s price goes over the limit for payment PayPal. Please, separate your order into parts');
                 return false;
             } // ограничение суммы для транзакции по палке
 
@@ -217,6 +214,7 @@
                     'equipmentName'   : _b,
                     'equipmentPrice'  : _c,
                     'equipmentAmount' : 1,
+                    'oldEquipmentAmount' : 1,
                     'equipmentSum'    : 1 * _d
                 });
                 vm.currentCart.totalPrice = vm.currentCart.totalPrice + ( _e );
@@ -239,6 +237,7 @@
                     vm.currentCart.selectItems.forEach(function (element, index) {
                         if (element.equipmentID === _equipmentID) {
                             element.equipmentAmount = ++element.equipmentAmount;
+                            element.oldEquipmentAmount = element.equipmentAmount;
                             element.equipmentSum = element.equipmentAmount * element.equipmentPrice;
                             isCurrentItem = true;
                             vm.currentCart.totalPrice = vm.currentCart.totalPrice + element.equipmentPrice;

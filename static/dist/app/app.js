@@ -96,10 +96,8 @@
 })();
 
 // todo
-
-// 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
-// 5) корзина на сайте должна обновлять значение в зависимости от того что поправили внутри корзины!
-// 6) сделать верстку для того случая когда есть скидка на товар
+// todo 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
+// todo 6) сделать верстку для того случая когда есть скидка на товар
 
 
 
@@ -463,10 +461,7 @@
 
             if ( vm.cartTotalPrice >= CART_MAX_PRICE ) {
                 vm.cartTotalPrice = vm.cartTotalPrice - _equipmentPrice;
-
-                //todo сюда перевод фразы о превышении лимита по Paypal
-                alert('Стоимость выбранного количества товаров превышает лимит для оплаты PayPal. разделите ваш заказ на две или более частей');
-
+                alert('The product\'s price goes over the limit for payment PayPal. Please, separate your order into parts');
                 return false;
             } // ограничение суммы для транзакции по палке
 
@@ -477,6 +472,7 @@
                     'equipmentName'   : _b,
                     'equipmentPrice'  : _c,
                     'equipmentAmount' : 1,
+                    'oldEquipmentAmount' : 1,
                     'equipmentSum'    : 1 * _d
                 });
                 vm.currentCart.totalPrice = vm.currentCart.totalPrice + ( _e );
@@ -499,6 +495,7 @@
                     vm.currentCart.selectItems.forEach(function (element, index) {
                         if (element.equipmentID === _equipmentID) {
                             element.equipmentAmount = ++element.equipmentAmount;
+                            element.oldEquipmentAmount = element.equipmentAmount;
                             element.equipmentSum = element.equipmentAmount * element.equipmentPrice;
                             isCurrentItem = true;
                             vm.currentCart.totalPrice = vm.currentCart.totalPrice + element.equipmentPrice;
@@ -1988,6 +1985,8 @@
                                 'modalCaption',
                                 'CART_POST_URL',
                                 '$http',
+                                'CART_MAX_PRICE',
+                                'CART_MAX_ITEMS',
                                 '$location'
     ];
 
@@ -2001,6 +2000,8 @@
                              modalCaption,
                              CART_POST_URL,
                              $http,
+                             CART_MAX_PRICE,
+                             CART_MAX_ITEMS,
                              $location
     ) {
 
@@ -2025,26 +2026,46 @@
 
         $scope.changeEquipmentAmountInSelect = function ( _index ) {
 
-            //todo !!!в эту функцию захуячить проверку на то чтоб сумма товаров в корзине не превышает максимальный лимит палки!
             // changeEquipmentDataInTheCart
             (function ( _index ) {
 
+                $rootScope.currentCart.selectItems[_index].oldEquipmentSum = $rootScope.currentCart.selectItems[_index].equipmentSum;
                 $rootScope.currentCart.selectItems[_index].equipmentSum
                     =
                     $rootScope.currentCart.selectItems[_index].equipmentAmount
                     *
                     $rootScope.currentCart.selectItems[_index].equipmentPrice;
 
+                $rootScope.currentCart.oldTotalPrice = $rootScope.currentCart.totalPrice;
                 $rootScope.currentCart.totalPrice = 0;
 
                 // changeTotalPrice
+
+                $rootScope.currentCart.itemsInCart = 0;
+
                 $rootScope.currentCart.selectItems.forEach(function (element, index) {
+                    $rootScope.currentCart.totalPrice
+                        =
                         $rootScope.currentCart.totalPrice
-                            =
-                            $rootScope.currentCart.totalPrice
-                            +
-                            element.equipmentSum;
+                        +
+                        element.equipmentSum;
+                    $rootScope.currentCart.itemsInCart = $rootScope.currentCart.itemsInCart + element.equipmentAmount
                 }); // changeTotalPrice
+
+                if ( $rootScope.currentCart.totalPrice >= CART_MAX_PRICE ) {
+                    $rootScope.currentCart.selectItems[_index].equipmentSum = $rootScope.currentCart.selectItems[_index].oldEquipmentSum;
+                    $rootScope.currentCart.selectItems[_index].equipmentAmount = $rootScope.currentCart.selectItems[_index].oldEquipmentAmount;
+                    $rootScope.currentCart.totalPrice = $rootScope.currentCart.oldTotalPrice;
+                    alert('The product\'s price goes over the limit for payment PayPal. Please, separate your order into parts');
+                    return false;
+                } else {
+                    $rootScope.currentCart.selectItems[_index].oldEquipmentAmount = $rootScope.currentCart.selectItems[_index].equipmentAmount;
+                    $rootScope.maxItemsInCart = $rootScope.currentCart.itemsInCart;
+                    if ( $rootScope.maxItemsInCart > CART_MAX_ITEMS ) {
+                        $rootScope.maxItemsInCart = CART_MAX_ITEMS;
+                        $rootScope.currentCart.itemsInCart = CART_MAX_ITEMS;
+                    }
+                    } // ограничение суммы для транзакции по палке
 
             })( _index ); // changeEquipmentDataInTheCart
 
