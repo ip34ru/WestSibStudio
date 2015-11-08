@@ -12,6 +12,8 @@ urlpatterns = [
     url(r'^ajax/cart/', Cart_View.as_view(), name='cart'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^pay/paypal/', include('paypal.standard.ipn.urls')),
+
 ]
 
 if settings.DEBUG:

@@ -1,7 +1,20 @@
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, render_to_response, RequestContext
 from django.views.generic import View, TemplateView
+from paypal.standard.forms import PayPalPaymentsForm
+from paypal.standard.models import ST_PP_COMPLETED
+from paypal.standard.ipn.signals import valid_ipn_received
 import json
 from .models import *
+
+
+def show_me_the_money(sender, **kwargs):
+    ipn_obj = sender
+    if ipn_obj.payment_status == ST_PP_COMPLETED:
+        # Undertake some action depending upon `ipn_obj`.
+        order = Order.objects.get(pk=ipn_obj.invoice.split(':')[0])
+        order.status = 'paid'
+
+valid_ipn_received.connect(show_me_the_money)
 
 
 class Home(TemplateView):
@@ -152,5 +165,8 @@ class Cart_View(View):
             order.sum += float(prod.price_discont if prod.is_discont else prod.price) * float(item.count)
             order.items.add(item)
         order.save()
-        return HttpResponse(json.dumps({'url': "https://paypal.com"}),
-                            content_type="application/json")
+        
+        form = PayPalPaymentsForm(initial=order.get_paypal_dict())
+
+        return render_to_response("payform.html", {"form": form}, RequestContext(request))
+

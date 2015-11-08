@@ -1,7 +1,10 @@
 # coding=utf-8
 import os
 from django.db import models
+from django.core.urlresolvers import reverse
+from django.conf import settings
 from ckeditor_uploader.fields import RichTextUploadingField
+from datetime import datetime
 from PIL import Image
 
 THUMBNAIL_SIZE = 128, 128
@@ -232,6 +235,27 @@ class Order(models.Model):
 
         if postal_code_old == '' and self.postal_code != '':
             print('send message for %s' % self.client.email)
+
+    def get_paypal_dict(self):
+        paypal_dict = {
+        "cmd": '_cart',
+        "upload": 1,
+        "business": settings.PAYPAL_RECEIVER_EMAIL,
+        "invoice": '%s:%s' % (self.pk, datetime.now()),
+        "notify_url": "%s%s"%(settings.SITE_URL, reverse('paypal-ipn')),
+        "return_url": "%s/yes" % settings.SITE_URL,
+        "cancel_return": "%s/no" % settings.SITE_URL,
+       # "custom": "Its",  # Custom command to correlate to some function later (optional)
+        }
+        index = 1
+        for item in self.items.all():
+            paypal_dict['item_name_%s' % index] = ('%s:%s') % (item.product.brand_set.all().first(), 
+                                                               item.product.name)
+            paypal_dict['amount_%s' % index] = item.product.price_discont if item.product.is_discont else item.product.price
+            paypal_dict['quantity_%s' % index] = item.count
+            index += 1
+        print(paypal_dict)
+        return paypal_dict
 
 
 class News(models.Model):
