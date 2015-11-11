@@ -1,0 +1,18 @@
+// стилизация для страницы 404
+// author taksenov@gmail.com
+
+.gf-404__header {
+    p {
+        font-size: $font-size-404-header;
+    }
+}
+
+.gf-404-bg-image {
+    min-height: 100vh;
+    background-image: url("../img/nggirlsfit-404-bg.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}

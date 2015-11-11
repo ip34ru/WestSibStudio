@@ -1,0 +1,87 @@
+// Стили для раздела с упражнениями
+
+.gf-exercises__filter-btns {
+    margin-bottom: 30px;
+}
+
+.gf-exercises__view-btn {
+    padding: 8px 10px;
+    margin: 0 1px;
+    cursor: pointer;
+}
+
+.gf-exercises__filter-xs {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.gf-exercises__filter-btns-xs {
+
+}
+
+.img-exercise{
+    width:100%
+}
+
+.gf-exercise-string__image {
+    width: 40px;
+    margin: 0 auto;
+    padding-top: 4px;
+    padding-bottom: 6px;
+}
+
+.gf-exercise-string__text {
+    h3 {
+        margin-top: 10px;
+    }
+}
+
+.gf-exercise-string__add-link,
+.gf-exercise-blocks__add-link {
+    h3 {
+        color: #000000;
+    }
+    &:hover {
+        h3 {
+            text-decoration: underline;
+            color: #009688;
+        }
+    }
+}
+
+.gf-panel-material-orange-50 {
+    background-color: #fff3e0;
+}
+
+.gf-exercise-string__exercise-text {
+    margin-left: 20px;
+}
+
+.gf-exercise-string__exercise-btns {
+    margin-top: 6px;
+}
+
+.gf-panel-material-grey-500 {
+    background-color: #FAFAFA;
+}
+
+//.gf-exercise-form__addnew_editexist input.ng-invalid {
+//    background-color: rgba(250, 64, 44, 0.20);
+//}
+//
+//.gf-exercise-form__addnew_editexist input.ng-valid.ng-touched {
+//    color: #2a2a2a;
+//}
+
+.gf-red-asterics {
+    color: orangered;
+}
+
+.gf-warning-message__borders {
+    border-bottom: 1px solid #b8b8b8;
+    border-top: 1px solid #b8b8b8;
+}
+
+.gf-exercise-caption__word-wrap {
+    word-wrap: break-word;
+}

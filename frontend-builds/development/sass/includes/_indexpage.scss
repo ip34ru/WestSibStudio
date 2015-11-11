@@ -1,0 +1,233 @@
+// Таблицы стилей для главной страницы
+
+
+.index-bg-image {
+    min-height: 100vh;
+    background-image: url("../img/nggirlsfit-index-bg.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}
+
+.nr-separator__post {
+    clear: both;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nr-post__userpic-img {
+    margin-top: 18px;
+    margin-left: 18px;
+}
+
+.nr-btn-manage-group {
+    padding: 4px 6px;
+}
+
+.nr-post-text__marg-top {
+    margin-bottom: 20px;
+}
+
+
+.gf-mainbar__info {
+
+    p {
+        font-size: $font-size-info;
+        color: #ffffff;
+        text-shadow: #000000 1px 1px 2px, #000000 -1px -1px 2px,
+                     #000000 -1px 1px 2px, #000000 1px -1px 2px;
+    }
+}
+
+.gf-navbar__navigation {
+    li {
+        list-style-type: none;
+    }
+    ul {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    margin-top: 8px;
+}
+
+.gf-navbar__navigation-xs {
+
+    margin: 0 auto;
+    margin-top: 30px;
+    li {
+        list-style-type: none;
+    }
+    ul {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    border-color: orangered;
+}
+
+.gf-navbar__mainlist {
+    @include clearfix;
+}
+
+.gf-navbar__lists {
+    float: right;
+    margin-left: 20px;
+}
+
+.gf-navbar__lists-xs {
+    float: left;
+    margin-left: 8px;
+}
+
+.gf-navbar__link {
+    color: #ffffff;
+    text-shadow: #000000 1px 1px 2px, #000000 -1px -1px 2px,
+                 #000000 -1px 1px 2px, #000000 1px -1px 2px;
+    font-size: $font-size-navbar;
+    text-decoration: underline;
+
+    &:hover {
+        color: #03a9f4;
+    }
+
+}
+
+.gf-navbar {
+    margin-top: 20px;
+}
+
+.gf-logo {
+    @include clearfix;
+}
+
+.gf-logo__text {
+    color: #ffffff;
+    text-shadow: #000000 1px 1px 2px, #000000 -1px -1px 2px,
+                 #000000 -1px 1px 2px, #000000 1px -1px 2px;
+    font-size: $font-size-logo;
+    margin-top: 8px;
+}
+
+.gf-logo__image {
+    background-image: url("../img/nggirlsfit-index-logo-1.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 41px;
+    width: 40px;
+    float: left;
+    margin-right: 15px;
+
+}
+
+.gf-logo__link {
+    &:hover {
+        text-decoration: none;
+        .gf-logo__image {
+            background-image: url("../img/nggirlsfit-index-logo-2.png");
+        }
+        .gf-logo__text,
+        .ng-logo__logo-text-xs {
+            color: #03a9f4;
+        }
+        .gf-logo__text-xs {
+            background-image: url("../img/nggirlsfit-index-logo-2.png");
+        }
+    }
+}
+
+.gf-logo__text-xs {
+    color: #ffffff;
+    text-shadow: #000000 1px 1px 2px, #000000 -1px -1px 2px,
+                 #000000 -1px 1px 2px, #000000 1px -1px 2px;
+    background-image: url("../img/nggirlsfit-index-logo-1.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+    height: 41px;
+    width: 195px;
+    margin-bottom: 23px;
+}
+
+.ng-logo__logo-text-xs {
+    font-size: $font-size-logo-mini;
+    padding-top: 8px;
+}
+
+.gf-navbar__navmenu-center {
+    width: 181px;
+    margin: 0 auto;
+}
+
+.gf-navbar__logo-center {
+    width: 150px;
+    height: 50px;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media screen and (min-width: 1201px) {
+
+    .gf-mainbar {
+        margin-top: 19%;
+    }
+
+}
+
+
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+
+    .gf-mainbar {
+        margin-top: 27%;
+    }
+
+}
+
+@media screen and (min-width: 769px) and (max-width: 993px) {
+
+    .gf-mainbar {
+        margin-top: 27%;
+    }
+
+    .gf-mainbar__info {
+        p {
+            font-size: $font-size-info-mini;
+        }
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    .gf-mainbar {
+        margin-top: 27%;
+    }
+
+    .gf-mainbar__info {
+        p {
+            font-size: $font-size-info-mini;
+        }
+    }
+
+    .btn {
+        font-size: 10px;
+        padding: 6px;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

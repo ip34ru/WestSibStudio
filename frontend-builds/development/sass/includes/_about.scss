@@ -1,0 +1,26 @@
+// Таблицы стилей для страницы about
+
+
+.gf-about-bg-image {
+    min-height: 100vh;
+    background-image: url("../img/nggirlsfit-about-bg-2.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}
+
+.gf-about__marg-bot-50px {
+    margin-bottom: 50px;
+}
+
+.gf-about-article__paragraph,
+.gf-about-article__header {
+    p,
+    h2 {
+        color: #000000;
+        word-wrap: break-word;
+    }
+}
+

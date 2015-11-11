@@ -1,0 +1,204 @@
+<div class="wss__manufacturer_and_equipment_block" ng-repeat="manufacturer in vm.dataJSON">
+
+    <section class="wss__manufacturer">
+
+        <div class="container wss__container">
+
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <div class="wss__manufacturer_main_block">
+                        <a href="#" data-toggle="modal" data-target="#manufacturerModal">
+                            <div class="wss__manufacturer_logo">
+                                <!-- manufacturer logo -->
+                                <img src=""
+                                     ng-src="{{ manufacturer.logo.main }}" alt="{{ manufacturer.name }}"
+                                     height="40">
+                                <!-- manufacturer logo -->
+                            </div>
+
+                            <div class="wss__manufacturer_motto">
+                                <!-- manufacturer motto -->
+                                <h2>
+                                    {{ manufacturer.tagline }}
+                                </h2>
+                                <!-- manufacturer motto -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+<!-- ng-if="vm.showEquipmentSection && equipment.id === vm.equipmentID && manufacturer.id === vm.manufacturerID" -->
+    <section
+            class="wss_equipment_one-item"
+            ng-repeat="equipment in manufacturer.products"
+            >
+
+        <div class="container wss__container animate-new"
+            ng-if="vm.showEquipmentSection && equipment.id === vm.equipmentID && manufacturer.id === vm.manufacturerID"
+            >
+
+            <div class="">
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="thumbnail one-item__thumbnail">
+                            <img class="img-rounded marg-top__10" src=""
+                                 ng-src="{{ equipment.main_image.original }}"
+                                 alt="MICRO MIX 8S">
+
+                            <div class="caption">
+                                <div class="form-group form-group__no-margin-bottom">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                            <a href="javascript:void(0)"
+                                               ng-click="vm.addItemToCart( equipment.id,
+                                                                       equipment.price,
+                                                                       equipment.name )
+                                                                       "
+                                               class="btn btn-warning wss__equipment_qty_btn">Add to
+                                                Cart</a>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                            <a href="javascript:void(0)"
+                                               ng-click="vm.collapseEquipment()"
+                                               class="btn btn-collapse_wss wss__equipment_qty_btn">Collapse</a>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- data insert from WYSIWYG -->
+                            <div class="one-item__insert-from-wysiwyg">
+                                <div ng-bind-html="equipment.text | sanitize"></div>
+                            </div>
+                            <!-- data insert from WYSIWYG -->
+
+                            <div class="one-item__gallery">
+
+                                <p>
+                                    Photo:
+                                </p>
+
+                                <div class="one-item__photo-gallery">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 one-item__photo-gallery_ome-image"
+                                             ng-repeat="fancyboxImages in equipment.gallery">
+                                            <a class="fancybox-thumb" rel="fancybox-thumb"
+                                               href="{{ fancyboxImages.original }}"
+                                               title="{{ fancyboxImages.text }}">
+                                                <img src="" ng-src="{{ fancyboxImages.original }}"
+                                                     alt="{{ fancyboxImages.text }}">
+                                            </a>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                    <a href="javascript:void(0)"
+                                       ng-click="vm.addItemToCart( equipment.id,
+                                                                       equipment.price,
+                                                                       equipment.name )
+                                                                       "
+                                       class="btn btn-warning wss__equipment_qty_btn">Add to
+                                        Cart</a>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                    <a href="javascript:void(0)"
+                                       ng-click="vm.collapseEquipment()"
+                                       class="btn btn-collapse_wss wss__equipment_qty_btn">Collapse</a>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+
+
+    <section class="wss_equipment">
+
+        <div class="container wss__container">
+
+            <!-- repeat for the equips -->
+            <div class="" ng-repeat="equipment in manufacturer.products">
+
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                        <div class="thumbnail serv-thumbnail">
+                            <img class="img-rounded marg-top__10 img__miniature_pointer-on-hover"
+                                 ng-click="vm.showInfoThisEquipment( equipment.id, manufacturer.id )"
+                                 src=""
+                                 ng-src="{{ equipment.miniature_image.original }}"
+                                 alt="{{ equipment.miniature_image.text }}">
+
+                            <div class="caption">
+                                <h3 ng-click="vm.showInfoThisEquipment( equipment.id, manufacturer.id )"
+                                    class="text-center h3__miniature_pointer-on-hover">{{ equipment.name }}</h3>
+
+                                <p class="text-center">{{ equipment.price | deleteTwoSymbolsFilter }}$</p>
+
+                                <div class="form-group form-group__no-margin-bottom">
+
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                                            <a href="javascript:void(0)"
+                                               ng-click="vm.addItemToCart( equipment.id,
+                                                                           equipment.price,
+                                                                           equipment.name )
+                                                                           "
+                                               class="btn btn-warning wss__equipment_qty_btn">Add to
+                                                Cart</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <!-- repeat for the equips -->
+
+        </div>
+
+    </section>
+
+</div>
+
+
