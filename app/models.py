@@ -262,7 +262,7 @@ class News(models.Model):
     title = models.CharField(verbose_name=u'Заголовок', max_length=150)
     teaser = RichTextUploadingField(verbose_name=u'Тизер')
     text = RichTextUploadingField(verbose_name=u'Текст')
-    date = models.DateTimeField(verbose_name=u'Дата и время')
+    date = models.DateField(verbose_name=u'Дата')
 
     class Meta:
         verbose_name = u'Новость'

@@ -88,8 +88,27 @@ body {
     }
 }
 
-// -- поинтер в виде пальцап, когда ховерим на кнопке и на надписи
+// когда есть скидка
+.discont__main-div {
+    @include clearfix;
+}
 
+.discont__old-price {
+    float: left;
+    text-decoration: line-through;
+    color: darkgray;
+}
+
+.discont__new-price {
+    padding-left: 12px;
+    float: left;
+}
+
+.discont__centered-block {
+    display:inline-block;
+}
+
+//display:inline-block
 
 
 

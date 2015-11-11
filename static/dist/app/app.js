@@ -13,17 +13,17 @@
         .module('ngWestSibStudio', [
 
             'ngWestSibStudio.main',
+            'ngWestSibStudio.news',
             'ngCookies',
             'ngAnimate',
             'ngWestSibStudio.error404',
-            //'ngWestSibStudio.firebase.service',
             'ngWestSibStudio.modal-windows',
-            //'ngWestSibStudio.edit-modal',
             'ui.router',
             'ui.bootstrap',
             'angular-storage'
         ])
         .constant('BRANDS_URL', '/ajax/brands/')
+        .constant('NEWS_URL', '/ajax/news/')
         .constant('CART_POST_URL', '/ajax/cart/')
         .constant('CART_MAX_ITEMS', 9)
         .constant('CART_MAX_PRICE', 8500)
@@ -96,8 +96,7 @@
 })();
 
 // todo
-// todo 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
-// todo 6) сделать верстку для того случая когда есть скидка на товар
+// todo 7) сделать модалку для инфы о производителе
 
 
 
@@ -187,6 +186,21 @@
 })();
 
 /**
+ * Created by taksenov@gmail.com on 01.07.2015.
+ */
+
+;(function() {
+    'use strict';
+
+    angular
+        .module('ngWestSibStudio.news', [
+            'ngWestSibStudio.main',
+            'ui.bootstrap'
+        ]);
+
+})();
+
+/**
  * Created by taksenov@gmail.com on 24.06.2015.
  */
 
@@ -266,17 +280,12 @@
     angular
         .module(
             'ngWestSibStudio.main'
-        //,
-        //    [
-        //        'ngAnimate'
-        //    ]
         )
         .controller('MainCtrl', mainCtrl)
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
-        .controller('FormPostAddCtrl', formPostAddCtrl)
-        .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
         .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
         .controller('HeaderMainPageCtrl', headerMainPageCtrl)
+        .controller('NewsCtrl', newsCtrl)
         .filter('deleteTwoSymbolsFilter', function(){
                 return function (input) {
                     return input.replace(".00" , "")
@@ -323,7 +332,75 @@
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
 
-    // контроллердля запуска модалки корзины и генерации ее же
+    // контроллер для обработки новостей
+    newsCtrl.$inject = [
+                                    'ARRAY_OF_LIST_OPTIONS_FOR_CART',
+                                    'NEWS_URL',
+                                    '$rootScope',
+                                    '$log',
+                                    '$modal',
+                                    '$http'
+    ];
+
+    function newsCtrl (
+                                    ARRAY_OF_LIST_OPTIONS_FOR_CART,
+                                    NEWS_URL,
+                                    $rootScope,
+                                    $log,
+                                    $modal,
+                                    $http
+    ) {
+
+        var vm = this;
+
+        // запрос новостей с бекэнда
+        $http({method: 'GET', url: NEWS_URL}).
+            success(function(data, status, headers, config) {
+                vm.newsJSON = data;
+                $log.debug('News is', data);
+            }).
+            error(function(data, status, headers, config) {
+                $log.debug('Error when i retrieve news from backend!', status);
+        }); // $http
+
+        vm.scrollToEquips = function ( e ) {
+            e.preventDefault();
+
+            var offset = jQuery( '.header__scroll' ).offset().top;
+            jQuery('html, body').animate({scrollTop: (offset - 0 )},800);
+
+        }; // vm.scrollToEquips
+
+        vm.animationsEnabled = true;
+
+        vm.openModalNews = function ( e, _newsHeader, _newsText ) {
+            e.preventDefault();
+
+            vm.modalCaption = _newsHeader;
+            $modal.open(
+                {
+                    animation: vm.animationsEnabled,
+                    templateUrl: 'static/dist/app/components/modal-windows/news-modal.html',
+                    controller: 'ModalNewsCtrl',
+                    size: 'lg',
+                    resolve: {
+                        modalCaption: function () {
+                            //return vm.modalCaption;
+                            return {
+                                'newsHeader': vm.modalCaption,
+                                'newsText': _newsText
+                            };
+                        }
+                    }
+                }
+            ); // ~~~ $modal.open ~~~
+
+        }; // ~~~ openModalCart ~~~;
+
+
+    } // newsCtrl
+
+    // контроллер для запуска модалки корзины и генерации ее же
     headerMainPageCtrl.$inject = [
                                     'ARRAY_OF_LIST_OPTIONS_FOR_CART',
                                     '$rootScope',
@@ -341,6 +418,15 @@
         var vm = this;
 
         vm.animationsEnabled = true;
+
+        vm.scrollToNews = function ( e ) {
+            e.preventDefault();
+
+            var offset = jQuery( '.news__scroll' ).offset().top;
+            jQuery('html, body').animate({scrollTop: (offset - 0 )},800);
+
+        }; // vm.scrollToNews
+
 
         vm.openModalCart = function ( e ) {
             e.preventDefault();
@@ -383,6 +469,7 @@
                                                 'BRANDS_URL',
                                                 'CART_MAX_ITEMS',
                                                 'CART_MAX_PRICE',
+                                                'NEWS_URL',
                                                 'store',
                                                 '$http'
     ];
@@ -395,6 +482,7 @@
                                                 BRANDS_URL,
                                                 CART_MAX_ITEMS,
                                                 CART_MAX_PRICE,
+                                                NEWS_URL,
                                                 store,
                                                 $http
     ) {
@@ -443,12 +531,17 @@
         // добавить товар в корзину
         vm.addItemToCart = function ( _equipmentID,
                                       _equipmentPrice,
-                                      _equipmentName
+                                      _equipmentName,
+                                      _equipmentPriceDiscont
                                     ) {
 
             if ( $rootScope.maxItemsInCart >= CART_MAX_ITEMS ) {
                 return false;
             } // ограничение товаров в корзине
+
+            if ( _equipmentPriceDiscont != '' ) {
+                _equipmentPrice = _equipmentPriceDiscont;
+            } // условие того есть ли скидка на товар или нет
 
             var isCurrentItem = false,
                 isNewItem = false;
@@ -525,251 +618,6 @@
 
     } //allBrandsAndProductsMainPageCtrl
 
-
-    allPostsMainPageCtrl.$inject = [ '$scope', '$rootScope',
-                                    'ngfitfire', '$modal',
-                                    'AuthfireFactory', 'FIREBASE_URL',
-                                    '$log', '$firebaseObject',
-                                    '$firebaseArray', '$q',
-                                    'toastr' ];
-
-    function allPostsMainPageCtrl( $scope, $rootScope,
-                           ngfitfire, $modal,
-                           AuthfireFactory, FIREBASE_URL,
-                           $log, $firebaseObject,
-                           $firebaseArray, $q,
-                           toastr ) {
-
-        var vm = this;
-
-        $rootScope.allPosts = {};
-        // for easy access
-        $rootScope.allPostsData = $rootScope.allPosts;
-        // boolean flag to indicate api call success
-        $rootScope.allPostsData.dataLoaded = false;
-
-        // запрос всех постов для главной страницы
-        //todo сделать errorCallBack
-        $q.all( [
-            ngfitfire.getPosts2(),
-            ngfitfire.getAvatars2() ] )
-        .then(
-            function (results) {
-
-                $log.debug( 'comments = results[0] =', results[0] );
-                $log.debug( 'avatars = results[1] =', results[1] );
-
-
-                $rootScope.allPosts = ngfitfire.processingMainDataOfQALL( results );
-                $rootScope.allPostsData.dataLoaded = true;
-
-                $log.debug( '$rootScope.allPosts =', $rootScope.allPosts );
-                //$log.debug( 'данные нового добавленного поста typeof(results) =', typeof(results) );
-                //$log.debug( 'данные нового добавленного поста results =', results );
-                //$log.debug( 'vm.allPosts =', vm.allPosts );
-                //$log.debug( 'results[0] =', results[0] );
-                //$log.debug( '$rootScope.currentUser =', $rootScope.currentUser );
-            }
-        ); // $q.all
-
-        vm.commentEdit = function ( _comment, _post ) {
-            $log.debug( 'Редактировать, выбранный коммент _comment =', _comment );
-            $log.debug( 'Редактировать, post =', _post );
-
-            ////e.preventDefault();
-            vm.modalCaption = 'Редактировать комментарий';
-            $modal.open(
-                {
-                    animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/edit-modal/comment-edit-modal.html',
-                    controller: 'ModalCommentEditCtrl',
-                    resolve: {
-                        modalCaption: function () {
-                            return vm.modalCaption;
-                        },
-                        commentData: function () {
-                            return _comment;
-                        },
-                        postData: function () {
-                            return _post;
-                        }
-                    }
-                }
-            ); // ~~~ $modal.open ~~~
-
-        }; // ~~~ vm.commentEdit ~~~
-
-        vm.postEdit = function ( _elementIndex, _post ) {
-            $log.debug( 'Редактировать, выбранный пост имеет индекс =', _elementIndex );
-            $log.debug( 'Редактировать, _post =', _post );
-
-            //e.preventDefault();
-            vm.modalCaption = 'Редактировать пост';
-            $modal.open(
-                {
-                    animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/edit-modal/post-edit-modal.html',
-                    controller: 'ModalPostEditCtrl',
-                    resolve: {
-                        modalCaption: function () {
-                            return vm.modalCaption;
-                        },
-                        postData: function () {
-                            return _post;
-                        }
-                    }
-                }
-            ); // ~~~ $modal.open ~~~
-
-        }; // ~~~ vm.postEdit ~~~
-
-        vm.postDelete = function ( _element, _postID ) {
-            $log.debug( 'удалить, выбранный пост имеет индекс =', _element );
-
-            ngfitfire.postDelete( _postID, _element );
-
-        }; // ~~~ vm.postDelete ~~~
-
-        // показать форму
-        vm.addNewCommentFunc = function ( _post ) {
-            $log.debug('Открыта форма добавления нового комментария');
-            $scope.addNewCommentSelected = _post;
-            vm.newComment = null;
-        }; // vm.addNewCommentFunc ~~~ показать форму
-
-        // скрыть форму
-        vm.cancelCommentFunc = function () {
-            $log.debug('Закрыта форма добавления нового комментария');
-            $scope.addNewCommentSelected = false;
-            vm.newComment = null;
-        }; // vm.cancelCommentFunc ~~~ скрыть форму
-
-        // условие для того чтобы открывалась форма добавления комментария, только в конкретном посте
-        vm.isSelectedFormAddNewComment = function ( _post ) {
-            return $scope.addNewCommentSelected === _post;
-        }; // ~~~ vm.isSelectedFormAddNewComment ~~~
-
-        // кнопка submit добавления нового поста
-        vm.addNewComment = function ( _commentText, _postID ) {
-            if ( typeof(_commentText) === 'undefined' ) {
-                $log.debug( 'вы пытаетесь добавить пустой комментарий! это невозможно');
-                toastr.warning('Вы пытаетесь добавить пустой комментарий, это невозможно', 'Внимание!' );
-                return false;
-            } else {
-                $log.debug( 'вы пытаетесь добавть новый комментарий с текстом =', _commentText, 'в пост-айди', _postID );
-                $log.debug(
-                    'инфа о пользователе =',
-                    $rootScope.currentUser.id,
-                    $rootScope.currentUser.name
-                );
-
-                vm.submittedNewComment = {
-                    'commentText': _commentText
-                };
-                vm.submittedNewComment = extend( {},
-                                     vm.submittedNewComment,
-                                     {
-                                        'dateTime': Math.round(new Date().getTime() / 1000),   //10
-                                        'ownerId': $rootScope.currentUser.id,
-                                        'ownerName': $rootScope.currentUser.name
-                                     }
-                );
-
-                ngfitfire
-                    .newCommentAdd(
-                        vm.submittedNewComment,
-                        _postID,
-                        function () {
-                            vm.submittedNewComment = null;
-                            $scope.addNewCommentSelected = false;
-                            vm.newComment = null;
-                            //vm.isShowExistedComments( _postID );
-                        }
-                );
-            }
-        }; // ~~~ vm.addNewComment ~~~
-
-        // показать комменты поста
-        vm.showExistedComments = function ( _post ) {
-            $scope.showCommentsInPost = _post;
-        }; // vm.showExistedComments ~~~ показать комменты поста
-
-        // скрыть комменты поста
-        vm.hideExistedComments = function () {
-            $scope.showCommentsInPost = false;
-        }; // vm.hideExistedComments ~~~ скрыть комменты поста
-
-        // условие для того чтобы открывалась форма добавления комментария, только в конкретном посте
-        vm.isShowExistedComments = function ( _post ) {
-            return $scope.showCommentsInPost === _post;
-        }; // ~~~ vm.isSelectedFormAddNewComment ~~~
-
-        // удаление комментария
-        vm.deleteThisComment = function ( _comment, _post ) {
-            ngfitfire.commentDelete( _post.postID, _comment.commentID );
-        }; // ~~~ vm.deleteThisComment ~~~
-
-
-    } // ~~~ allPostsMainPageCtrl ~~~
-
-    formPostAddCtrl.$inject = [ '$scope', '$rootScope',
-                                    'ngfitfire', '$modal',
-                                    'AuthfireFactory', 'FIREBASE_URL',
-                                    '$log', 'toastr' ];
-
-    function formPostAddCtrl( $scope, $rootScope,
-                           ngfitfire, $modal,
-                           AuthfireFactory, FIREBASE_URL,
-                           $log, toastr ) {
-        var vm = this;
-
-        vm.addNewPost = true;
-
-        vm.addNewPostFunc = function () {
-            $log.debug('Открыта форма добавления нового поста');
-            vm.newpost = null;
-            vm.addNewPost = false;
-        }; // vm.addNewPostFunc ~~~ показать форму
-
-        vm.cancelPostFunc = function () {
-            $log.debug('Закрыта форма добавления нового поста');
-            vm.addNewPost = true;
-        }; // vm.cancelPostFunc ~~~ скрыть форму
-
-        vm.submitNewPost = function ( _postCaption, _postText ) {
-
-            $log.debug( 'vm.newpost', vm.newpost );
-
-            if ( typeof( _postCaption ) === 'undefined' || typeof( _postText ) === 'undefined' || vm.newpost === null ) {
-                $log.debug( 'вы пытаетесь добавить пустой пост! это невозможно');
-                toastr.warning('Вы пытаетесь добавить пустой пост, это невозможно', 'Внимание!' );
-                return false;
-            } else {
-                vm.newpost = extend( {},
-                                     vm.newpost,
-                                     {
-                                        'dateTime': Math.round(new Date().getTime() / 1000),   //10
-                                        'ownerId': $rootScope.currentUser.id,
-                                        'ownerName': $rootScope.currentUser.name
-                                     }
-                );
-
-                $log.debug( '$rootScope.currentUser =', $rootScope.currentUser );
-                $log.debug('Добавлен новый пост', vm.newpost);
-                ngfitfire
-                    .newPostAdd(
-                        vm.newpost,
-                        function () {
-                            vm.newpost = null;
-                            vm.addNewPost = true;
-                        }
-                );
-            }
-        }; // vm.submitNewPost ~~~ добавить новый пост
-
-    } // ~~~ formPostAdd ~~~
-
-
     mainCtrl.$inject = [ '$scope', '$rootScope',
                      'ngfitfire', '$modal',
                      'AuthfireFactory' ];
@@ -823,28 +671,6 @@
                 }
             ); // ~~~ $modal.open ~~~
         }; // ~~~ openModalSingIn ~~~
-
-        //vm.openModalSingUp = function ( e ) {
-        //    e.preventDefault();
-        //    vm.modalCaption = 'Регистрация';
-        //    $modal.open(
-        //        {
-        //            animation: vm.animationsEnabled,
-        //            templateUrl: '/app/components/auth-modal/sign-up-modal.html',
-        //            controller: 'ModalSingUpCtrl',
-        //            resolve: {
-        //                modalCaption: function () {
-        //                    return vm.modalCaption;
-        //                }
-        //            }
-        //        }
-        //    ); // ~~~ $modal.open ~~~
-        //}; // ~~~ openModalSingUp ~~~
-        //
-        //
-        //vm.logout = function (  ) {
-        //    AuthfireFactory.logout();
-        //}; // ~~~ vm.logout ~~~
 
     } // ~~~ openModalAboutManufacturerCtrl ~~~
 
@@ -902,10 +728,10 @@
                         controller: 'AllBrandsAndProductsMainPageCtrl',
                         controllerAs: 'vm'
                     },
-                    'mainContent' : {
-                        //templateUrl: 'app/main/main.html',
-                        //controller: 'MainCtrl',
-                        //controllerAs: 'vm'
+                    'news' : {
+                        templateUrl: 'static/dist/app/components/news/news.html',
+                        controller: 'NewsCtrl',
+                        controllerAs: 'vm'
                     }
                 }
 
@@ -2070,14 +1896,22 @@
             })( _index ); // changeEquipmentDataInTheCart
 
             $log.debug('$rootScope.currentCart =', $rootScope.currentCart );
-            $log.debug('изменение количество товара =', $rootScope.currentCart.selectItems[_index] );
+            $log.debug('количество товаров в корзине  =', $rootScope.currentCart.itemsInCart );
 
         }; // changeEquipmentAmountInSelect
 
-
-        $scope.ok = function () {
+        $scope.cartProceed = function () {
 
             $scope.isSubmitBtnDisablet = true;
+
+            if ( $rootScope.currentCart.itemsInCart === 0 ) {
+                $log.debug('Для оплаты необходимо ввести данные пользователя!');
+                $scope.isNotItemsInCartError = true;
+                $scope.isSubmitBtnDisablet = false;
+                return false;
+            } else {
+                $scope.isNotItemsInCartError = false;
+            } // проверка на отсутсвие товаров в корзине внутри самой корзины!
 
             if (
                  !$scope.userdata.name
@@ -2094,9 +1928,10 @@
                   ||
                  !$scope.userdata.zipcode
             ) {
-                $log.debug('Для оплаты необходимо ввести данные пользователя');
+                $log.debug('Для оплаты необходимо ввести данные пользователя!');
                 $scope.isValidateError2 = true;
                 $scope.isSubmitBtnDisablet = false;
+                return false;
             } else {
 
                 $scope.isValidateError2 = false;
@@ -2206,6 +2041,138 @@
 
         }; //~~~ $scope.ok ~~~
 
+        //$scope.ok = function () {
+        //
+        //    //$scope.isSubmitBtnDisablet = true;
+        //
+        //    //if (
+        //    //     !$scope.userdata.name
+        //    //      ||
+        //    //     !$scope.userdata.phone
+        //    //      ||
+        //    //     !$scope.userdata.email
+        //    //      ||
+        //    //     !$scope.userdata.address
+        //    //      ||
+        //    //     !$scope.userdata.town
+        //    //      ||
+        //    //     !$scope.userdata.country
+        //    //      ||
+        //    //     !$scope.userdata.zipcode
+        //    //) {
+        //    //    $log.debug('Для оплаты необходимо ввести данные пользователя!');
+        //    //    $scope.isValidateError2 = true;
+        //    //    $scope.isSubmitBtnDisablet = false;
+        //    //    return false;
+        //    //} else {
+        //    //
+        //    //    //$scope.isValidateError2 = false;
+        //    //    //
+        //    //    //if ( !$scope.userdata.company ) {
+        //    //    //    $scope.userdata.company = '';
+        //    //    //}
+        //    //    //
+        //    //    //// getDataFromEquipments
+        //    //    //$rootScope.currentCart.selectItems.forEach(function (element, index) {
+        //    //    //    vm.orderedEquipment.push({
+        //    //    //        'equipmentID'     : element.equipmentID,
+        //    //    //        'equipmentAmount' : element.equipmentAmount
+        //    //    //    });
+        //    //    //}); // getDataFromEquipments
+        //    //    //
+        //    //    //var products = vm.orderedEquipment;
+        //    //    //var userData =  $scope.userdata ;
+        //    //    //
+        //    //    //vm.data = {
+        //    //    //    'products' : products,
+        //    //    //    'userData' : userData
+        //    //    //};
+        //    //    //
+        //    //    //$log.debug('vm.data =', vm.data );
+        //    //    //
+        //    //    //vm.orderedEquipment = [];
+        //    //    //
+        //    //    //// отправка данных корзины на back-end
+        //    //    //$http({method: 'POST', data: vm.data, url: CART_POST_URL}).
+        //    //    //    success(function(data, status, headers, config) {
+        //    //    //
+        //    //    //        if ( typeof(data.errors) === 'undefined' ) {
+        //    //    //            //return link to paypal
+        //    //    //            $log.debug('RETURN FROM POST Data is =', data);
+        //    //    //            jQuery('body').append(data);
+        //    //    //            jQuery('#paypal_form_cont > form').submit();
+        //    //    //        } else {
+        //    //    //
+        //    //    //            // todo сделать проверку вот так как написано ниже
+        //    //    //            //[0:17:45] Nikolas Kost: errors = [12,22,34]
+        //    //    //            //if( errors.indexOf(34) >= 0 ) ……
+        //    //    //            //[0:18:09] Nikolas Kost: и числа заменить на константы
+        //    //    //
+        //    //    //            //return some errors from back-end
+        //    //    //            for (var i = 0; i < data.errors.length; i++) {
+        //    //    //                $log.debug('data.errors is =', data.errors[i]);
+        //    //    //                $scope.errorCode = 20;
+        //    //    //
+        //    //    //                if ( data.errors[i] === 10 || data.errors[i] === 11 || data.errors[i] === 11 ) {
+        //    //    //                    alert('No items in the cart');
+        //    //    //                    vm.data = {};
+        //    //    //                    $modalInstance.dismiss('cancel');
+        //    //    //                } else if ( data.errors[i] === 20 ) {
+        //    //    //                    alert('No user data');
+        //    //    //                    $scope.errorCodeName = true;
+        //    //    //                    $scope.errorCodePhone = true;
+        //    //    //                    $scope.errorCodeEmail = true;
+        //    //    //                    $scope.errorCodeAddress = true;
+        //    //    //                    $scope.errorCodeTown = true;
+        //    //    //                    $scope.errorCodeCountry = true;
+        //    //    //                    $scope.errorCodeZIP = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                } else if ( data.errors[i] === 21 ) {
+        //    //    //                    $scope.errorCodeName = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                } else if ( data.errors[i] === 22 ) {
+        //    //    //                    $scope.errorCodePhone = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                } else if ( data.errors[i] === 23 ) {
+        //    //    //                    $scope.errorCodeEmail = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                } else if ( data.errors[i] === 24 ) {
+        //    //    //                    $scope.errorCodeAddress = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                } else if ( data.errors[i] === 25 ) {
+        //    //    //                    $scope.errorCodeTown = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                } else if ( data.errors[i] === 26 ) {
+        //    //    //                    $scope.errorCodeCountry = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                } else if ( data.errors[i] === 27 ) {
+        //    //    //                    $scope.errorCodeZIP = true;
+        //    //    //                    $scope.isValidateError = true;
+        //    //    //                }
+        //    //    //            }
+        //    //    //        }
+        //    //    //
+        //    //    //        $scope.isSubmitBtnDisablet = false;
+        //    //    //    }).
+        //    //    //    error(function(data, status, headers, config) {
+        //    //    //        $log.debug('STATUS. Error when i post cart-data =', status);
+        //    //    //        alert("We're sorry, a server error occurred. Please try your request later");
+        //    //    //        $scope.isSubmitBtnDisablet = false;
+        //    //    //}); // $http
+        //    //
+        //    //}
+        //    //
+        //    //$scope.errorCodeName = false;
+        //    //$scope.errorCodePhone = false;
+        //    //$scope.errorCodeEmail = false;
+        //    //$scope.errorCodeAddress = false;
+        //    //$scope.errorCodeTown = false;
+        //    //$scope.errorCodeCountry = false;
+        //    //$scope.errorCodeZIP = false;
+        //    //$scope.isValidateError = false;
+        //
+        //}; //~~~ $scope.ok ~~~
+
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         }; //~~~ $scope.cancel ~~~
@@ -2238,6 +2205,67 @@
         }; //~~~ $scope.cancel ~~~
 
     } // ~~~ modalSingUpCtrl ~~~
+
+})();
+
+
+
+/**
+ * Created by taksenov@gmail.com on 01.07.2015.
+ */
+
+;(function() {
+    'use strict';
+
+    angular
+        .module('ngWestSibStudio.news')
+        .controller('ModalNewsCtrl', modalNewsCtrl)
+    ;
+
+    modalNewsCtrl.$inject = [
+                                '$scope',
+                                'ARRAY_OF_LIST_OPTIONS_FOR_CART',
+                                '$modal',
+                                '$log',
+                                '$rootScope',
+                                '$modalInstance',
+                                'modalCaption',
+                                'CART_POST_URL',
+                                '$http',
+                                'CART_MAX_PRICE',
+                                'CART_MAX_ITEMS',
+                                '$location'
+    ];
+
+    function modalNewsCtrl (
+                             $scope,
+                             ARRAY_OF_LIST_OPTIONS_FOR_CART,
+                             $modal,
+                             $log,
+                             $rootScope,
+                             $modalInstance,
+                             modalCaption,
+                             CART_POST_URL,
+                             $http,
+                             CART_MAX_PRICE,
+                             CART_MAX_ITEMS,
+                             $location
+    ) {
+
+        var vm = this;
+
+        $log.debug( 'news modalCaption =', modalCaption );
+
+        $scope.modalCaption = modalCaption;
+
+        $scope.newsOk = function () {
+        }; //~~~ $scope.newsOk ~~~
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        }; //~~~ $scope.cancel ~~~
+
+    } // ~~~ modalCartCtrl ~~~
 
 })();
 

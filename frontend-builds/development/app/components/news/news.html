@@ -1,0 +1,60 @@
+<!-- news -->
+
+<div class="wss__manufacturer_and_equipment_block">
+
+    <section class="wss_equipment">
+
+        <div class="container wss__container news__padding-bottom_for_last_news">
+
+            <div class="news__media_for_header">
+                <h4 class="our_news__padding-left">
+                    Our News
+                </h4>
+            </div>
+
+            <!-- repeat for the news -->
+            <div class="" ng-repeat="news in vm.newsJSON">
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="news__header-main">
+                        <div class="news__header-text">
+                            <h4>
+                                {{ news.title }}
+                            </h4>
+                        </div>
+                        <div class="news__header-date">
+                            <span>( {{ news.date }} )</span>
+                        </div>
+                    </div>
+
+                    <div class="news__teaser">
+                        <span ng-bind-html="news.teaser | sanitize" ></span>
+
+                        <a href="javascript:void(0)"
+                           ng-click="vm.openModalNews( $event, news.title, news.text )"
+                           class="btn btn-xs btn-collapse_wss wss__equipment_qty_btn">
+                            More Info
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- repeat for the news -->
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                <a href="javascript:void(0)"
+                   ng-click="vm.scrollToEquips( $event )"
+                   class="btn btn-collapse_wss wss__equipment_qty_btn">
+                    Back to equipment
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- news -->

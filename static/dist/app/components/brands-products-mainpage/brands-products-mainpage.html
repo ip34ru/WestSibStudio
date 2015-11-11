@@ -34,8 +34,6 @@
 
     </section>
 
-
-<!-- ng-if="vm.showEquipmentSection && equipment.id === vm.equipmentID && manufacturer.id === vm.manufacturerID" -->
     <section
             class="wss_equipment_one-item"
             ng-repeat="equipment in manufacturer.products"
@@ -64,7 +62,8 @@
                                             <a href="javascript:void(0)"
                                                ng-click="vm.addItemToCart( equipment.id,
                                                                        equipment.price,
-                                                                       equipment.name )
+                                                                       equipment.name,
+                                                                       equipment.price_discont )
                                                                        "
                                                class="btn btn-warning wss__equipment_qty_btn">Add to
                                                 Cart</a>
@@ -120,7 +119,8 @@
                                     <a href="javascript:void(0)"
                                        ng-click="vm.addItemToCart( equipment.id,
                                                                        equipment.price,
-                                                                       equipment.name )
+                                                                       equipment.name,
+                                                                       equipment.price_discont )
                                                                        "
                                        class="btn btn-warning wss__equipment_qty_btn">Add to
                                         Cart</a>
@@ -145,9 +145,6 @@
 
     </section>
 
-
-
-
     <section class="wss_equipment">
 
         <div class="container wss__container">
@@ -168,7 +165,19 @@
                                 <h3 ng-click="vm.showInfoThisEquipment( equipment.id, manufacturer.id )"
                                     class="text-center h3__miniature_pointer-on-hover">{{ equipment.name }}</h3>
 
-                                <p class="text-center">{{ equipment.price | deleteTwoSymbolsFilter }}$</p>
+                                <div ng-if="equipment.price_discont != ''" class="discont__main-div text-center">
+                                    <div class="discont__centered-block">
+                                        <div class="discont__old-price text-center">
+                                            <p class="text-center">{{ equipment.price | deleteTwoSymbolsFilter }}$</p>
+                                        </div>
+                                        <div class="discont__new-price text-center">
+                                            <p class="text-center">{{ equipment.price_discont | deleteTwoSymbolsFilter }}$</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <p ng-if="equipment.price_discont == ''" class="text-center">{{ equipment.price | deleteTwoSymbolsFilter }}$</p>
 
                                 <div class="form-group form-group__no-margin-bottom">
 
@@ -177,7 +186,8 @@
                                             <a href="javascript:void(0)"
                                                ng-click="vm.addItemToCart( equipment.id,
                                                                            equipment.price,
-                                                                           equipment.name )
+                                                                           equipment.name,
+                                                                           equipment.price_discont )
                                                                            "
                                                class="btn btn-warning wss__equipment_qty_btn">Add to
                                                 Cart</a>

@@ -48,10 +48,10 @@
                         controller: 'AllBrandsAndProductsMainPageCtrl',
                         controllerAs: 'vm'
                     },
-                    'mainContent' : {
-                        //templateUrl: 'app/main/main.html',
-                        //controller: 'MainCtrl',
-                        //controllerAs: 'vm'
+                    'news' : {
+                        templateUrl: 'static/dist/app/components/news/news.html',
+                        controller: 'NewsCtrl',
+                        controllerAs: 'vm'
                     }
                 }
 

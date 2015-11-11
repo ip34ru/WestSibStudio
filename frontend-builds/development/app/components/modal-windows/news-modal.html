@@ -1,0 +1,27 @@
+<!-- modal-window news -->
+            <div class="modal-header wss-modal-header__color">
+                <button type="button" class="close wss-modal__close" ng-click="cancel()">×</button>
+                <h4 class="modal-title text-center">{{ modalCaption.newsHeader }}</h4>
+            </div>
+
+
+            <div class="modal-body">
+
+                <!-- data insert from WYSIWYG -->
+                <div class="one-item__insert-from-wysiwyg">
+                    <div ng-bind-html="modalCaption.newsText | sanitize"></div>
+                </div>
+                <!-- data insert from WYSIWYG -->
+
+            </div>
+
+            <div class="modal-footer wss-modal-footer__color">
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button type="button" class="btn btn-default" ng-click="cancel()">Close Window</button>
+                    </div>
+                </div>
+
+            </div>
+<!-- modal-window news -->

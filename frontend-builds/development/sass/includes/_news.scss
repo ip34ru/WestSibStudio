@@ -1,0 +1,83 @@
+// таблицы стилей для новостей
+
+.our_news__padding-left {
+    padding-left: 20px;
+    margin-bottom: 25px;
+}
+
+.news__header-main {
+    @include clearfix;
+}
+
+.news__header-text {
+    float: left;
+}
+
+.news__header-date {
+    float: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 15px;
+}
+
+.news__teaser {
+    margin-bottom: 15px;
+}
+
+.news__padding-bottom_for_last_news {
+    padding-bottom: 20px;
+}
+
+// mediaQueries for news
+@media screen and (min-width: 1201px) {
+
+}
+
+@media screen and (min-width: 993px) and (max-width: 1200px) {
+
+}
+
+@media screen and (min-width: 769px) and (max-width: 993px) {
+
+    h4 {
+        margin-bottom: 0;
+    }
+
+    .news__header-date {
+        float: left;
+        margin-bottom: 10px;
+        margin-top: 0;
+        padding-left: 0;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    h4 {
+        margin-bottom: 0;
+    }
+
+    .news__header-date {
+        float: left;
+        margin-bottom: 10px;
+        margin-top: 0;
+        padding-left: 0;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,7 +4,7 @@
                 <h4 class="modal-title text-center">{{ modalCaption }}</h4>
             </div>
 
-            <form name="userCartForm" action="" novalidate>
+            <form name="userCartForm" novalidate>
                 <div class="modal-body">
 
                     <div class="row wss-cart-list-in-cart">
@@ -141,6 +141,10 @@
                                         <label class="col-lg-12 control-label">Please fill in all fields marked with *</label>
                                     </div>
 
+                                    <div class="form-group has-error text-center" ng-show="isNotItemsInCartError">
+                                        <label class="col-lg-12 control-label">Your cart is empty. Please add equipment to cart</label>
+                                    </div>
+
                                 </fieldset>
 
                             </div>
@@ -155,9 +159,9 @@
                     <div class="row">
                         <div class="col-lg-12 text-center">
                             <button type="button" class="btn btn-default" ng-click="cancel()">Continue shopping</button>
-                            <button type="submit"
+                            <button type="button"
                                     class="btn btn-warning"
-                                    ng-click="ok()"
+                                    ng-click="cartProceed()"
                                     ng-disabled="isSubmitBtnDisablet"
                                     >Proceed to checkout</button>
                         </div>

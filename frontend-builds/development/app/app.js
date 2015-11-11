@@ -13,17 +13,17 @@
         .module('ngWestSibStudio', [
 
             'ngWestSibStudio.main',
+            'ngWestSibStudio.news',
             'ngCookies',
             'ngAnimate',
             'ngWestSibStudio.error404',
-            //'ngWestSibStudio.firebase.service',
             'ngWestSibStudio.modal-windows',
-            //'ngWestSibStudio.edit-modal',
             'ui.router',
             'ui.bootstrap',
             'angular-storage'
         ])
         .constant('BRANDS_URL', '/ajax/brands/')
+        .constant('NEWS_URL', '/ajax/news/')
         .constant('CART_POST_URL', '/ajax/cart/')
         .constant('CART_MAX_ITEMS', 9)
         .constant('CART_MAX_PRICE', 8500)
@@ -96,8 +96,7 @@
 })();
 
 // todo
-// todo 4) основной текст новости кинуть в модалку, на главной странице в блоке новостей, только тизер
-// todo 6) сделать верстку для того случая когда есть скидка на товар
+// todo 7) сделать модалку для инфы о производителе
 
 
 

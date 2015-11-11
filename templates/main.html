@@ -11,7 +11,7 @@
         <div class="wss__wrapper_container">
 
             <!-- Header -->
-            <div class="" ui-view="headerMainPage">
+            <div class="header__scroll" ui-view="headerMainPage">
             </div>
             <!-- Header -->
 
@@ -19,6 +19,11 @@
             <div class="" ui-view="allBrandsAndProductsMainPage">
             </div>
             <!-- manufacturers and equipments block -->
+
+            <!-- news -->
+            <section class="news__scroll" ui-view="news">
+            </section>
+            <!-- news -->
 
             <!-- footer -->
             <section class="footer" ui-view="footerMainPage">
@@ -31,49 +36,6 @@
             <!-- footer ip34.ru -->
 
         </div>
-
-        <!-- modal-window about corp-data -->
-        <div class="modal fade" id="manufacturerModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header wss-modal-header__color">
-                        <button type="button" class="close wss-modal__close" data-dismiss="modal">×</button>
-                        <h4 class="modal-title text-center">About Long</h4>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="row">
-
-                            <div class="col-lg-12 wss-about-manufacturer__text">
-                                <p>
-                                    Long Enterprise is a small Russian company that makes very good equipment.
-                                    For nearly thirty-year history, the company has gone from issuing built-up to the development and production of various processing devices and control of sound.
-                                    Long Enterprise specialized in analog sound processing, and in this area the company has accumulated wide experience allows to produce high quality products that meet the modern global levels of development.
-                                </p>
-                            </div>
-
-                            <div class="col-lg-12 wss-about-manufacturer__img">
-                                <img class="img-responsive" src="/static/dist/img/modal-aboutlong.jpg" alt="About Long" width="">
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="modal-footer wss-modal-footer__color">
-
-                        <div class="row">
-                            <div class="col-lg-12 text-center">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close window</button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- modal-window about corp-data -->
 
     </div>
 {% endblock mainpage %}
@@ -107,7 +69,6 @@
     <script src="/static/dist/libs/fancybox/jquery.fancybox.js"></script>
     <script src="/static/dist/js/logo-float-top/logo-float-top.js"></script>
     <script src="/static/dist/js/fancy-box/fancy-box-initial.js"></script>
-    <script src="/static/dist/js/csrf-token/csrf-token.js"></script>
     <!-- Our JS App Fies -->
     <script src="/static/dist/app/app.js"></script>
     <!-- Other helpers JS -->

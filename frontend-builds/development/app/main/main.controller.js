@@ -8,17 +8,12 @@
     angular
         .module(
             'ngWestSibStudio.main'
-        //,
-        //    [
-        //        'ngAnimate'
-        //    ]
         )
         .controller('MainCtrl', mainCtrl)
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
-        .controller('FormPostAddCtrl', formPostAddCtrl)
-        .controller('AllPostsMainPageCtrl', allPostsMainPageCtrl)
         .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
         .controller('HeaderMainPageCtrl', headerMainPageCtrl)
+        .controller('NewsCtrl', newsCtrl)
         .filter('deleteTwoSymbolsFilter', function(){
                 return function (input) {
                     return input.replace(".00" , "")
@@ -65,7 +60,75 @@
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
 
-    // контроллердля запуска модалки корзины и генерации ее же
+    // контроллер для обработки новостей
+    newsCtrl.$inject = [
+                                    'ARRAY_OF_LIST_OPTIONS_FOR_CART',
+                                    'NEWS_URL',
+                                    '$rootScope',
+                                    '$log',
+                                    '$modal',
+                                    '$http'
+    ];
+
+    function newsCtrl (
+                                    ARRAY_OF_LIST_OPTIONS_FOR_CART,
+                                    NEWS_URL,
+                                    $rootScope,
+                                    $log,
+                                    $modal,
+                                    $http
+    ) {
+
+        var vm = this;
+
+        // запрос новостей с бекэнда
+        $http({method: 'GET', url: NEWS_URL}).
+            success(function(data, status, headers, config) {
+                vm.newsJSON = data;
+                $log.debug('News is', data);
+            }).
+            error(function(data, status, headers, config) {
+                $log.debug('Error when i retrieve news from backend!', status);
+        }); // $http
+
+        vm.scrollToEquips = function ( e ) {
+            e.preventDefault();
+
+            var offset = jQuery( '.header__scroll' ).offset().top;
+            jQuery('html, body').animate({scrollTop: (offset - 0 )},800);
+
+        }; // vm.scrollToEquips
+
+        vm.animationsEnabled = true;
+
+        vm.openModalNews = function ( e, _newsHeader, _newsText ) {
+            e.preventDefault();
+
+            vm.modalCaption = _newsHeader;
+            $modal.open(
+                {
+                    animation: vm.animationsEnabled,
+                    templateUrl: 'static/dist/app/components/modal-windows/news-modal.html',
+                    controller: 'ModalNewsCtrl',
+                    size: 'lg',
+                    resolve: {
+                        modalCaption: function () {
+                            //return vm.modalCaption;
+                            return {
+                                'newsHeader': vm.modalCaption,
+                                'newsText': _newsText
+                            };
+                        }
+                    }
+                }
+            ); // ~~~ $modal.open ~~~
+
+        }; // ~~~ openModalCart ~~~;
+
+
+    } // newsCtrl
+
+    // контроллер для запуска модалки корзины и генерации ее же
     headerMainPageCtrl.$inject = [
                                     'ARRAY_OF_LIST_OPTIONS_FOR_CART',
                                     '$rootScope',
@@ -83,6 +146,15 @@
         var vm = this;
 
         vm.animationsEnabled = true;
+
+        vm.scrollToNews = function ( e ) {
+            e.preventDefault();
+
+            var offset = jQuery( '.news__scroll' ).offset().top;
+            jQuery('html, body').animate({scrollTop: (offset - 0 )},800);
+
+        }; // vm.scrollToNews
+
 
         vm.openModalCart = function ( e ) {
             e.preventDefault();
@@ -125,6 +197,7 @@
                                                 'BRANDS_URL',
                                                 'CART_MAX_ITEMS',
                                                 'CART_MAX_PRICE',
+                                                'NEWS_URL',
                                                 'store',
                                                 '$http'
     ];
@@ -137,6 +210,7 @@
                                                 BRANDS_URL,
                                                 CART_MAX_ITEMS,
                                                 CART_MAX_PRICE,
+                                                NEWS_URL,
                                                 store,
                                                 $http
     ) {
@@ -185,12 +259,17 @@
         // добавить товар в корзину
         vm.addItemToCart = function ( _equipmentID,
                                       _equipmentPrice,
-                                      _equipmentName
+                                      _equipmentName,
+                                      _equipmentPriceDiscont
                                     ) {
 
             if ( $rootScope.maxItemsInCart >= CART_MAX_ITEMS ) {
                 return false;
             } // ограничение товаров в корзине
+
+            if ( _equipmentPriceDiscont != '' ) {
+                _equipmentPrice = _equipmentPriceDiscont;
+            } // условие того есть ли скидка на товар или нет
 
             var isCurrentItem = false,
                 isNewItem = false;
@@ -267,251 +346,6 @@
 
     } //allBrandsAndProductsMainPageCtrl
 
-
-    allPostsMainPageCtrl.$inject = [ '$scope', '$rootScope',
-                                    'ngfitfire', '$modal',
-                                    'AuthfireFactory', 'FIREBASE_URL',
-                                    '$log', '$firebaseObject',
-                                    '$firebaseArray', '$q',
-                                    'toastr' ];
-
-    function allPostsMainPageCtrl( $scope, $rootScope,
-                           ngfitfire, $modal,
-                           AuthfireFactory, FIREBASE_URL,
-                           $log, $firebaseObject,
-                           $firebaseArray, $q,
-                           toastr ) {
-
-        var vm = this;
-
-        $rootScope.allPosts = {};
-        // for easy access
-        $rootScope.allPostsData = $rootScope.allPosts;
-        // boolean flag to indicate api call success
-        $rootScope.allPostsData.dataLoaded = false;
-
-        // запрос всех постов для главной страницы
-        //todo сделать errorCallBack
-        $q.all( [
-            ngfitfire.getPosts2(),
-            ngfitfire.getAvatars2() ] )
-        .then(
-            function (results) {
-
-                $log.debug( 'comments = results[0] =', results[0] );
-                $log.debug( 'avatars = results[1] =', results[1] );
-
-
-                $rootScope.allPosts = ngfitfire.processingMainDataOfQALL( results );
-                $rootScope.allPostsData.dataLoaded = true;
-
-                $log.debug( '$rootScope.allPosts =', $rootScope.allPosts );
-                //$log.debug( 'данные нового добавленного поста typeof(results) =', typeof(results) );
-                //$log.debug( 'данные нового добавленного поста results =', results );
-                //$log.debug( 'vm.allPosts =', vm.allPosts );
-                //$log.debug( 'results[0] =', results[0] );
-                //$log.debug( '$rootScope.currentUser =', $rootScope.currentUser );
-            }
-        ); // $q.all
-
-        vm.commentEdit = function ( _comment, _post ) {
-            $log.debug( 'Редактировать, выбранный коммент _comment =', _comment );
-            $log.debug( 'Редактировать, post =', _post );
-
-            ////e.preventDefault();
-            vm.modalCaption = 'Редактировать комментарий';
-            $modal.open(
-                {
-                    animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/edit-modal/comment-edit-modal.html',
-                    controller: 'ModalCommentEditCtrl',
-                    resolve: {
-                        modalCaption: function () {
-                            return vm.modalCaption;
-                        },
-                        commentData: function () {
-                            return _comment;
-                        },
-                        postData: function () {
-                            return _post;
-                        }
-                    }
-                }
-            ); // ~~~ $modal.open ~~~
-
-        }; // ~~~ vm.commentEdit ~~~
-
-        vm.postEdit = function ( _elementIndex, _post ) {
-            $log.debug( 'Редактировать, выбранный пост имеет индекс =', _elementIndex );
-            $log.debug( 'Редактировать, _post =', _post );
-
-            //e.preventDefault();
-            vm.modalCaption = 'Редактировать пост';
-            $modal.open(
-                {
-                    animation: vm.animationsEnabled,
-                    templateUrl: '/app/components/edit-modal/post-edit-modal.html',
-                    controller: 'ModalPostEditCtrl',
-                    resolve: {
-                        modalCaption: function () {
-                            return vm.modalCaption;
-                        },
-                        postData: function () {
-                            return _post;
-                        }
-                    }
-                }
-            ); // ~~~ $modal.open ~~~
-
-        }; // ~~~ vm.postEdit ~~~
-
-        vm.postDelete = function ( _element, _postID ) {
-            $log.debug( 'удалить, выбранный пост имеет индекс =', _element );
-
-            ngfitfire.postDelete( _postID, _element );
-
-        }; // ~~~ vm.postDelete ~~~
-
-        // показать форму
-        vm.addNewCommentFunc = function ( _post ) {
-            $log.debug('Открыта форма добавления нового комментария');
-            $scope.addNewCommentSelected = _post;
-            vm.newComment = null;
-        }; // vm.addNewCommentFunc ~~~ показать форму
-
-        // скрыть форму
-        vm.cancelCommentFunc = function () {
-            $log.debug('Закрыта форма добавления нового комментария');
-            $scope.addNewCommentSelected = false;
-            vm.newComment = null;
-        }; // vm.cancelCommentFunc ~~~ скрыть форму
-
-        // условие для того чтобы открывалась форма добавления комментария, только в конкретном посте
-        vm.isSelectedFormAddNewComment = function ( _post ) {
-            return $scope.addNewCommentSelected === _post;
-        }; // ~~~ vm.isSelectedFormAddNewComment ~~~
-
-        // кнопка submit добавления нового поста
-        vm.addNewComment = function ( _commentText, _postID ) {
-            if ( typeof(_commentText) === 'undefined' ) {
-                $log.debug( 'вы пытаетесь добавить пустой комментарий! это невозможно');
-                toastr.warning('Вы пытаетесь добавить пустой комментарий, это невозможно', 'Внимание!' );
-                return false;
-            } else {
-                $log.debug( 'вы пытаетесь добавть новый комментарий с текстом =', _commentText, 'в пост-айди', _postID );
-                $log.debug(
-                    'инфа о пользователе =',
-                    $rootScope.currentUser.id,
-                    $rootScope.currentUser.name
-                );
-
-                vm.submittedNewComment = {
-                    'commentText': _commentText
-                };
-                vm.submittedNewComment = extend( {},
-                                     vm.submittedNewComment,
-                                     {
-                                        'dateTime': Math.round(new Date().getTime() / 1000),   //10
-                                        'ownerId': $rootScope.currentUser.id,
-                                        'ownerName': $rootScope.currentUser.name
-                                     }
-                );
-
-                ngfitfire
-                    .newCommentAdd(
-                        vm.submittedNewComment,
-                        _postID,
-                        function () {
-                            vm.submittedNewComment = null;
-                            $scope.addNewCommentSelected = false;
-                            vm.newComment = null;
-                            //vm.isShowExistedComments( _postID );
-                        }
-                );
-            }
-        }; // ~~~ vm.addNewComment ~~~
-
-        // показать комменты поста
-        vm.showExistedComments = function ( _post ) {
-            $scope.showCommentsInPost = _post;
-        }; // vm.showExistedComments ~~~ показать комменты поста
-
-        // скрыть комменты поста
-        vm.hideExistedComments = function () {
-            $scope.showCommentsInPost = false;
-        }; // vm.hideExistedComments ~~~ скрыть комменты поста
-
-        // условие для того чтобы открывалась форма добавления комментария, только в конкретном посте
-        vm.isShowExistedComments = function ( _post ) {
-            return $scope.showCommentsInPost === _post;
-        }; // ~~~ vm.isSelectedFormAddNewComment ~~~
-
-        // удаление комментария
-        vm.deleteThisComment = function ( _comment, _post ) {
-            ngfitfire.commentDelete( _post.postID, _comment.commentID );
-        }; // ~~~ vm.deleteThisComment ~~~
-
-
-    } // ~~~ allPostsMainPageCtrl ~~~
-
-    formPostAddCtrl.$inject = [ '$scope', '$rootScope',
-                                    'ngfitfire', '$modal',
-                                    'AuthfireFactory', 'FIREBASE_URL',
-                                    '$log', 'toastr' ];
-
-    function formPostAddCtrl( $scope, $rootScope,
-                           ngfitfire, $modal,
-                           AuthfireFactory, FIREBASE_URL,
-                           $log, toastr ) {
-        var vm = this;
-
-        vm.addNewPost = true;
-
-        vm.addNewPostFunc = function () {
-            $log.debug('Открыта форма добавления нового поста');
-            vm.newpost = null;
-            vm.addNewPost = false;
-        }; // vm.addNewPostFunc ~~~ показать форму
-
-        vm.cancelPostFunc = function () {
-            $log.debug('Закрыта форма добавления нового поста');
-            vm.addNewPost = true;
-        }; // vm.cancelPostFunc ~~~ скрыть форму
-
-        vm.submitNewPost = function ( _postCaption, _postText ) {
-
-            $log.debug( 'vm.newpost', vm.newpost );
-
-            if ( typeof( _postCaption ) === 'undefined' || typeof( _postText ) === 'undefined' || vm.newpost === null ) {
-                $log.debug( 'вы пытаетесь добавить пустой пост! это невозможно');
-                toastr.warning('Вы пытаетесь добавить пустой пост, это невозможно', 'Внимание!' );
-                return false;
-            } else {
-                vm.newpost = extend( {},
-                                     vm.newpost,
-                                     {
-                                        'dateTime': Math.round(new Date().getTime() / 1000),   //10
-                                        'ownerId': $rootScope.currentUser.id,
-                                        'ownerName': $rootScope.currentUser.name
-                                     }
-                );
-
-                $log.debug( '$rootScope.currentUser =', $rootScope.currentUser );
-                $log.debug('Добавлен новый пост', vm.newpost);
-                ngfitfire
-                    .newPostAdd(
-                        vm.newpost,
-                        function () {
-                            vm.newpost = null;
-                            vm.addNewPost = true;
-                        }
-                );
-            }
-        }; // vm.submitNewPost ~~~ добавить новый пост
-
-    } // ~~~ formPostAdd ~~~
-
-
     mainCtrl.$inject = [ '$scope', '$rootScope',
                      'ngfitfire', '$modal',
                      'AuthfireFactory' ];
@@ -565,28 +399,6 @@
                 }
             ); // ~~~ $modal.open ~~~
         }; // ~~~ openModalSingIn ~~~
-
-        //vm.openModalSingUp = function ( e ) {
-        //    e.preventDefault();
-        //    vm.modalCaption = 'Регистрация';
-        //    $modal.open(
-        //        {
-        //            animation: vm.animationsEnabled,
-        //            templateUrl: '/app/components/auth-modal/sign-up-modal.html',
-        //            controller: 'ModalSingUpCtrl',
-        //            resolve: {
-        //                modalCaption: function () {
-        //                    return vm.modalCaption;
-        //                }
-        //            }
-        //        }
-        //    ); // ~~~ $modal.open ~~~
-        //}; // ~~~ openModalSingUp ~~~
-        //
-        //
-        //vm.logout = function (  ) {
-        //    AuthfireFactory.logout();
-        //}; // ~~~ vm.logout ~~~
 
     } // ~~~ openModalAboutManufacturerCtrl ~~~
 
