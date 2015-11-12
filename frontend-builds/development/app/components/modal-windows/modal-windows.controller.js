@@ -285,139 +285,8 @@
             $scope.errorCodeZIP = false;
             $scope.isValidateError = false;
 
-        }; //~~~ $scope.ok ~~~
+        }; //~~~ $scope.cartProceed ~~~
 
-        //$scope.ok = function () {
-        //
-        //    //$scope.isSubmitBtnDisablet = true;
-        //
-        //    //if (
-        //    //     !$scope.userdata.name
-        //    //      ||
-        //    //     !$scope.userdata.phone
-        //    //      ||
-        //    //     !$scope.userdata.email
-        //    //      ||
-        //    //     !$scope.userdata.address
-        //    //      ||
-        //    //     !$scope.userdata.town
-        //    //      ||
-        //    //     !$scope.userdata.country
-        //    //      ||
-        //    //     !$scope.userdata.zipcode
-        //    //) {
-        //    //    $log.debug('Для оплаты необходимо ввести данные пользователя!');
-        //    //    $scope.isValidateError2 = true;
-        //    //    $scope.isSubmitBtnDisablet = false;
-        //    //    return false;
-        //    //} else {
-        //    //
-        //    //    //$scope.isValidateError2 = false;
-        //    //    //
-        //    //    //if ( !$scope.userdata.company ) {
-        //    //    //    $scope.userdata.company = '';
-        //    //    //}
-        //    //    //
-        //    //    //// getDataFromEquipments
-        //    //    //$rootScope.currentCart.selectItems.forEach(function (element, index) {
-        //    //    //    vm.orderedEquipment.push({
-        //    //    //        'equipmentID'     : element.equipmentID,
-        //    //    //        'equipmentAmount' : element.equipmentAmount
-        //    //    //    });
-        //    //    //}); // getDataFromEquipments
-        //    //    //
-        //    //    //var products = vm.orderedEquipment;
-        //    //    //var userData =  $scope.userdata ;
-        //    //    //
-        //    //    //vm.data = {
-        //    //    //    'products' : products,
-        //    //    //    'userData' : userData
-        //    //    //};
-        //    //    //
-        //    //    //$log.debug('vm.data =', vm.data );
-        //    //    //
-        //    //    //vm.orderedEquipment = [];
-        //    //    //
-        //    //    //// отправка данных корзины на back-end
-        //    //    //$http({method: 'POST', data: vm.data, url: CART_POST_URL}).
-        //    //    //    success(function(data, status, headers, config) {
-        //    //    //
-        //    //    //        if ( typeof(data.errors) === 'undefined' ) {
-        //    //    //            //return link to paypal
-        //    //    //            $log.debug('RETURN FROM POST Data is =', data);
-        //    //    //            jQuery('body').append(data);
-        //    //    //            jQuery('#paypal_form_cont > form').submit();
-        //    //    //        } else {
-        //    //    //
-        //    //    //            // todo сделать проверку вот так как написано ниже
-        //    //    //            //[0:17:45] Nikolas Kost: errors = [12,22,34]
-        //    //    //            //if( errors.indexOf(34) >= 0 ) ……
-        //    //    //            //[0:18:09] Nikolas Kost: и числа заменить на константы
-        //    //    //
-        //    //    //            //return some errors from back-end
-        //    //    //            for (var i = 0; i < data.errors.length; i++) {
-        //    //    //                $log.debug('data.errors is =', data.errors[i]);
-        //    //    //                $scope.errorCode = 20;
-        //    //    //
-        //    //    //                if ( data.errors[i] === 10 || data.errors[i] === 11 || data.errors[i] === 11 ) {
-        //    //    //                    alert('No items in the cart');
-        //    //    //                    vm.data = {};
-        //    //    //                    $modalInstance.dismiss('cancel');
-        //    //    //                } else if ( data.errors[i] === 20 ) {
-        //    //    //                    alert('No user data');
-        //    //    //                    $scope.errorCodeName = true;
-        //    //    //                    $scope.errorCodePhone = true;
-        //    //    //                    $scope.errorCodeEmail = true;
-        //    //    //                    $scope.errorCodeAddress = true;
-        //    //    //                    $scope.errorCodeTown = true;
-        //    //    //                    $scope.errorCodeCountry = true;
-        //    //    //                    $scope.errorCodeZIP = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                } else if ( data.errors[i] === 21 ) {
-        //    //    //                    $scope.errorCodeName = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                } else if ( data.errors[i] === 22 ) {
-        //    //    //                    $scope.errorCodePhone = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                } else if ( data.errors[i] === 23 ) {
-        //    //    //                    $scope.errorCodeEmail = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                } else if ( data.errors[i] === 24 ) {
-        //    //    //                    $scope.errorCodeAddress = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                } else if ( data.errors[i] === 25 ) {
-        //    //    //                    $scope.errorCodeTown = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                } else if ( data.errors[i] === 26 ) {
-        //    //    //                    $scope.errorCodeCountry = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                } else if ( data.errors[i] === 27 ) {
-        //    //    //                    $scope.errorCodeZIP = true;
-        //    //    //                    $scope.isValidateError = true;
-        //    //    //                }
-        //    //    //            }
-        //    //    //        }
-        //    //    //
-        //    //    //        $scope.isSubmitBtnDisablet = false;
-        //    //    //    }).
-        //    //    //    error(function(data, status, headers, config) {
-        //    //    //        $log.debug('STATUS. Error when i post cart-data =', status);
-        //    //    //        alert("We're sorry, a server error occurred. Please try your request later");
-        //    //    //        $scope.isSubmitBtnDisablet = false;
-        //    //    //}); // $http
-        //    //
-        //    //}
-        //    //
-        //    //$scope.errorCodeName = false;
-        //    //$scope.errorCodePhone = false;
-        //    //$scope.errorCodeEmail = false;
-        //    //$scope.errorCodeAddress = false;
-        //    //$scope.errorCodeTown = false;
-        //    //$scope.errorCodeCountry = false;
-        //    //$scope.errorCodeZIP = false;
-        //    //$scope.isValidateError = false;
-        //
-        //}; //~~~ $scope.ok ~~~
 
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
@@ -427,24 +296,29 @@
 
 
     modalAboutManufacturerCtrl.$inject = [
-        '$scope', '$modal', '$log',
-        '$rootScope', '$modalInstance', 'modalCaption',
-        'AuthfireFactory', '$location'
+                                            '$scope',
+                                            '$modal',
+                                            '$log',
+                                            '$rootScope',
+                                            '$modalInstance',
+                                            'modalCaption',
+                                            '$location'
     ];
 
 
-    function modalAboutManufacturerCtrl ( $scope, $modal,
-                               $log, $rootScope,
-                               $modalInstance, modalCaption,
-                               AuthfireFactory, $location ) {
+    function modalAboutManufacturerCtrl (
+                                            $scope,
+                                            $modal,
+                                            $log,
+                                            $rootScope,
+                                            $modalInstance,
+                                            modalCaption,
+                                            $location
+    ) {
 
         var vm = this;
 
         $scope.modalCaption = modalCaption;
-
-        $scope.ok = function () {
-
-        }; //~~~ $scope.ok ~~~
 
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');

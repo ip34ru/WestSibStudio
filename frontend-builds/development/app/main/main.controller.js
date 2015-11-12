@@ -81,14 +81,13 @@
 
         var vm = this;
 
-        // запрос новостей с бекэнда
-        $http({method: 'GET', url: NEWS_URL}).
-            success(function(data, status, headers, config) {
-                vm.newsJSON = data;
-                $log.debug('News is', data);
-            }).
-            error(function(data, status, headers, config) {
-                $log.debug('Error when i retrieve news from backend!', status);
+        // запрос новостей с бекэнда (ИСПОЛЬЗУЙ В БУДУЩЕМ ЕГО)
+        $http({method: 'GET', url: NEWS_URL})
+            .then(function successCallback(response) {
+                vm.newsJSON = response.data;
+                $log.debug('NEW_METHOD News is', response.data);
+            }, function errorCallback(response) {
+                $log.debug('Error when i retrieve news from backend!', response.status);
         }); // $http
 
         vm.scrollToEquips = function ( e ) {
@@ -198,6 +197,7 @@
                                                 'CART_MAX_ITEMS',
                                                 'CART_MAX_PRICE',
                                                 'NEWS_URL',
+                                                '$modal',
                                                 'store',
                                                 '$http'
     ];
@@ -211,6 +211,7 @@
                                                 CART_MAX_ITEMS,
                                                 CART_MAX_PRICE,
                                                 NEWS_URL,
+                                                $modal,
                                                 store,
                                                 $http
     ) {
@@ -219,6 +220,7 @@
 
         vm.showEquipmentSection = false;
         vm.cartTotalPrice = 0;
+        vm.animationsEnabled = true;
 
         store.set('currentCart', null);
         $rootScope.currentCart = null;
@@ -241,6 +243,31 @@
             error(function(data, status, headers, config) {
                 $log.debug('Error when i retrieve main data from backend!', status);
         }); // $http
+
+        vm.openModalAboutManufacturerInfo = function ( e, _manufacturerName, _manufacturerText ) {
+            e.preventDefault();
+
+            vm.modalCaption = 'About ' + _manufacturerName;
+            $modal.open(
+                {
+                    animation: vm.animationsEnabled,
+                    templateUrl: 'static/dist/app/components/modal-windows/about-manufacturer-modal.html',
+                    controller: 'ModalAboutManufacturerCtrl',
+                    size: 'lg',
+                    resolve: {
+                        modalCaption: function () {
+                            //return vm.modalCaption;
+                            return {
+                                'manufacturerHeader': vm.modalCaption,
+                                'manufacturerText': _manufacturerText
+                            };
+                        }
+                    }
+                }
+            ); // ~~~ $modal.open ~~~
+
+        }; // ~~~ openModalAboutManufacturerInfo ~~~;
+
 
         // отображение информации о товаре
         vm.showInfoThisEquipment = function ( _equipmentID, _manufacturerID ) {
