@@ -24,6 +24,7 @@
         ])
         .constant('BRANDS_URL', '/ajax/brands/')
         .constant('NEWS_URL', '/ajax/news/')
+        .constant('NOW_YEAR_URL', '/ajax/nowyear/')
         .constant('CART_POST_URL', '/ajax/cart/')
         .constant('CART_MAX_ITEMS', 9)
         .constant('CART_MAX_PRICE', 8500)

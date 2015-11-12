@@ -33,9 +33,8 @@
                     },
                     'footerMainPage' : {
                         templateUrl: 'static/dist/app/components/footer/footer.html',
-                        //static/dist/app/components/header/header.html
-                        //controller: 'HeaderMainPageCtrl',
-                        //controllerAs: 'vm'
+                        controller: 'FooterMainPageCtrl',
+                        controllerAs: 'vm'
                     },
                     'footerIP34MainPage' : {
                         templateUrl: 'static/dist/app/components/footer-ip34/footer-ip34.html',

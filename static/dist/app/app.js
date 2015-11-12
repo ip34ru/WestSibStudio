@@ -24,6 +24,7 @@
         ])
         .constant('BRANDS_URL', '/ajax/brands/')
         .constant('NEWS_URL', '/ajax/news/')
+        .constant('NOW_YEAR_URL', '/ajax/nowyear/')
         .constant('CART_POST_URL', '/ajax/cart/')
         .constant('CART_MAX_ITEMS', 9)
         .constant('CART_MAX_PRICE', 8500)
@@ -285,6 +286,7 @@
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
         .controller('HeaderMainPageCtrl', headerMainPageCtrl)
+        .controller('FooterMainPageCtrl', footerMainPageCtrl)
         .controller('NewsCtrl', newsCtrl)
         .filter('deleteTwoSymbolsFilter', function(){
                 return function (input) {
@@ -331,6 +333,33 @@
         });
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
+    //контроллер для даты в футере
+    footerMainPageCtrl.$inject = [
+                                    '$http',
+                                    'NOW_YEAR_URL',
+                                    '$log'
+    ];
+
+    function footerMainPageCtrl (
+                                    $http,
+                                    NOW_YEAR_URL,
+                                    $log
+    ) {
+
+        var vm = this;
+
+        // запрос текущего года для футера
+        $http({method: 'GET', url: NOW_YEAR_URL})
+            .then(function successCallback(response) {
+                vm.nowYearJSON = response.data;
+                $log.debug('Now Year is', response.data);
+            }, function errorCallback(response) {
+                $log.debug('Error when i retrieve data of now year from backend!', response.status);
+        }); // $http
+
+    } // footerMainPageCtrl
+
 
     // контроллер для обработки новостей
     newsCtrl.$inject = [
@@ -740,9 +769,8 @@
                     },
                     'footerMainPage' : {
                         templateUrl: 'static/dist/app/components/footer/footer.html',
-                        //static/dist/app/components/header/header.html
-                        //controller: 'HeaderMainPageCtrl',
-                        //controllerAs: 'vm'
+                        controller: 'FooterMainPageCtrl',
+                        controllerAs: 'vm'
                     },
                     'footerIP34MainPage' : {
                         templateUrl: 'static/dist/app/components/footer-ip34/footer-ip34.html',

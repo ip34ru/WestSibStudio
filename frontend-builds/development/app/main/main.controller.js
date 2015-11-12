@@ -13,6 +13,7 @@
         .controller('OpenModalAboutManufacturerCtrl', openModalAboutManufacturerCtrl)
         .controller('AllBrandsAndProductsMainPageCtrl', allBrandsAndProductsMainPageCtrl)
         .controller('HeaderMainPageCtrl', headerMainPageCtrl)
+        .controller('FooterMainPageCtrl', footerMainPageCtrl)
         .controller('NewsCtrl', newsCtrl)
         .filter('deleteTwoSymbolsFilter', function(){
                 return function (input) {
@@ -59,6 +60,33 @@
         });
         return base;
     } // ~~~ extend function: https://gist.github.com/katowulf/6598238 ~~~
+
+    //контроллер для даты в футере
+    footerMainPageCtrl.$inject = [
+                                    '$http',
+                                    'NOW_YEAR_URL',
+                                    '$log'
+    ];
+
+    function footerMainPageCtrl (
+                                    $http,
+                                    NOW_YEAR_URL,
+                                    $log
+    ) {
+
+        var vm = this;
+
+        // запрос текущего года для футера
+        $http({method: 'GET', url: NOW_YEAR_URL})
+            .then(function successCallback(response) {
+                vm.nowYearJSON = response.data;
+                $log.debug('Now Year is', response.data);
+            }, function errorCallback(response) {
+                $log.debug('Error when i retrieve data of now year from backend!', response.status);
+        }); // $http
+
+    } // footerMainPageCtrl
+
 
     // контроллер для обработки новостей
     newsCtrl.$inject = [

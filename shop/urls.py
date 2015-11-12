@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^ajax/notes/', Notes_View.as_view(), name='notes'),
     url(r'^ajax/logo/', Logo_View.as_view(), name='logo'),
     url(r'^ajax/cart/', Cart_View.as_view(), name='cart'),
+    url(r'^ajax/nowyear/', Now_Year.as_view(), name='nowyear'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^pay/paypal/', include('paypal.standard.ipn.urls')),

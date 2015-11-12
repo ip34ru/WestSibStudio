@@ -4,7 +4,17 @@ from paypal.standard.forms import PayPalPaymentsForm
 from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.signals import valid_ipn_received
 import json
+import datetime
 from .models import *
+
+
+class Now_Year(View):
+
+    def get(self, request, *args, **kwargs):
+        now = datetime.now()
+        result = {'now_year': now.year}
+        return HttpResponse(json.dumps(result, indent=1),
+                            content_type='application/json')
 
 
 def show_me_the_money(sender, **kwargs):
