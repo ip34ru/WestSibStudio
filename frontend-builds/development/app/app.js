@@ -58,7 +58,7 @@
             requireBase: false
         });
 
-        $logProvider.debugEnabled( true );
+        $logProvider.debugEnabled( false );
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             $injector.invoke(['$state', function ($state) { $state.go('error'); }]);

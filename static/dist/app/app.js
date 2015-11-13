@@ -58,7 +58,7 @@
             requireBase: false
         });
 
-        $logProvider.debugEnabled( true );
+        $logProvider.debugEnabled( false );
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             $injector.invoke(['$state', function ($state) { $state.go('error'); }]);
@@ -1919,9 +1919,9 @@
 
                 $rootScope.currentCart.oldTotalPrice = $rootScope.currentCart.totalPrice;
                 $rootScope.currentCart.totalPrice = 0;
+                $rootScope.currentCart.oldItemsInCart = $rootScope.currentCart.itemsInCart;
 
                 // changeTotalPrice
-
                 $rootScope.currentCart.itemsInCart = 0;
 
                 $rootScope.currentCart.selectItems.forEach(function (element, index) {
@@ -1930,13 +1930,14 @@
                         $rootScope.currentCart.totalPrice
                         +
                         element.equipmentSum;
-                    $rootScope.currentCart.itemsInCart = $rootScope.currentCart.itemsInCart + element.equipmentAmount
+                    $rootScope.currentCart.itemsInCart = $rootScope.currentCart.itemsInCart + element.equipmentAmount;
                 }); // changeTotalPrice
 
                 if ( $rootScope.currentCart.totalPrice >= CART_MAX_PRICE ) {
                     $rootScope.currentCart.selectItems[_index].equipmentSum = $rootScope.currentCart.selectItems[_index].oldEquipmentSum;
                     $rootScope.currentCart.selectItems[_index].equipmentAmount = $rootScope.currentCart.selectItems[_index].oldEquipmentAmount;
                     $rootScope.currentCart.totalPrice = $rootScope.currentCart.oldTotalPrice;
+                    $rootScope.currentCart.itemsInCart = $rootScope.currentCart.oldItemsInCart;
                     alert('The product\'s price goes over the limit for payment PayPal. Please, separate your order into parts');
                     return false;
                 } else {
